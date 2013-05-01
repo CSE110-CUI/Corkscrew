@@ -74,7 +74,7 @@ public class WineInfo extends Activity {
 		    	  InputStream in = new URL(urldisplay).openStream();
 			      mIcon11 = BitmapFactory.decodeStream(in);} catch (Exception e) {
 			    	  try {
-			    		   	InputStream in = getAssets().open("gillsp.jpg");
+			    		   	InputStream in = getAssets().open("wineDefault.jpg");
 			    		   	mIcon11 = BitmapFactory.decodeStream(in);} catch (IOException e1){
 			    	  		   	e1.printStackTrace();}
 		          			Log.e("Error", e.getMessage());
