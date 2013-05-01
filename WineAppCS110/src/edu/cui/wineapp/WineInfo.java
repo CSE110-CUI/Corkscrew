@@ -10,15 +10,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 public class WineInfo extends Activity {
 
-	//sam
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -32,23 +31,24 @@ public class WineInfo extends Activity {
 		TextView name = (TextView) findViewById(R.id.textView1);
 		name.setText(currentWine.getName());	
 		
+		TextView country = (TextView) findViewById(R.id.TextView01);
+		country.setText(currentWine.getCountry());	
+		
 		TextView varietal = (TextView) findViewById(R.id.TextView03);
 		varietal.setText(currentWine.getVarietal());		
 		
-		//TextView label_url = (TextView) findViewById(R.id.TextView02);
-		//label_url.setText(currentWine.getLabel_URL());	
+		TextView region = (TextView) findViewById(R.id.TextView05);
+		region.setText(currentWine.getRegion());		
 		
-		TextView avin = (TextView) findViewById(R.id.TextView05);
-		avin.setText(currentWine.getAvin());	
-		
-		TextView rating = (TextView) findViewById(R.id.TextView04);
-		rating.setText(currentWine.getRating());	
-		
-		TextView country = (TextView) findViewById(R.id.TextView01);
-		country.setText(currentWine.getCountry());
+		TextView producer = (TextView) findViewById(R.id.TextView02);
+		producer.setText(currentWine.getProducer());	
+
 		
 		new DownloadImageTask((ImageView) findViewById(R.id.image))
         .execute(currentWine.getLabel_URL());
+		
+		RatingBar wineRating = (RatingBar) findViewById(R.id.ratingBar1);
+		wineRating.setRating(Float.parseFloat(currentWine.getRating()));
 		
 		
 	}
@@ -75,10 +75,11 @@ public class WineInfo extends Activity {
 			      mIcon11 = BitmapFactory.decodeStream(in);} catch (Exception e) {
 			    	  try {
 			    		   	InputStream in = getAssets().open("wineDefault.jpg");
+			    		   	Log.e("TRY","Trying to put default photo");
 			    		   	mIcon11 = BitmapFactory.decodeStream(in);} catch (IOException e1){
-			    	  		   	e1.printStackTrace();}
-		          			Log.e("Error", e.getMessage());
-		          			e.printStackTrace();
+				    		   	Log.e("CATCH","Failed to put default photo");
+			    	  		   	e1.printStackTrace();
+		    	  		   	}
 		      }
 		      
 		      return mIcon11;
