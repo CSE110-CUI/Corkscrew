@@ -1,6 +1,8 @@
 package edu.cui.wineapp;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,6 +10,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.ImageView;
@@ -45,6 +48,8 @@ public class WineInfo extends Activity {
 		
 		new DownloadImageTask((ImageView) findViewById(R.id.image))
         .execute(currentWine.getLabel_URL());
+		
+		
 	}
 
 	@Override
@@ -58,20 +63,23 @@ public class WineInfo extends Activity {
 	private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
 		  ImageView bmImage;
 
-		  public DownloadImageTask(ImageView bmImage) {
-		      this.bmImage = bmImage;
-		  }
+		  public DownloadImageTask(ImageView bmImage) {this.bmImage = bmImage;}
 
 		  protected Bitmap doInBackground(String... urls) {
 		      String urldisplay = urls[0];
 		      Bitmap mIcon11 = null;
+		      
 		      try {
-		        InputStream in = new java.net.URL(urldisplay).openStream();
-		        mIcon11 = BitmapFactory.decodeStream(in);
-		      } catch (Exception e) {
-		          Log.e("Error", e.getMessage());
-		          e.printStackTrace();
+		    	  InputStream in = new URL(urldisplay).openStream();
+			      mIcon11 = BitmapFactory.decodeStream(in);} catch (Exception e) {
+			    	  try {
+			    		   	InputStream in = getAssets().open("gillsp.jpg");
+			    		   	mIcon11 = BitmapFactory.decodeStream(in);} catch (IOException e1){
+			    	  		   	e1.printStackTrace();}
+		          			Log.e("Error", e.getMessage());
+		          			e.printStackTrace();
 		      }
+		      
 		      return mIcon11;
 		  }
 
