@@ -1,7 +1,7 @@
 package edu.cui.wineapp;
 
 import java.io.Serializable;
-
+//sam
 public class Wine implements Serializable{
 
 		public Wine(String avin, String name, String country, String region,
