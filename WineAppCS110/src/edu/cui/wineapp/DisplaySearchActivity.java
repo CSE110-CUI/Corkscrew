@@ -27,6 +27,8 @@ import android.widget.ListView;
 
 public class DisplaySearchActivity extends ListActivity {
 	
+	//Test
+	
 	private static final String DEBUG_TAG = "HttpExample";	
 	
     private static final String TAG_WINES = "wine"; 

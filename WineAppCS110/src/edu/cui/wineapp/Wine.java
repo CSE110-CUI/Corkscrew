@@ -4,6 +4,8 @@ import java.io.Serializable;
 //sam
 public class Wine implements Serializable{
 
+	
+	
 		public Wine(String avin, String name, String country, String region,
 			String producer, String varietal, String label_url, String rating) {
 			
@@ -83,12 +85,7 @@ public class Wine implements Serializable{
 		public String stripProducer(String producer){
 			String s = producer;
 			
-		/*
-			s = s.replace("\"producer\":", "");
-			s = s.replace("\"", "");
-			s = s.replace(",", "");
-		*/
-			
+	
 			if(s.contains("&quot;") == true){
 				s = s.replace("&quot;", "\"");
 			}
@@ -102,12 +99,7 @@ public class Wine implements Serializable{
 
 		public String stripCountry(String country){
 			String s = country;
-			
-		/*
-			s = s.replace("\"country\":", "");
-			s = s.replace("\"", "");
-			s = s.replace(",", "");
-		*/
+	
 			
 			if(s.contains("&quot;") == true){
 				s = s.replace("&quot;", "\"");
@@ -127,11 +119,7 @@ public class Wine implements Serializable{
 			
 			String s = varietals;
 			
-		/*
-			s = s.replace("\"varietals\":", "");
-			s = s.replace("\"", "");
-			s = s.replace(",", "");
-		*/
+		
 			
 			if(s.contains("&quot;") == true){
 				s = s.replace("&quot;", "\"");
@@ -145,22 +133,16 @@ public class Wine implements Serializable{
 		}
 		
 		public String stripURL(String label_url){
-			//int i = label_url.indexOf(",");
-			//String s = label_url.substring(0, i);
-		/*
-			s = s.replace("\"label_url\":{", "");
-			s = s.replace("},", "");
-		*/
+
 		    return label_url;
 			
 		}
 		
 		public String stripRating(String rating){
-			//int i = rating.indexOf(",");
+			
 			String s = rating;
 			s = s.replace("{\"adegga\":", "");
 			s = s.replace("}", "");
-			//s = s.replace(",", "");
 			
 			return s;
 		}
