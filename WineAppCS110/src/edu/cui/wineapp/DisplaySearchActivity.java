@@ -8,8 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
+
 
 import org.json.*;
 
@@ -28,17 +27,9 @@ import android.widget.ListView;
 
 public class DisplaySearchActivity extends ListActivity {
 	
-	private static final String DEBUG_TAG = "HttpExample";
-	/*
-    private String[] tags 	 = 
-    	{"\"avin\":",		"\"name\":",		"\"country\":",
-    	 "\"region\":",		"\"producer\":",	"\"varietals\":",
-    	 "\"label_url\":",	"\"rating\":"};
-    	 */
+	private static final String DEBUG_TAG = "HttpExample";	
 	
-	
-    private static final String TAG_WINES = "wine";
-    
+    private static final String TAG_WINES = "wine"; 
     private static final String TAG_AVIN = "avin";
     private static final String TAG_NAME = "name";
     private static final String TAG_COUNTRY = "country";
@@ -47,31 +38,21 @@ public class DisplaySearchActivity extends ListActivity {
     private static final String TAG_VARIETALS = "varietals";
     private static final String TAG_LABEL = "label_url";
     private static final String TAG_RATING = "rating";
-    
-    private static final int NUM_OF_JTAGS = 8;
-    
+        
     JSONArray wines = null;
-    
-    
-    //private String[] tagVals = new String[tags.length];
-    private Boolean[] edited = new Boolean[NUM_OF_JTAGS];
+        
     private ArrayList<Wine> myProducts = new ArrayList<Wine>();
+    private String[] prodInfo = new String[25];
 
-    private String[] prodInfo = 
-    	{"nah","nah","nah","nah","nah","nah","nah","nah","nah",
-         "nah","nah","nah","nah","nah","nah","nah","nah","nah",
-         "nah","nah","nah","nah","nah","nah","nah"};
-    
 	ArrayAdapter<String> myAdapter;// = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, prodInfo);
-
-
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		for(int i = 0; i < edited.length; ++i){edited[i] = false;}
-		
+	    for(int i = 0; i < prodInfo.length; ++i)
+	    	prodInfo[i] = "Loading...";
+				
 		Intent intent = getIntent();
 		String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
 		
@@ -142,45 +123,13 @@ public class DisplaySearchActivity extends ListActivity {
    }
     
    public ArrayList<Wine> parseXML(String preParsed){
-	   //name country producer varietals
-	   /*
-	    * preParsed = preParsed + "\nENDOFFILEREACHCED";
-	  
-	   Log.i("entireString",preParsed);
-	   
-	   Scanner myScan = new Scanner(preParsed);
-	   
-	   while(myScan.findInLine("ENDOFFILE") == null){
-		   String scannedLine = myScan.nextLine();
-		   
-		   for(int j = 0; j < tags.length; ++j){
-			   if(scannedLine.contains(tags[j])){
-				   tagVals[j] = scannedLine;
-				   edited[j] = true;
-				   Log.i("tagFound",scannedLine);
-			   }
-		   }
-		   
-		   if(!(Arrays.asList(edited).contains(false))){
-			   Wine myProd = new Wine(tagVals);
-			   myProducts.add(myProd);
-			   for(int k = 0; k < edited.length; ++k)
-				   edited[k] = false;
-		   }
-
-		   
-	   }
-	   
-	   return myProducts;
-	   */
-	   
 	   try {
 		JSONObject myJSON = new JSONObject(preParsed);
 		myJSON = myJSON.getJSONObject("response");
 		myJSON = myJSON.getJSONObject("aml");
 		myJSON = myJSON.getJSONObject("wines");
 		wines = myJSON.getJSONArray(TAG_WINES);
-		Log.e("TRY","made it past myJSON");
+		Log.i("TRY","made it past myJSON");
 
 		
 		for(int i = 0; i < wines.length(); i++){
@@ -192,12 +141,8 @@ public class DisplaySearchActivity extends ListActivity {
 					currentWine.getString(TAG_LABEL),currentWine.getString(TAG_RATING));
 			
 			myProducts.add(newWine);
-			
-			
-		
 		}
 	} catch (JSONException e) {
-		// TODO Auto-generated catch block
 		Log.e("CATCH","Shit's fucked");
 		e.printStackTrace();
 	}
