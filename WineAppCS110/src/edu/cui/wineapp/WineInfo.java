@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 public class WineInfo extends Activity {
 
+	//sam
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
