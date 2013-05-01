@@ -29,7 +29,7 @@ public class Wine implements Serializable{
 	public String getAvin() {return avin;}
 	public void setAvin(String avin) {this.avin = avin;}
 
-	public String getRegion() {return "Region: "+region;}
+	public String getRegion() {return "Region:     "+region;}
 	public void setRegion(String region) {this.region = region;}
 
 	public String getProducer() {return "Producer: "+producer;}
@@ -44,7 +44,7 @@ public class Wine implements Serializable{
 	public String getName() {return name;}
 	public void setName(String name) {this.name = name;}
 
-	public String getCountry() {return "Country: "+country;}
+	public String getCountry() {return "Country:   "+country;}
 	public void setCountry(String country) {this.country = country;}
 
 	public String getVarietal() {return varietal;}
@@ -113,7 +113,7 @@ public class Wine implements Serializable{
 	public String stripVarietals(String varietals){
 		
 		if(varietals.contains("null"))
-			return "Varietal: N/A";
+			return "Varietal:    N/A";
 		
 		String s = varietals;
 		
