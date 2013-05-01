@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class Wine implements Serializable{
 
+	//Test
+	
 		public Wine(String avin, String name, String country, String region,
 			String producer, String varietal, String label_url, String rating) {
 			
