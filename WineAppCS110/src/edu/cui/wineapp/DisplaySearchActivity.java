@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import org.json.*;
+
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -27,14 +29,32 @@ import android.widget.ListView;
 public class DisplaySearchActivity extends ListActivity {
 	
 	private static final String DEBUG_TAG = "HttpExample";
-	
+	/*
     private String[] tags 	 = 
     	{"\"avin\":",		"\"name\":",		"\"country\":",
     	 "\"region\":",		"\"producer\":",	"\"varietals\":",
     	 "\"label_url\":",	"\"rating\":"};
+    	 */
+	
+	
+    private static final String TAG_WINES = "wine";
     
-    private String[] tagVals = new String[tags.length];
-    private Boolean[] edited = new Boolean[tags.length];
+    private static final String TAG_AVIN = "avin";
+    private static final String TAG_NAME = "name";
+    private static final String TAG_COUNTRY = "country";
+    private static final String TAG_REGION = "region";
+    private static final String TAG_PRODUCER = "producer";
+    private static final String TAG_VARIETALS = "varietals";
+    private static final String TAG_LABEL = "label_url";
+    private static final String TAG_RATING = "rating";
+    
+    private static final int NUM_OF_JTAGS = 8;
+    
+    JSONArray wines = null;
+    
+    
+    //private String[] tagVals = new String[tags.length];
+    private Boolean[] edited = new Boolean[NUM_OF_JTAGS];
     private ArrayList<Wine> myProducts = new ArrayList<Wine>();
 
     private String[] prodInfo = 
@@ -50,7 +70,7 @@ public class DisplaySearchActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		for(int i = 0; i < tags.length; ++i){edited[i] = false;}
+		for(int i = 0; i < edited.length; ++i){edited[i] = false;}
 		
 		Intent intent = getIntent();
 		String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
@@ -116,14 +136,16 @@ public class DisplaySearchActivity extends ListActivity {
 	 // onPostExecute displays the results of the AsyncTask.
     @Override
 	protected void onPostExecute(String result) {
-    	ArrayList<Wine> pr0ds = parseXML(result, tags);
+    	ArrayList<Wine> pr0ds = parseXML(result);
     	for(int i = 0; i < 25; ++i){prodInfo[i] = pr0ds.get(i).toString();}
     	myAdapter.notifyDataSetChanged();
    }
     
-   public ArrayList<Wine> parseXML(String preParsed, String[] tags){
+   public ArrayList<Wine> parseXML(String preParsed){
 	   //name country producer varietals
-	   preParsed = preParsed + "\nENDOFFILEREACHCED";
+	   /*
+	    * preParsed = preParsed + "\nENDOFFILEREACHCED";
+	  
 	   Log.i("entireString",preParsed);
 	   
 	   Scanner myScan = new Scanner(preParsed);
@@ -148,6 +170,37 @@ public class DisplaySearchActivity extends ListActivity {
 
 		   
 	   }
+	   
+	   return myProducts;
+	   */
+	   
+	   try {
+		JSONObject myJSON = new JSONObject(preParsed);
+		myJSON = myJSON.getJSONObject("response");
+		myJSON = myJSON.getJSONObject("aml");
+		myJSON = myJSON.getJSONObject("wines");
+		wines = myJSON.getJSONArray(TAG_WINES);
+		Log.e("TRY","made it past myJSON");
+
+		
+		for(int i = 0; i < wines.length(); i++){
+			JSONObject currentWine = wines.getJSONObject(i);
+			
+			Wine newWine = new Wine(currentWine.getString(TAG_AVIN),currentWine.getString(TAG_NAME),
+					currentWine.getString(TAG_COUNTRY),currentWine.getString(TAG_REGION),
+					currentWine.getString(TAG_PRODUCER),currentWine.getString(TAG_VARIETALS),
+					currentWine.getString(TAG_LABEL),currentWine.getString(TAG_RATING));
+			
+			myProducts.add(newWine);
+			
+			
+		
+		}
+	} catch (JSONException e) {
+		// TODO Auto-generated catch block
+		Log.e("CATCH","Shit's fucked");
+		e.printStackTrace();
+	}
 	   
 	   return myProducts;
    }
