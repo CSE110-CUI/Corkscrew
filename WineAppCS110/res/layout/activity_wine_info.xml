@@ -9,21 +9,11 @@
     tools:context=".WineInfo" >
 
     <TextView
-        android:id="@+id/TextView02"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/TextView01"
-        android:layout_marginRight="26dp"
-        android:text="@string/hello_world"
-        android:textSize="25sp" />
-
-    <TextView
         android:id="@+id/TextView03"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/TextView02"
+        android:layout_below="@+id/TextView01"
         android:layout_marginRight="26dp"
         android:text="@string/hello_world"
         android:textSize="25sp" />

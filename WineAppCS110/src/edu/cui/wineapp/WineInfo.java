@@ -31,8 +31,8 @@ public class WineInfo extends Activity {
 		TextView varietal = (TextView) findViewById(R.id.TextView03);
 		varietal.setText(currentWine.getVarietal());		
 		
-		TextView label_url = (TextView) findViewById(R.id.TextView02);
-		label_url.setText(currentWine.getLabel_URL());	
+		//TextView label_url = (TextView) findViewById(R.id.TextView02);
+		//label_url.setText(currentWine.getLabel_URL());	
 		
 		TextView avin = (TextView) findViewById(R.id.TextView05);
 		avin.setText(currentWine.getAvin());	
