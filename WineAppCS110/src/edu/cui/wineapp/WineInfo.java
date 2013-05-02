@@ -17,6 +17,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 public class WineInfo extends Activity {
+	//Merge
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
