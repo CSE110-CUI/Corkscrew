@@ -2,7 +2,16 @@ package edu.cui.wineapp;
 
 import java.io.Serializable;
 
-public class Wine implements Serializable{
+public class Wine{
+	
+	private String avin;
+	private String name;
+	private String country;
+	private String region;
+	private String producer;
+	private String varietal;
+	private String label_url;
+	private String rating;
 	
 	public Wine(String avin, String name, String country, String region,
 		String producer, String varietal, String label_url, String rating) {
@@ -16,52 +25,69 @@ public class Wine implements Serializable{
 		this.label_url = label_url;
 		this.rating = rating;
 	}
-
-	private String avin;
-	private String name;
-	private String country;
-	private String region;
-	private String producer;
-	private String varietal;
-	private String label_url;
-	private String rating;
 	
-	public String getAvin() {return avin;}
-	public void setAvin(String avin) {this.avin = avin;}
-
-	public String getRegion() {return "Region:     "+region;}
-	public void setRegion(String region) {this.region = region;}
-
-	public String getProducer() {return "Producer: "+producer;}
-	public void setProducer(String producer) {this.producer = producer;}
-
-	public String getLabel_URL() {return label_url;}
-	public void setLabel_URL(String label_url) {this.label_url = label_url;}
-
-	public String getRating() {return rating;}
-	public void setRating(String rating) {this.rating = rating;}
-
-	public String getName() {return name;}
-	public void setName(String name) {this.name = name;}
-
-	public String getCountry() {return "Country:   "+country;}
-	public void setCountry(String country) {this.country = country;}
-
-	public String getVarietal() {return varietal;}
-	public void setVarietal(String varietal) {this.varietal = varietal;}
-	
-	public Wine(String[] tagArray){
-		this.avin = tagArray[0];
-		this.name = tagArray[1];
-		this.country = tagArray[2];
-		this.region = tagArray[3];
-		this.producer = tagArray[4];
-		this.varietal = tagArray[5];
-		this.label_url = tagArray[6];
-		this.rating = tagArray[7];
+	public String getAvin() {
+		return avin;
 	}
 	
-	public String toString(){return stripName(this.name);}
+	public void setAvin(String avin) {
+		this.avin = avin;
+	}
+
+	public String getRegion() {
+		return "Region:     "+region;
+	}
+	public void setRegion(String region) {
+		this.region = region;
+	}
+
+	public String getProducer() {
+		return "Producer: "+producer;
+	}
+	
+	public void setProducer(String producer) {
+		this.producer = producer;
+	}
+
+	public String getLabel_URL() {
+		return label_url;
+	}
+	public void setLabel_URL(String label_url) {
+		this.label_url = label_url;
+	}
+
+	public String getRating() {
+		return rating;
+	}
+	public void setRating(String rating) {
+		this.rating = rating;
+	}
+
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getCountry() {
+		return "Country:   "+country;
+	}
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getVarietal() {
+		return varietal;
+	}
+	public void setVarietal(String varietal) {
+		this.varietal = varietal;
+	}
+	
+
+	public String toString(){
+		return stripName(this.name);
+	}
 	
 	public String stripName(String name){
 		String s = name;
