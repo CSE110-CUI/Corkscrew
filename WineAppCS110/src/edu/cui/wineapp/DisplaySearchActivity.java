@@ -52,7 +52,7 @@ public class DisplaySearchActivity extends ListActivity {
 		Wine wineToPass = (Wine) wines.get(position);
 		Intent i = new Intent(this,WineInfo.class);
 		Bundle bundle2 = new Bundle();
-	    bundle2.putString("passedWine", wineToPass.getName());
+	    bundle2.putLong("passedWine", wineToPass.getId());
 		i.putExtras(bundle2);
 		startActivity(i);
 	}

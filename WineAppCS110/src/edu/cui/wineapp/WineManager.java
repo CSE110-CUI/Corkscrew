@@ -20,7 +20,7 @@ public class WineManager {
 			return dao.getWineByName(name);
 		}
 		
-		public Wine getWineById(int wineId){
+		public Wine getWineById(long wineId){
 			return dao.getWineById(wineId);
 		}
 		

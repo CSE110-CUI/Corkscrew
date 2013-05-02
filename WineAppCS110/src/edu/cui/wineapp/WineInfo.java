@@ -25,7 +25,7 @@ public class WineInfo extends Activity {
 		setContentView(R.layout.activity_wine_info);
 		
 		Intent i = getIntent();
-		Wine currentWine = (Wine)i.getSerializableExtra("passedWine");
+		Wine currentWine = (Wine)WineManager.getWineManager(this).getWineById(i.getExtras().getLong(("passedWine")));
 		
 		currentWine.stripJSON();
 		

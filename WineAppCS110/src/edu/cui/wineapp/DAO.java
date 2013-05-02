@@ -30,7 +30,7 @@ public class DAO{
 	private WineSQLiteHelper dbHelper=null;
 	private String[] allColumns = { WineSQLiteHelper.COLUMN_ID,WineSQLiteHelper.COLUMN_AVIN,WineSQLiteHelper.COLUMN_NAME,WineSQLiteHelper.COLUMN_COUNTRY,WineSQLiteHelper.COLUMN_REGION,WineSQLiteHelper.COLUMN_PRODUCER,WineSQLiteHelper.COLUMN_VARIETAL,WineSQLiteHelper.COLUMN_LABEL_URL,WineSQLiteHelper.COLUMN_RATING};
 	  
-	//private ArrayList<Wine> wines=new ArrayList<Wine>();
+	private ArrayList<Wine> wines=new ArrayList<Wine>();
 	
 	
 	private DAO(Context context){
@@ -138,11 +138,19 @@ public class DAO{
 	   // }else{
 	   // 	Log.e("DEBUG",wines.get(0).toString());
 	  //  }
-	    //return wines;
-		return getAllWinesInDataBase();
+	    return wines;
+		//return getAllWinesInDataBase();
 	}
-	public Wine getWineById(int wineId){
-		return new Wine("that", "1", "", null, null, null, null, null,-1);
+	public Wine getWineById(long wineId){
+	    ArrayList<Wine> winesInData = new ArrayList<Wine>();
+
+	    Cursor cursor = database.query(WineSQLiteHelper.TABLE_WINES,
+	        allColumns, WineSQLiteHelper.COLUMN_ID + " = " + wineId, null, null, null, null);
+
+	    cursor.moveToFirst();
+	    Wine newWine = cursorToWine(cursor);
+	    cursor.close();
+	    return newWine;
 	}
 	public boolean createUser(String name, int age, float weight){
 		return false;
@@ -235,8 +243,7 @@ public class DAO{
 							-1
 					);
 					//Log.i("DEBUG",newWine.toString());
-					//wines.add(newWine);
-					createWine(newWine);
+					wines.add(createWine(newWine));
 				}
 		   } catch (JSONException e) {e.printStackTrace();}  
 	   }
