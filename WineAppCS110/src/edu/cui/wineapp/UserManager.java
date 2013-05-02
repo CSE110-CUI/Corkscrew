@@ -1,12 +1,17 @@
 package edu.cui.wineapp;
 
+import android.content.Context;
+
 public class UserManager {
-	private static DAO dao = DAO.getInstance();
-	private static UserManager ourInstance = new UserManager();
-	private UserManager(){}
+	private static Context context = null;
+	private static DAO dao = DAO.getDAO(context);
+	//private static UserManager ourInstance = new UserManager();
+	private UserManager(Context context){
+		this.context = context;
+	}
 	
-	public static UserManager getUserManager(){
-		return ourInstance;
+	public static UserManager getUserManager(Context context){
+		return new UserManager(context);
 	}
 	
 	public static User getUserByName(String name){

@@ -1,7 +1,10 @@
 package edu.cui.wineapp;
 
+import android.content.Context;
+
 public class User {
-	private static DAO dao = DAO.getInstance();
+	private static Context context = null;
+	private static DAO dao = DAO.getDAO(context);
 	private static String name=null;
 	private static int age=-1;
 	private static float weight=-1;

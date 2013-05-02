@@ -41,7 +41,7 @@ public class DisplaySearchActivity extends ListActivity {
 				
 		Intent intent 	= getIntent();
 		String message 	= intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-		wineManager = WineManager.getWineManager();
+		wineManager = WineManager.getWineManager(this);
 		new DownloadWebpageText().execute(message);
 		myAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, prodInfo);
 		setListAdapter(myAdapter);

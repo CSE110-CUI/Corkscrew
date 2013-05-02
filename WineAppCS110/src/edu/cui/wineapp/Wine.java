@@ -3,7 +3,7 @@ package edu.cui.wineapp;
 import java.io.Serializable;
 
 public class Wine{
-	
+	private long id;
 	private String avin;
 	private String name;
 	private String country;
@@ -14,8 +14,8 @@ public class Wine{
 	private String rating;
 	
 	public Wine(String avin, String name, String country, String region,
-		String producer, String varietal, String label_url, String rating) {
-		
+		String producer, String varietal, String label_url, String rating,long id) {
+		this.id = id;
 		this.avin = avin;
 		this.name = name;
 		this.country = country;
@@ -25,7 +25,9 @@ public class Wine{
 		this.label_url = label_url;
 		this.rating = rating;
 	}
-	
+	public long getId(){
+		return id;
+	}
 	public String getAvin() {
 		return avin;
 	}
