@@ -16,12 +16,16 @@ public class WineManager {
 			return new WineManager(context);
 		}
 		
-		public ArrayList<Wine> getWineByName(String name){
-			return dao.getWineByName(name);
+		public ArrayList<Wine> downloadWineByName(String name){
+			return dao.downloadWineByName(name);
 		}
 		
 		public Wine getWineById(long wineId){
 			return dao.getWineById(wineId);
+		}
+		
+		public ArrayList<Wine> getWineByName(String name){
+			return dao.getWineByName(name);
 		}
 		
 }

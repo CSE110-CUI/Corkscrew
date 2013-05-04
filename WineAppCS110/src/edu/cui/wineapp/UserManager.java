@@ -18,8 +18,13 @@ public class UserManager {
 		return dao.getUserByName(name);
 	}
 	
-	public static boolean createUser(String name, int age, float weight){
-		return dao.createUser(name, age, weight);
+	public static boolean createUser(User user, String password){
+		if(dao.getUserByName(user.getName())!=null){
+			return false;
+		}else{
+			dao.createUser(user,password);
+			return true;
+		}
 	}
 
 	public static boolean deleteUser(String name){

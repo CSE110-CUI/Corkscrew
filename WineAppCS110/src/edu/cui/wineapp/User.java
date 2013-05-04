@@ -1,5 +1,7 @@
 package edu.cui.wineapp;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 
 public class User {
@@ -12,11 +14,20 @@ public class User {
 	private static String sex=null;
 	private static String country=null;
 	private static String photourl=null;
-	private static Wine[] drinkedWines=null;
-	private static String[] comments=null;
+	private static ArrayList<Wine> drinkedWines=null;
+	private static ArrayList<String> comments=null;
+	private static long id;
 	
-	
-	public User(String name, int age, float weight, Object... p){}
+	public User(String name, int age, float weight, String email, String sex, String country, String photourl, long id){
+		this.name = name;
+		this.age = age;
+		this.weight = weight;
+		this.email = email;
+		this.sex = sex;
+		this.country = country;
+		this.photourl = photourl;
+		this.id = id;
+	}
 	
 	public static String getName(){
 		return name;
@@ -39,10 +50,10 @@ public class User {
 	public static String getPhotoUrl(){
 		return photourl;
 	}
-	public static Wine[] getDrinkedWines(){
+	public static ArrayList<Wine> getDrinkedWines(){
 		return drinkedWines;
 	}
-	public static String[] getComments(){
+	public static ArrayList<String> getComments(){
 		return comments;
 	}
 	

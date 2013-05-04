@@ -26,8 +26,10 @@ import android.util.Log;
 public class DAO{
 	//private static DAO ourInstance = new DAO();
 	private static Context context = null;
-	private SQLiteDatabase database=null;
-	private WineSQLiteHelper dbHelper=null;
+	private SQLiteDatabase wineDataBase=null;
+	private WineSQLiteHelper wineDBHelper=null;
+//	private SQLiteDatabase userDataBase = null;
+//	private UserSQLiteHelper userDBHelper = null;
 	private String[] allColumns = { WineSQLiteHelper.COLUMN_ID,WineSQLiteHelper.COLUMN_AVIN,WineSQLiteHelper.COLUMN_NAME,WineSQLiteHelper.COLUMN_COUNTRY,WineSQLiteHelper.COLUMN_REGION,WineSQLiteHelper.COLUMN_PRODUCER,WineSQLiteHelper.COLUMN_VARIETAL,WineSQLiteHelper.COLUMN_LABEL_URL,WineSQLiteHelper.COLUMN_RATING};
 	  
 	private ArrayList<Wine> wines=new ArrayList<Wine>();
@@ -35,26 +37,39 @@ public class DAO{
 	
 	private DAO(Context context){
 		this.context = context;
-		dbHelper = new WineSQLiteHelper(context);
+		wineDBHelper = new WineSQLiteHelper(context);
+	//	userDBHelper = new UserSQLiteHelper(context);
 		open();
+	//	open();
 	}
 	public void open() throws SQLException {
-		database = dbHelper.getWritableDatabase();
+		wineDataBase = wineDBHelper.getWritableDatabase();
+		//userDataBase = userDBHelper.getWritableDatabase();
 	}
 
 	public void close() {
-		dbHelper.close();
+		wineDBHelper.close();
+	//	userDBHelper.close();
 	}
+	/**public void openUserData() throws SQLException {
+		//wineDataBase = wineDBHelper.getWritableDatabase();
+		userDataBase = userDBHelper.getWritableDatabase();
+	}
+	public void closeUserData() {
+	//	wineDBHelper.close();
+		userDBHelper.close();
+	}
+**/
 //	public static DAO getInstance(){
 	//	return ourInstance;
 //	}
 	public static DAO getDAO(Context context){
 		return new DAO(context);
 	}
-	
-	
-	//LOCAL DATABASE/////////////
+
+	//LOCAL wineDataBase/////////////
 	public Wine createWine(Wine wine) {
+		//openWineData();
 	    ContentValues values = new ContentValues();
 	    values.put(WineSQLiteHelper.COLUMN_AVIN, wine.getAvin());
 	    values.put(WineSQLiteHelper.COLUMN_NAME, wine.getName());
@@ -64,32 +79,32 @@ public class DAO{
 	    values.put(WineSQLiteHelper.COLUMN_VARIETAL, wine.getVarietal());
 	    values.put(WineSQLiteHelper.COLUMN_LABEL_URL, wine.getLabel_URL());
 	    values.put(WineSQLiteHelper.COLUMN_RATING, wine.getRating());
-	    long insertId = database.insert(WineSQLiteHelper.TABLE_WINES, null,
+	    long insertId = wineDataBase.insert(WineSQLiteHelper.TABLE_WINES, null,
 	        values);
-	    Cursor cursor = database.query(WineSQLiteHelper.TABLE_WINES,
+	    Cursor cursor = wineDataBase.query(WineSQLiteHelper.TABLE_WINES,
 	        allColumns, WineSQLiteHelper.COLUMN_ID + " = " + insertId, null,
 	        null, null, null);
 	    cursor.moveToFirst();
 	    Wine newWine = cursorToWine(cursor);
 	    cursor.close();
+	  //  closeWineData();
 	    return newWine;
 	  }
-
-	  public boolean deleteWine(Wine wine) {
+	public boolean deleteWine(Wine wine) {
 	    long id = wine.getId();
 	    if (id == -1){
 	    	return false;
 	    }
 	    System.out.println("Comment deleted with id: " + id);
-	    database.delete(WineSQLiteHelper.TABLE_WINES, WineSQLiteHelper.COLUMN_ID
+	    wineDataBase.delete(WineSQLiteHelper.TABLE_WINES, WineSQLiteHelper.COLUMN_ID
 	        + " = " + id, null);
 	    return true;
 	  }
 
-	  public ArrayList<Wine> getAllWinesInDataBase() {
+	public ArrayList<Wine> getAllWinesInwineDataBase() {
 	    ArrayList<Wine> winesInData = new ArrayList<Wine>();
 
-	    Cursor cursor = database.query(WineSQLiteHelper.TABLE_WINES,
+	    Cursor cursor = wineDataBase.query(WineSQLiteHelper.TABLE_WINES,
 	        allColumns, null, null, null, null, null);
 
 	    cursor.moveToFirst();
@@ -102,18 +117,47 @@ public class DAO{
 	    cursor.close();
 	    return winesInData;
 	  }
-
-	  private Wine cursorToWine(Cursor cursor) {
+	private Wine cursorToWine(Cursor cursor) {
 	    Wine wine = new Wine(cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(7),cursor.getString(8),cursor.getLong(0));
 	    return wine;
 	  }
-	
-	
+	private User cursorToUser(Cursor cursor) {
+		int myAge=-1;
+		float myWeight=-1;
+		try {
+		    myAge = Integer.parseInt(cursor.getString(2));
+		} catch(NumberFormatException nfe) {
+			Log.e("DEBUG","can not convert age for user");
+		} 
+		try {
+		    myWeight = Float.parseFloat(cursor.getString(3));
+		} catch(NumberFormatException nfe) {
+			Log.e("DEBUG","can not convert weight for user");
+		} 
+		//ArrayList<Wine> drinkedWines = null;//cursor.getString(8);
+		//ArrayList<String> comments = null;//cursor.getString(9);
+	    User user = new User(cursor.getString(1),myAge,myWeight,cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(7),cursor.getLong(0));
+	    return user;
+	  }
+	public ArrayList<Wine> getWineByName(String name){
+		 ArrayList<Wine> winesInData = new ArrayList<Wine>();
+
+		    Cursor cursor = wineDataBase.query(WineSQLiteHelper.TABLE_WINES,
+		        allColumns, WineSQLiteHelper.COLUMN_NAME + " = " + name, null, null, null, null);
+
+		    cursor.moveToFirst();
+		    while (!cursor.isAfterLast()) {
+			      Wine wine = cursorToWine(cursor);
+			      winesInData.add(wine);
+			      cursor.moveToNext();
+			    }
+		    return winesInData;
+	}
 	
 	
 	
 	//GETTER AND SETTER FROM ONLINE
-	public ArrayList<Wine> getWineByName(String name){
+	public ArrayList<Wine> downloadWineByName(String name){
 	    String apiKey 		= "588eeca229b7895ff55a";
 	    String urlPreTerm 	= "http://api.adegga.com/rest/v1.0/GetWinesByName/";
 	    String urlPostTerm 	= "/&format=json&key=";
@@ -139,26 +183,60 @@ public class DAO{
 	   // 	Log.e("DEBUG",wines.get(0).toString());
 	  //  }
 	    return wines;
-		//return getAllWinesInDataBase();
+		//return getAllWinesInwineDataBase();
 	}
 	public Wine getWineById(long wineId){
 	    ArrayList<Wine> winesInData = new ArrayList<Wine>();
 
-	    Cursor cursor = database.query(WineSQLiteHelper.TABLE_WINES,
+	    Cursor cursor = wineDataBase.query(WineSQLiteHelper.TABLE_WINES,
 	        allColumns, WineSQLiteHelper.COLUMN_ID + " = " + wineId, null, null, null, null);
-
-	    cursor.moveToFirst();
-	    Wine newWine = cursorToWine(cursor);
-	    cursor.close();
-	    return newWine;
+	    if(cursor.moveToFirst()){
+	    	Wine newWine = cursorToWine(cursor);
+	    	cursor.close();
+	    	return newWine;
+	    }else{
+	    	return null;
+	    }
 	}
-	public boolean createUser(String name, int age, float weight){
-		return false;
+	public User createUser(User user, String password){
+/**		 ContentValues values = new ContentValues();
+		 values.put(UserSQLiteHelper.COLUMN_NAME, user.getName());
+		 values.put(UserSQLiteHelper.COLUMN_AGE, Integer.toString(user.getAge()));
+		 values.put(UserSQLiteHelper.COLUMN_WEIGHT, Float.toString(user.getWeight()));
+		 values.put(UserSQLiteHelper.COLUMN_EMAIL, user.getEmail());
+		 values.put(UserSQLiteHelper.COLUMN_SEX, user.getSex());
+		 values.put(UserSQLiteHelper.COLUMN_COUNTRY, user.getCountry());
+		 values.put(UserSQLiteHelper.COLUMN_PHOTOURL, user.getPhotoUrl());
+		 //values.put(UserSQLiteHelper.COLUMN_DRINKEDWINES,user.getDrinkedWines().toString());
+		 //values.put(UserSQLiteHelper.COLUMN_COMMENTS, user.getComments().toString());
+		 values.put(UserSQLiteHelper.COLUMN_PASSWORD,password);
+		    long insertId = userDataBase.insert(UserSQLiteHelper.TABLE_USERS, null,
+		        values);
+		    Cursor cursor = userDataBase.query(UserSQLiteHelper.TABLE_USERS,
+		        allColumns, UserSQLiteHelper.COLUMN_ID + " = " + insertId, null,
+		        null, null, null);
+		    cursor.moveToFirst();
+		    User newUser = cursorToUser(cursor);
+		    cursor.close();
+		    return newUser;**/
+		return null;
 	}
 	public boolean deleteUser(String name){
 		return false;
 	}
 	public User getUserByName(String userName){
+	/**	ArrayList<Wine> winesInData = new ArrayList<Wine>();
+
+	    Cursor cursor = userDataBase.query(UserSQLiteHelper.TABLE_USERS,
+	        allColumns, UserSQLiteHelper.COLUMN_NAME + " = " + userName, null, null, null, null);
+
+	    if(cursor.moveToFirst()){
+	    	User newUser = cursorToUser(cursor);
+	    	cursor.close();
+	    	return newUser;
+	    }else{
+	    	return null;
+	    }**/
 		return null;
 	}
 	public boolean setUserName(String userName){
