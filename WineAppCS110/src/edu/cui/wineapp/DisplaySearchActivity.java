@@ -23,13 +23,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class DisplaySearchActivity extends ListActivity {
 	
         
     private ArrayList<Wine> wines;
     private WineManager wineManager;
-   // private UserManager userManager;
+    private UserManager userManager;
     private String[] prodInfo = new String[25];
 
 	ArrayAdapter<String> myAdapter;
@@ -37,10 +38,12 @@ public class DisplaySearchActivity extends ListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		//userManager = UserManager.getUserManager(this);
-		User account = new User("Zhaoyang Zeng", 19, (float)50.0, "zeng0129@gmail.com","b","c","d",(long)-1);
-	   // userManager.createUser(account, "asdf");
-	   // Log.e("DEBUG",userManager.getUserByName(account.getName()).getEmail());
+		userManager = UserManager.getUserManager(this);
+		/** this code below is used for test!
+		User account = new User("Zhaoyang_Zeng", 19, (float)50.0, "zeng0129@gmail.com","b","c","d",(long)-1);
+	    userManager.createUser(account, "asdf");
+	    Toast.makeText(this,userManager.getUserByName(account.getName()).getEmail(), Toast.LENGTH_SHORT).show();
+	    **/
 		for(int i = 0; i < prodInfo.length; ++i) prodInfo[i] = "Loading...";
 				
 		Intent intent 	= getIntent();

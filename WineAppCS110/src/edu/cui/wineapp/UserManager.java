@@ -4,10 +4,11 @@ import android.content.Context;
 
 public class UserManager {
 	private static Context context = null;
-	private static DAO dao = DAO.getDAO(context);
+	private static DAO dao = null; 
 	//private static UserManager ourInstance = new UserManager();
 	private UserManager(Context context){
 		this.context = context;
+		dao=DAO.getDAO(context);
 	}
 	
 	public static UserManager getUserManager(Context context){
@@ -19,12 +20,12 @@ public class UserManager {
 	}
 	
 	public static boolean createUser(User user, String password){
-		if(dao.getUserByName(user.getName())!=null){
-			return false;
-		}else{
+		//if(dao.getUserByName(user.getName())!=null){
+		//	return false;
+		//}else{
 			dao.createUser(user,password);
 			return true;
-		}
+		//}
 	}
 
 	public static boolean deleteUser(String name){

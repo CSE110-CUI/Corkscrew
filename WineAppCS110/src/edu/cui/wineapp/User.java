@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import android.content.Context;
 
 public class User {
-	private static Context context = null;
-	private static DAO dao = DAO.getDAO(context);
 	private static String name=null;
 	private static int age=-1;
 	private static float weight=-1;
@@ -56,7 +54,7 @@ public class User {
 	public static ArrayList<String> getComments(){
 		return comments;
 	}
-	
+/**	
 	//setter!!!!!
 	public static boolean setName(String name){
 		return dao.setUserName(name);
@@ -85,5 +83,5 @@ public class User {
 	public static boolean setComments(String comment){
 		return dao.setUserComments(comment);
 	}
-	
+**/	
 }
