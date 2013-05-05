@@ -39,11 +39,17 @@ public class DisplaySearchActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		userManager = UserManager.getUserManager(this);
-		/** this code below is used for test!
+		//this code below is used for test!
 		User account = new User("Zhaoyang_Zeng", 19, (float)50.0, "zeng0129@gmail.com","b","c","d",(long)-1);
+		User account2 = new User("Zhaoyang_Zeng2", 19, (float)50.0, "zeng0129@gmail.com","b","c","d",(long)-1);
 	    userManager.createUser(account, "asdf");
-	    Toast.makeText(this,userManager.getUserByName(account.getName()).getEmail(), Toast.LENGTH_SHORT).show();
-	    **/
+	    boolean flag = userManager.setUserEmail("Zhaoyang_Zeng","bilibili2");
+	    if (flag==true){
+	    	if(userManager.getUserByName("Zhaoyang_Zeng2123")==null){
+	    		Log.e("ERROR","YES");
+	    	}
+	    Toast.makeText(this,userManager.getUserByName("Zhaoyang_Zeng").getName(), Toast.LENGTH_SHORT).show();
+	    }
 		for(int i = 0; i < prodInfo.length; ++i) prodInfo[i] = "Loading...";
 				
 		Intent intent 	= getIntent();

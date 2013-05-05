@@ -1,6 +1,7 @@
 package edu.cui.wineapp;
 
 import android.content.Context;
+import android.util.Log;
 
 public class UserManager {
 	private static Context context = null;
@@ -20,14 +21,17 @@ public class UserManager {
 	}
 	
 	public static boolean createUser(User user, String password){
-		//if(dao.getUserByName(user.getName())!=null){
-		//	return false;
-		//}else{
+		if(dao.getUserByName(user.getName())!=null){
+			return false;
+		}else{
+			Log.e("ERROR","ACCOUNT CREATED");
 			dao.createUser(user,password);
 			return true;
-		//}
+		}
 	}
-
+	public static boolean setUserEmail(String username, String newEmail){
+		return dao.setUserEmail(username, newEmail);
+	}
 	public static boolean deleteUser(String name){
 		return dao.deleteUser(name);
 	}

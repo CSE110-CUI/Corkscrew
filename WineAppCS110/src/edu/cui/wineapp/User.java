@@ -5,16 +5,16 @@ import java.util.ArrayList;
 import android.content.Context;
 
 public class User {
-	private static String name=null;
-	private static int age=-1;
-	private static float weight=-1;
-	private static String email=null;
-	private static String sex=null;
-	private static String country=null;
-	private static String photourl=null;
-	private static ArrayList<Wine> drinkedWines=null;
-	private static ArrayList<String> comments=null;
-	private static long id;
+	private String name=null;
+	private int age=-1;
+	private float weight=-1;
+	private String email=null;
+	private String sex=null;
+	private String country=null;
+	private String photourl=null;
+	private ArrayList<Wine> drinkedWines=null;
+	private ArrayList<String> comments=null;
+	private long id;
 	
 	public User(String name, int age, float weight, String email, String sex, String country, String photourl, long id){
 		this.name = name;
@@ -26,32 +26,34 @@ public class User {
 		this.photourl = photourl;
 		this.id = id;
 	}
-	
-	public static String getName(){
+	public long getId(){
+		return id;
+	}
+	public String getName(){
 		return name;
 	}
-	public static int getAge(){
+	public int getAge(){
 		return age;
 	}
-	public static float getWeight(){
+	public float getWeight(){
 		return weight;
 	}
-	public static String getEmail(){
+	public String getEmail(){
 		return email;
 	}
-	public static String getSex(){
+	public String getSex(){
 		return sex;
 	}
-	public static String getCountry(){
+	public String getCountry(){
 		return country;
 	}
-	public static String getPhotoUrl(){
+	public String getPhotoUrl(){
 		return photourl;
 	}
-	public static ArrayList<Wine> getDrinkedWines(){
+	public ArrayList<Wine> getDrinkedWines(){
 		return drinkedWines;
 	}
-	public static ArrayList<String> getComments(){
+	public ArrayList<String> getComments(){
 		return comments;
 	}
 /**	

@@ -230,17 +230,37 @@ public class DAO{
 
 	    Cursor cursor = userDataBase.query(UserSQLiteHelper.TABLE_USERS,
 	        allColumnsforuser, UserSQLiteHelper.COLUMN_NAME + " = \"" + userName+ "\"", null, null, null, null);
-
+	    Log.e("ERROR",userName);
 	    if(cursor.moveToFirst()){
 	    	User newUser = cursorToUser(cursor);
 	    	cursor.close();
+	    	Log.e("ERROR","NOT NULL");
 	    	return newUser;
 	    }else{
+	    	Log.e("ERROR","null");
 	    	return null;
 	    }
 	}
-	public boolean setUserName(String userName){
-		return false;
+	public boolean setUserEmail(String userName, String newEmail){
+	    /**Cursor cursor = userDataBase.query(UserSQLiteHelper.TABLE_USERS,
+		        allColumnsforuser, UserSQLiteHelper.COLUMN_NAME + " = \"" + userName+ "\"", null, null, null, null);
+
+		    if(cursor.moveToFirst()){
+		    	User newUser = cursorToUser(cursor);
+		    	cursor.close();
+		    	return newUser;
+		    }else{
+		    	return null;
+		    }**/
+		ContentValues arg = new ContentValues();
+		arg.put("email", newEmail);
+		int num =userDataBase.update(UserSQLiteHelper.TABLE_USERS, arg, "name=?", new String[]{userName});
+		if (num==0){
+			return false;
+		}
+		else{
+			return true;
+		}
 	}
 	public boolean setUserPassWord(String password){
 		return false;
@@ -260,7 +280,7 @@ public class DAO{
 	public boolean setUserPhoto(String url){
 		return false;
 	}
-	public boolean setUserEmail(String email){
+	public boolean setUserName(String email){
 		return false;
 	}
 	public boolean setUserComments(String comment){
