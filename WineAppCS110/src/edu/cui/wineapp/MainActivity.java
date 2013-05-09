@@ -10,6 +10,7 @@ import android.os.StrictMode;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteException;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -88,10 +89,10 @@ SearchView.OnCloseListener{
 	}
 
 	@Override
-	public boolean onQueryTextChange(String parseText) {
-		if(parseText.length() >= 10){
+	public boolean onQueryTextChange(String parseText) throws SQLiteException{
+		if(parseText.length() >= 3){
 		
-			Log.i("Inside_QTChange","Text>=10");
+			Log.i("Inside_QTChange","Text>=3");
 			
 			SearchView searchView = (SearchView) findViewById(R.id.searchView1);
 	        searchView.setIconifiedByDefault(false);
@@ -101,21 +102,32 @@ SearchView.OnCloseListener{
 	        
 			
 			WineManager wManager = new WineManager(this);
-			wManager.getWineByName(parseText);
-			myWineList = wManager.getWineByName(parseText);
-						
 			
-			for(int i = 0; i < myWineList.size(); ++i){
-				wineNames.add(myWineList.get(i).toString());
+			try{
+				myWineList = wManager.getWineByName(parseText);
+				Log.i("Inside_QTChange","TRY");	
+				
+				for(int i = 0; i < myWineList.size(); ++i){wineNames.add(myWineList.get(i).toString());}
+				
+				myAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,wineNames);
+				mListView.setAdapter(myAdapter);
+		    	myAdapter.notifyDataSetChanged();
+				
+			}catch (SQLiteException e){
+				myWineList = wManager.downloadWineByName(parseText);
+				Log.i("Inside_QTChange","CATCH");
+				
+				for(int i = 0; i < myWineList.size(); ++i){wineNames.add(myWineList.get(i).toString());}
+				
+				myAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,wineNames);
+				mListView.setAdapter(myAdapter);
+		    	myAdapter.notifyDataSetChanged();
+				
+				throw e;
+			}finally{
+							
+
 			}
-			
-			myAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,wineNames);
-			mListView.setAdapter(myAdapter);
-	    	myAdapter.notifyDataSetChanged();
-	    	
-	    	
-		
-			
 		}
 		return false;
 	}

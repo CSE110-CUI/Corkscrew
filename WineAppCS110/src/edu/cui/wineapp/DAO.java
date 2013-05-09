@@ -124,8 +124,13 @@ public class DAO{
 	public ArrayList<Wine> getWineByName(String name){
 		 ArrayList<Wine> winesInData = new ArrayList<Wine>();
 
-		    Cursor cursor = wineDataBase.query(WineSQLiteHelper.TABLE_WINES,
-		        allColumns, WineSQLiteHelper.COLUMN_NAME + " = " + name, null, null, null, null);
+		    Cursor cursor = wineDataBase.query(WineSQLiteHelper.TABLE_WINES, 
+		    		//allColumns
+		    		null
+		    		, 
+		    		WineSQLiteHelper.COLUMN_NAME + " LIKE '%" + name +"%'"
+		    		//"name = " + name
+		    		, null, null, null, null);
 
 		    cursor.moveToFirst();
 		    while (!cursor.isAfterLast()) {
