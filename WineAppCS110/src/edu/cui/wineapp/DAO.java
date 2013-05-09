@@ -145,28 +145,17 @@ public class DAO{
 	    String urlPostTerm 	= "/&format=json&key=";
 	    String searchTerm 	= name;
 	    String stringUrl 	= urlPreTerm + searchTerm + urlPostTerm + apiKey;
+	    
 	    Log.e("DEBUG","url has been built");
-	   // ConnectivityManager connMgr = 
-	   // 		(ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
 	    Log.e("DEBUG","Manager has been built");
-	//	NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-		
-	//	if (networkInfo != null && networkInfo.isConnected()) {
-	//		return null;//
+	    
 	    new DownloadWebpageText().execute(stringUrl);
-		//} 
-	//	else {
-	//		Log.e("DEBUG","No network connection available.");
-	//	}
+
 	    Log.e("DEBUG","Wine has been built");
-	   // if(wines.size()==0){
-	   // 	Log.e("DEBUG","error");
-	   // }else{
-	   // 	Log.e("DEBUG",wines.get(0).toString());
-	  //  }
+
 	    return wines;
-		//return getAllWinesInwineDataBase();
-	}
+    }
+	
 	public Wine getWineById(long wineId){
 
 	    Cursor cursor = wineDataBase.query(WineSQLiteHelper.TABLE_WINES,
