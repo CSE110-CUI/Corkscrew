@@ -120,7 +120,7 @@ public class DAO{
 	    User user = new User(cursor.getString(1),myAge,myWeight,cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(7),cursor.getLong(0));
 	    return user;
 	  }
-	//test
+	
 	  
 	public ArrayList<Wine> getWineByName(String name){
 		 ArrayList<Wine> winesInData = new ArrayList<Wine>();
