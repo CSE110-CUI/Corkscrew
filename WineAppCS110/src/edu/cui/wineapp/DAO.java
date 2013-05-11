@@ -32,7 +32,7 @@ public class DAO{
 	private WineSQLiteHelper wineDBHelper=null;
 	private SQLiteDatabase userDataBase = null;
 	private UserSQLiteHelper userDBHelper = null;
-	private String[] allColumns = { WineSQLiteHelper.COLUMN_ID,WineSQLiteHelper.COLUMN_AVIN,WineSQLiteHelper.COLUMN_NAME,WineSQLiteHelper.COLUMN_COUNTRY,WineSQLiteHelper.COLUMN_REGION,WineSQLiteHelper.COLUMN_PRODUCER,WineSQLiteHelper.COLUMN_VARIETAL,WineSQLiteHelper.COLUMN_LABEL_URL,WineSQLiteHelper.COLUMN_RATING};
+	private String[] allColumns = { WineSQLiteHelper.COLUMN_ID,WineSQLiteHelper.COLUMN_NAME,WineSQLiteHelper.COLUMN_CODE,WineSQLiteHelper.COLUMN_REGION,WineSQLiteHelper.COLUMN_WINERY,WineSQLiteHelper.COLUMN_VARIETAL,WineSQLiteHelper.COLUMN_PRICE,WineSQLiteHelper.COLUMN_VINTAGE,WineSQLiteHelper.COLUMN_TYPE,WineSQLiteHelper.COLUMN_LABEL_URL,WineSQLiteHelper.COLUMN_RANK};
 	private String[] allColumnsforuser = {UserSQLiteHelper.COLUMN_ID,UserSQLiteHelper.COLUMN_NAME,UserSQLiteHelper.COLUMN_AGE,UserSQLiteHelper.COLUMN_WEIGHT,UserSQLiteHelper.COLUMN_EMAIL,UserSQLiteHelper.COLUMN_SEX,UserSQLiteHelper.COLUMN_COUNTRY,UserSQLiteHelper.COLUMN_PHOTOURL,UserSQLiteHelper.COLUMN_PASSWORD};
 	private ArrayList<Wine> wines=new ArrayList<Wine>();
 	
@@ -98,7 +98,7 @@ public class DAO{
 	    return winesInData;
 	  }
 	private Wine cursorToWine(Cursor cursor) {
-	    Wine wine = new Wine(cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(7),cursor.getString(8),cursor.getLong(0));
+	    Wine wine = new Wine(cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(7),cursor.getString(8),cursor.getString(9),cursor.getString(10),cursor.getLong(0));
 	    return wine;
 	  }
 	
@@ -146,11 +146,11 @@ public class DAO{
 	
 	//GETTER AND SETTER FROM ONLINE
 	public ArrayList<Wine> downloadWineByName(String name){
-	    String apiKey 		= "588eeca229b7895ff55a";
-	    String urlPreTerm 	= "http://api.adegga.com/rest/v1.0/GetWinesByName/";
-	    String urlPostTerm 	= "/&format=json&key=";
+	    String apiKey 		= "ra4c57ui7tkz3knjur913q2ubeekm9dnoulmu9j40lmrehjy";
 	    String searchTerm 	= name;
-	    String stringUrl 	= urlPreTerm + searchTerm + urlPostTerm + apiKey;
+	    String urlPreTerm 	= "http://api.snooth.com/wines/";
+	    String urlPostTerm 	= "?akey="+apiKey+"&format=json"+"&q="+searchTerm+"&n=25";
+	    String stringUrl 	= urlPreTerm + urlPostTerm;
 	    Log.e("DEBUG","url has been built");
 	   // ConnectivityManager connMgr = 
 	   // 		(ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
@@ -210,14 +210,18 @@ public class DAO{
 	public Wine createWine(Wine wine) {
 		//openWineData();
 	    ContentValues values = new ContentValues();
-	    values.put(WineSQLiteHelper.COLUMN_AVIN, wine.getAvin());
+	   // values.put(WineSQLiteHelper.COLUMN_AVIN, wine.getAvin());
 	    values.put(WineSQLiteHelper.COLUMN_NAME, wine.getName());
-	    values.put(WineSQLiteHelper.COLUMN_COUNTRY, wine.getCountry());
+	    values.put(WineSQLiteHelper.COLUMN_CODE, wine.getCode());
+	    //values.put(WineSQLiteHelper.COLUMN_COUNTRY, wine.getCountry());
 	    values.put(WineSQLiteHelper.COLUMN_REGION, wine.getRegion());
-	    values.put(WineSQLiteHelper.COLUMN_PRODUCER, wine.getProducer());
+	    values.put(WineSQLiteHelper.COLUMN_WINERY, wine.getWinery());
 	    values.put(WineSQLiteHelper.COLUMN_VARIETAL, wine.getVarietal());
-	    values.put(WineSQLiteHelper.COLUMN_LABEL_URL, wine.getLabel_URL());
-	    values.put(WineSQLiteHelper.COLUMN_RATING, wine.getRating());
+	    values.put(WineSQLiteHelper.COLUMN_PRICE, wine.getPrice());
+	    values.put(WineSQLiteHelper.COLUMN_VINTAGE, wine.getVintage());
+	    values.put(WineSQLiteHelper.COLUMN_TYPE, wine.getType());
+	    values.put(WineSQLiteHelper.COLUMN_LABEL_URL, wine.getImage_URL());
+	    values.put(WineSQLiteHelper.COLUMN_RANK, wine.getRank());
 	    long insertId = wineDataBase.insert(WineSQLiteHelper.TABLE_WINES, null,
 	        values);
 	    Cursor cursor = wineDataBase.query(WineSQLiteHelper.TABLE_WINES,
@@ -301,15 +305,19 @@ public class DAO{
     	private static final String DEBUG_TAG = "HttpExample";	
     	
     	
-        private static final String TAG_WINES = "wine"; 
-        private static final String TAG_AVIN = "avin";
+        private static final String TAG_WINES = "wines"; 
+       // private static final String TAG_AVIN = "avin";
         private static final String TAG_NAME = "name";
-        private static final String TAG_COUNTRY = "country";
+        private static final String TAG_CODE = "code";
+      //  private static final String TAG_COUNTRY = "country";
         private static final String TAG_REGION = "region";
-        private static final String TAG_PRODUCER = "producer";
-        private static final String TAG_VARIETALS = "varietals";
-        private static final String TAG_LABEL = "label_url";
-        private static final String TAG_RATING = "rating";
+        private static final String TAG_WINERY = "winery";
+        private static final String TAG_VARIETAL = "varietal";
+        private static final String TAG_PRICE="price";
+        private static final String TAG_VINTAGE = "vintage";
+        private static final String TAG_TYPE = "type";
+        private static final String TAG_LABEL = "image";
+        private static final String TAG_RANK = "snoothrank";
         JSONArray winesJSON = null; 
 		protected void execute(String... urls) {
 			String result="";
@@ -326,9 +334,6 @@ public class DAO{
 	   public void parseXML(String preParsed){
 		   try {
 				JSONObject myJSON = new JSONObject(preParsed);
-				myJSON = myJSON.getJSONObject("response");
-				myJSON = myJSON.getJSONObject("aml");
-				myJSON = myJSON.getJSONObject("wines");
 				winesJSON = myJSON.getJSONArray(TAG_WINES);
 				Log.i("TRY","made it past myJSON");
 				//Log.i("DEBUG",winesJSON.toString());
@@ -336,14 +341,17 @@ public class DAO{
 					JSONObject currentWine = winesJSON.getJSONObject(i);
 					
 					Wine newWine = new Wine(
-							currentWine.getString(TAG_AVIN),
+							//currentWine.getString(TAG_AVIN),
 							currentWine.getString(TAG_NAME),
-							currentWine.getString(TAG_COUNTRY),
+							currentWine.getString(TAG_CODE),
 							currentWine.getString(TAG_REGION),
-							currentWine.getString(TAG_PRODUCER),
-							currentWine.getString(TAG_VARIETALS),
+							currentWine.getString(TAG_WINERY),
+							currentWine.getString(TAG_VARIETAL),
+							currentWine.getString(TAG_PRICE),
+							currentWine.getString(TAG_VINTAGE),
+							currentWine.getString(TAG_TYPE),
 							currentWine.getString(TAG_LABEL),
-							currentWine.getString(TAG_RATING),
+							currentWine.getString(TAG_RANK),
 							-1
 					);
 					//Log.i("DEBUG",newWine.toString());

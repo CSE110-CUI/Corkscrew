@@ -4,38 +4,74 @@ import java.io.Serializable;
 
 public class Wine{
 	private long id;
-	private String avin;
+	//private String avin;
 	private String name;
-	private String country;
+	private String code;
+	//private String country;
 	private String region;
-	private String producer;
+	private String price;
+	private String winery;
 	private String varietal;
+	private String vintage;
+	private String type;
 	private String label_url;
-	private String rating;
+	private String rank;
 	
-	public Wine(String avin, String name, String country, String region,
-		String producer, String varietal, String label_url, String rating,long id) {
+	public Wine(String name,String code, String region, String winery,
+		String varietal,String price,String vintage,String type, String label_url, String rating,long id) {
 		this.id = id;
-		this.avin = avin;
+		//this.avin = avin;
 		this.name = name;
-		this.country = country;
+		//this.country = country;
+		this.code=code;
 		this.region = region;
-		this.producer = producer;
+		this.winery=winery;
+		this.type=type;
+		this.price=price;
+		this.vintage=vintage;
+		//this.producer = producer;
 		this.varietal = varietal;
 		this.label_url = label_url;
-		this.rating = rating;
+		this.rank = rating;
 	}
 	public long getId(){
 		return id;
 	}
-	public String getAvin() {
-		return avin;
+	public String getPrice() {
+		return price;
 	}
 	
-	public void setAvin(String avin) {
-		this.avin = avin;
+	public void setPrice(String price) {
+		this.price = price;
 	}
-
+	public String getVintage() {
+		return vintage;
+	}
+	
+	public void setVintage(String vintage) {
+		this.code = vintage;
+	}
+	public String getCode() {
+		return code;
+	}
+	
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public String getWinery() {
+		return winery;
+	}
+	
+	public void setWinery(String winery) {
+		this.winery = winery;
+	}
+	public String getType() {
+		return type;
+	}
+	
+	public void setType(String type) {
+		this.type = type;
+	}
 	public String getRegion() {
 		return "Region:     "+region;
 	}
@@ -43,26 +79,18 @@ public class Wine{
 		this.region = region;
 	}
 
-	public String getProducer() {
-		return "Producer: "+producer;
-	}
-	
-	public void setProducer(String producer) {
-		this.producer = producer;
-	}
-
-	public String getLabel_URL() {
+	public String getImage_URL() {
 		return label_url;
 	}
 	public void setLabel_URL(String label_url) {
 		this.label_url = label_url;
 	}
 
-	public String getRating() {
-		return rating;
+	public String getRank() {
+		return rank;
 	}
-	public void setRating(String rating) {
-		this.rating = rating;
+	public void setRank(String rating) {
+		this.rank = rating;
 	}
 
 	public String getName() {
@@ -72,12 +100,6 @@ public class Wine{
 		this.name = name;
 	}
 
-	public String getCountry() {
-		return "Country:   "+country;
-	}
-	public void setCountry(String country) {
-		this.country = country;
-	}
 
 	public String getVarietal() {
 		return varietal;
@@ -173,13 +195,11 @@ public class Wine{
 			return s;
 		}
 		
-	public void stripJSON(){
+//	public void stripJSON(){
 		
-		this.setName(stripName(this.name));
-		this.setCountry(stripCountry(this.country));
-		this.setProducer(stripProducer(this.producer));
-		this.setVarietal(stripVarietals(this.varietal));
-		this.setLabel_URL(stripURL(this.label_url));
-		this.setRating(stripRating(this.rating));
-	}
+	//	this.setName(stripName(this.name));
+		//this.setVarietal(stripVarietals(this.varietal));
+		//this.setLabel_URL(stripURL(this.label_url));
+		//this.setRating(stripRating(this.rating));
+	//}
 }
