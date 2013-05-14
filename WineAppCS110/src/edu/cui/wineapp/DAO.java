@@ -169,11 +169,11 @@ public class DAO{
 	
 	//GETTER AND SETTER FROM ONLINE
 	public ArrayList<Wine> downloadWineByName(String name){
-	    String apiKey 		= "588eeca229b7895ff55a";
-	    String urlPreTerm 	= "http://api.adegga.com/rest/v1.0/GetWinesByName/";
-	    String urlPostTerm 	= "/&format=json&key=";
+		String apiKey 		= "ra4c57ui7tkz3knjur913q2ubeekm9dnoulmu9j40lmrehjy";
 	    String searchTerm 	= name;
-	    String stringUrl 	= urlPreTerm + searchTerm + urlPostTerm + apiKey;
+	    String urlPreTerm 	= "http://api.snooth.com/wines/";
+	    String urlPostTerm 	= "?akey=" +apiKey +"&q=" +searchTerm;
+	    String stringUrl 	= urlPreTerm + urlPostTerm;
 	    
 	    Log.e("DEBUG","url has been built");
 	    Log.e("DEBUG","Manager has been built");
@@ -311,7 +311,7 @@ public class DAO{
     	private static final String DEBUG_TAG = "HttpExample";	
     	
     	
-  	  public static final String TAG_WINES = "Wines";
+  	  public static final String TAG_WINES = "wines";
     	  public static final String TAG_ID = "_id";
     	  public static final String TAG_NAME = "name";
     	  public static final String TAG_CODE = "code";
@@ -326,7 +326,7 @@ public class DAO{
     	  public static final String TAG_TAGS = "tags";
     	  public static final String TAG_IMAGE = "image";
     	  public static final String TAG_SNOOTHRANK = "snoothrank";
-    	  public static final String TAG_AVAILABILITY = "availability";
+    	  public static final String TAG_AVAILABILITY = "available";
     	  public static final String TAG_NUMMERCHANTS = "num_merchants";
     	  public static final String TAG_NUMREVIEWS = "num_reviews";
     	  
@@ -344,16 +344,21 @@ public class DAO{
 	   }
 	    
 	   public void parseXML(String preParsed){
+		   long wineRank = 0;
 		   try {
-				JSONObject myJSON = new JSONObject(preParsed);
-				myJSON = myJSON.getJSONObject("response");
-				myJSON = myJSON.getJSONObject("aml");
-				myJSON = myJSON.getJSONObject("wines");
+			   JSONObject myJSON = new JSONObject(preParsed);
 				winesJSON = myJSON.getJSONArray(TAG_WINES);
 				Log.i("TRY","made it past myJSON");
-				//Log.i("DEBUG",winesJSON.toString());
+				Log.i("DEBUG",winesJSON.toString());
 				for(int i = 0; i < winesJSON.length(); i++){
 					JSONObject currentWine = winesJSON.getJSONObject(i);
+					Log.i("DEBUG2",currentWine.toString());
+
+					try{
+						wineRank = currentWine.getLong(TAG_SNOOTHRANK);
+					} catch (JSONException e) {
+						wineRank = 0;
+					}
 					
 					Wine newWine = new Wine(
 							-1,
@@ -369,7 +374,7 @@ public class DAO{
 							currentWine.getString(TAG_LINK),
 							currentWine.getString(TAG_TAGS),
 							currentWine.getString(TAG_IMAGE),
-							currentWine.getLong(TAG_SNOOTHRANK),
+							wineRank,
 							currentWine.getString(TAG_AVAILABILITY),
 							currentWine.getString(TAG_NUMMERCHANTS),
 							currentWine.getString(TAG_NUMREVIEWS)
