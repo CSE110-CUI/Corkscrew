@@ -26,14 +26,21 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 public class DAO{
-	//private static DAO ourInstance = new DAO();
 	private static Context context = null;
 	private SQLiteDatabase wineDataBase=null;
 	private WineSQLiteHelper wineDBHelper=null;
 	private SQLiteDatabase userDataBase = null;
 	private UserSQLiteHelper userDBHelper = null;
-	private String[] allColumns = { WineSQLiteHelper.COLUMN_ID,WineSQLiteHelper.COLUMN_AVIN,WineSQLiteHelper.COLUMN_NAME,WineSQLiteHelper.COLUMN_COUNTRY,WineSQLiteHelper.COLUMN_REGION,WineSQLiteHelper.COLUMN_PRODUCER,WineSQLiteHelper.COLUMN_VARIETAL,WineSQLiteHelper.COLUMN_LABEL_URL,WineSQLiteHelper.COLUMN_RATING};
-	private String[] allColumnsforuser = {UserSQLiteHelper.COLUMN_ID,UserSQLiteHelper.COLUMN_NAME,UserSQLiteHelper.COLUMN_AGE,UserSQLiteHelper.COLUMN_WEIGHT,UserSQLiteHelper.COLUMN_EMAIL,UserSQLiteHelper.COLUMN_SEX,UserSQLiteHelper.COLUMN_COUNTRY,UserSQLiteHelper.COLUMN_PHOTOURL,UserSQLiteHelper.COLUMN_PASSWORD};
+	private String[] allColumnsforuser = {
+									UserSQLiteHelper.COLUMN_ID,
+									UserSQLiteHelper.COLUMN_NAME,
+									UserSQLiteHelper.COLUMN_AGE,
+									UserSQLiteHelper.COLUMN_WEIGHT,
+									UserSQLiteHelper.COLUMN_EMAIL,
+									UserSQLiteHelper.COLUMN_SEX,
+									UserSQLiteHelper.COLUMN_COUNTRY,
+									UserSQLiteHelper.COLUMN_PHOTOURL,
+									UserSQLiteHelper.COLUMN_PASSWORD};
 	private ArrayList<Wine> wines=new ArrayList<Wine>();
 	
 	
@@ -42,7 +49,6 @@ public class DAO{
 		wineDBHelper = new WineSQLiteHelper(context);
 		userDBHelper = new UserSQLiteHelper(context);
 		open();
-	//	open();
 	}
 	public void open() throws SQLException {
 		wineDataBase = wineDBHelper.getWritableDatabase();
@@ -85,7 +91,7 @@ public class DAO{
 	    ArrayList<Wine> winesInData = new ArrayList<Wine>();
 
 	    Cursor cursor = wineDataBase.query(WineSQLiteHelper.TABLE_WINES,
-	        allColumns, null, null, null, null, null);
+	        null, null, null, null, null, null);
 
 	    cursor.moveToFirst();
 	    while (!cursor.isAfterLast()) {
@@ -98,7 +104,25 @@ public class DAO{
 	    return winesInData;
 	  }
 	private Wine cursorToWine(Cursor cursor) {
-	    Wine wine = new Wine(cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(7),cursor.getString(8),cursor.getLong(0));
+	    Wine wine = new Wine(
+	    						cursor.getLong(0), 
+	    						cursor.getString(1),
+	    						cursor.getString(2),
+	    						cursor.getString(3),
+	    						cursor.getString(4),
+	    						cursor.getString(5),
+	    						cursor.getString(6),
+	    						cursor.getFloat(7), 
+	    						cursor.getString(8),
+	    						cursor.getString(9),
+	    						cursor.getString(10),
+	    						cursor.getString(11),
+	    						cursor.getString(12),
+	    						cursor.getFloat(13), 
+	    						cursor.getString(14),
+	    						cursor.getString(15),
+	    						cursor.getString(16)
+	    												);
 	    return wine;
 	  }
 	
@@ -164,7 +188,7 @@ public class DAO{
 	public Wine getWineById(long wineId){
 
 	    Cursor cursor = wineDataBase.query(WineSQLiteHelper.TABLE_WINES,
-	        allColumns, WineSQLiteHelper.COLUMN_ID + " = " + wineId, null, null, null, null);
+	        null, WineSQLiteHelper.COLUMN_ID + " = " + wineId, null, null, null, null);
 	    if(cursor.moveToFirst()){
 	    	Wine newWine = cursorToWine(cursor);
 	    	cursor.close();
@@ -198,18 +222,16 @@ public class DAO{
 	public Wine createWine(Wine wine) {
 		//openWineData();
 	    ContentValues values = new ContentValues();
-	    values.put(WineSQLiteHelper.COLUMN_AVIN, wine.getAvin());
 	    values.put(WineSQLiteHelper.COLUMN_NAME, wine.getName());
-	    values.put(WineSQLiteHelper.COLUMN_COUNTRY, wine.getCountry());
 	    values.put(WineSQLiteHelper.COLUMN_REGION, wine.getRegion());
-	    values.put(WineSQLiteHelper.COLUMN_PRODUCER, wine.getProducer());
 	    values.put(WineSQLiteHelper.COLUMN_VARIETAL, wine.getVarietal());
-	    values.put(WineSQLiteHelper.COLUMN_LABEL_URL, wine.getLabel_URL());
-	    values.put(WineSQLiteHelper.COLUMN_RATING, wine.getRating());
+	    
+	    
+	    
 	    long insertId = wineDataBase.insert(WineSQLiteHelper.TABLE_WINES, null,
 	        values);
 	    Cursor cursor = wineDataBase.query(WineSQLiteHelper.TABLE_WINES,
-	        allColumns, WineSQLiteHelper.COLUMN_ID + " = " + insertId, null,
+	        null, WineSQLiteHelper.COLUMN_ID + " = " + insertId, null,
 	        null, null, null);
 	    cursor.moveToFirst();
 	    Wine newWine = cursorToWine(cursor);
@@ -289,15 +311,25 @@ public class DAO{
     	private static final String DEBUG_TAG = "HttpExample";	
     	
     	
-        private static final String TAG_WINES = "wine"; 
-        private static final String TAG_AVIN = "avin";
-        private static final String TAG_NAME = "name";
-        private static final String TAG_COUNTRY = "country";
-        private static final String TAG_REGION = "region";
-        private static final String TAG_PRODUCER = "producer";
-        private static final String TAG_VARIETALS = "varietals";
-        private static final String TAG_LABEL = "label_url";
-        private static final String TAG_RATING = "rating";
+  	  public static final String TAG_WINES = "Wines";
+    	  public static final String TAG_ID = "_id";
+    	  public static final String TAG_NAME = "name";
+    	  public static final String TAG_CODE = "code";
+    	  public static final String TAG_REGION = "region";
+    	  public static final String TAG_WINERY = "winery";
+    	  public static final String TAG_WINERYID = "winery_id";
+    	  public static final String TAG_VARIETAL = "varietal";
+    	  public static final String TAG_PRICE = "price";
+    	  public static final String TAG_VINTAGE = "vintage";
+    	  public static final String TAG_TYPE = "type";
+    	  public static final String TAG_LINK = "link";
+    	  public static final String TAG_TAGS = "tags";
+    	  public static final String TAG_IMAGE = "image";
+    	  public static final String TAG_SNOOTHRANK = "snoothrank";
+    	  public static final String TAG_AVAILABILITY = "availability";
+    	  public static final String TAG_NUMMERCHANTS = "num_merchants";
+    	  public static final String TAG_NUMREVIEWS = "num_reviews";
+    	  
         JSONArray winesJSON = null; 
 		protected void execute(String... urls) {
 			String result="";
@@ -324,15 +356,23 @@ public class DAO{
 					JSONObject currentWine = winesJSON.getJSONObject(i);
 					
 					Wine newWine = new Wine(
-							currentWine.getString(TAG_AVIN),
+							-1,
 							currentWine.getString(TAG_NAME),
-							currentWine.getString(TAG_COUNTRY),
+							currentWine.getString(TAG_CODE),
 							currentWine.getString(TAG_REGION),
-							currentWine.getString(TAG_PRODUCER),
-							currentWine.getString(TAG_VARIETALS),
-							currentWine.getString(TAG_LABEL),
-							currentWine.getString(TAG_RATING),
-							-1
+							currentWine.getString(TAG_WINERY),
+							currentWine.getString(TAG_WINERYID),
+							currentWine.getString(TAG_VARIETAL),
+							currentWine.getLong(TAG_PRICE),
+							currentWine.getString(TAG_VINTAGE),
+							currentWine.getString(TAG_TYPE),
+							currentWine.getString(TAG_LINK),
+							currentWine.getString(TAG_TAGS),
+							currentWine.getString(TAG_IMAGE),
+							currentWine.getLong(TAG_SNOOTHRANK),
+							currentWine.getString(TAG_AVAILABILITY),
+							currentWine.getString(TAG_NUMMERCHANTS),
+							currentWine.getString(TAG_NUMREVIEWS)
 					);
 					//Log.i("DEBUG",newWine.toString());
 					wines.add(createWine(newWine));

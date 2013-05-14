@@ -1,185 +1,155 @@
 package edu.cui.wineapp;
 
-import java.io.Serializable;
-
-public class Wine{
+public class Wine {
 	private long id;
-	private String avin;
 	private String name;
-	private String country;
+	private String code;
 	private String region;
-	private String producer;
+	private String winery;
+	private String winery_id;
 	private String varietal;
-	private String label_url;
-	private String rating;
+	private float  price;
+	private String vintage;
+	private String type;
+	private String link;
+	private String tags;
+	private String image;
+	private float  snoothrank;
+	private String availability;
+	private String num_merchants;
+	private String num_reviews;
 	
-	public Wine(String avin, String name, String country, String region,
-		String producer, String varietal, String label_url, String rating,long id) {
+	public Wine(long id, String name, String code, String region, String winery,
+			String winery_id, String varietal, float price, String vintage,
+			String type, String link, String tags, String image,
+			float snoothrank, String availability, String num_merchants,
+			String num_reviews) {
+		
+		super();
 		this.id = id;
-		this.avin = avin;
 		this.name = name;
-		this.country = country;
+		this.code = code;
 		this.region = region;
-		this.producer = producer;
+		this.winery = winery;
+		this.winery_id = winery_id;
 		this.varietal = varietal;
-		this.label_url = label_url;
-		this.rating = rating;
-	}
-	public long getId(){
-		return id;
-	}
-	public String getAvin() {
-		return avin;
-	}
-	
-	public void setAvin(String avin) {
-		this.avin = avin;
-	}
-
-	public String getRegion() {
-		return "Region:     "+region;
-	}
-	public void setRegion(String region) {
-		this.region = region;
-	}
-
-	public String getProducer() {
-		return "Producer: "+producer;
-	}
-	
-	public void setProducer(String producer) {
-		this.producer = producer;
-	}
-
-	public String getLabel_URL() {
-		return label_url;
-	}
-	public void setLabel_URL(String label_url) {
-		this.label_url = label_url;
-	}
-
-	public String getRating() {
-		return rating;
-	}
-	public void setRating(String rating) {
-		this.rating = rating;
+		this.price = price;
+		this.vintage = vintage;
+		this.type = type;
+		this.link = link;
+		this.tags = tags;
+		this.image = image;
+		this.snoothrank = snoothrank;
+		this.availability = availability;
+		this.num_merchants = num_merchants;
+		this.num_reviews = num_reviews;
 	}
 
 	public String getName() {
 		return name;
 	}
+
+	public String getCode() {
+		return code;
+	}
+	public String getRegion() {
+		return region;
+	}
+	public String getWinery() {
+		return winery;
+	}
+	public String getWinery_id() {
+		return winery_id;
+	}
+	public String getVarietal() {
+		return varietal;
+	}
+	public float getPrice() {
+		return price;
+	}
+	public String getVintage() {
+		return vintage;
+	}
+	public String getType() {
+		return type;
+	}
+	public String getLink() {
+		return link;
+	}
+	public String getTags() {
+		return tags;
+	}
+	public String getImage() {
+		return image;
+	}
+	public float getSnoothrank() {
+		return snoothrank;
+	}
+	public String getAvailability() {
+		return availability;
+	}
+	public String getNum_merchants() {
+		return num_merchants;
+	}
+	public String getNum_reviews() {
+		return num_reviews;
+	}
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public String getCountry() {
-		return "Country:   "+country;
+	public void setCode(String code) {
+		this.code = code;
 	}
-	public void setCountry(String country) {
-		this.country = country;
+	public void setRegion(String region) {
+		this.region = region;
 	}
-
-	public String getVarietal() {
-		return varietal;
+	public void setWinery(String winery) {
+		this.winery = winery;
+	}
+	public void setWinery_id(String winery_id) {
+		this.winery_id = winery_id;
 	}
 	public void setVarietal(String varietal) {
 		this.varietal = varietal;
 	}
-	
-
-	public String toString(){
-		return stripName(this.name);
+	public void setPrice(float price) {
+		this.price = price;
 	}
-	
-	public String stripName(String name){
-		String s = name;
-		s = s.replace("\"name\":", "");
-		s = s.replace("\"", "");
-		s = s.replace(",", "");
-		
-		if(s.contains("&quot;") == true){
-			s = s.replace("&quot;", "\"");
-		}
-		
-		if(s.contains("&amp;") == true){
-			s = s.replace("&amp;", "&");
-		}
-		s = s.trim();
-		return s;
+	public void setVintage(String vintage) {
+		this.vintage = vintage;
 	}
-	
-	public String stripProducer(String producer){
-		String s = producer;
-		
-
-		if(s.contains("&quot;") == true){
-			s = s.replace("&quot;", "\"");
-		}
-		
-		if(s.contains("&amp;") == true){
-			s = s.replace("&amp;", "&");
-		}
-		
-		return s;
+	public void setType(String type) {
+		this.type = type;
+	}
+	public void setLink(String link) {
+		this.link = link;
+	}
+	public void setTags(String tags) {
+		this.tags = tags;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
+	public void setSnoothrank(float snoothrank) {
+		this.snoothrank = snoothrank;
+	}
+	public void setAvailability(String availability) {
+		this.availability = availability;
+	}
+	public void setNum_merchants(String num_merchants) {
+		this.num_merchants = num_merchants;
+	}
+	public void setNum_reviews(String num_reviews) {
+		this.num_reviews = num_reviews;
 	}
 
-	public String stripCountry(String country){
-		String s = country;
+	public long getId() {
+		return id;
+	}
 
-		
-		if(s.contains("&quot;") == true){
-			s = s.replace("&quot;", "\"");
-		}
-		
-		if(s.contains("&amp;") == true){
-			s = s.replace("&amp;", "&");
-		}
-		
-		return s;
+	public void setId(long id) {
+		this.id = id;
 	}
 	
-	public String stripVarietals(String varietals){
-		
-		if(varietals.contains("null"))
-			return "Varietal:    N/A";
-		
-		String s = varietals;
-		
-	
-		
-		if(s.contains("&quot;") == true){
-			s = s.replace("&quot;", "\"");
-		}
-		
-		if(s.contains("&amp;") == true){
-			s = s.replace("&amp;", "&");
-		}
-		
-		return s;
-	}
-	
-	public String stripURL(String label_url){
 
-	    return label_url;
-		
-	}
-	
-	public String stripRating(String rating){
-		
-		String s = rating;
-		s = s.replace("{\"adegga\":", "");
-		s = s.replace("}", "");
-			
-			return s;
-		}
-		
-	public void stripJSON(){
-		
-		this.setName(stripName(this.name));
-		this.setCountry(stripCountry(this.country));
-		this.setProducer(stripProducer(this.producer));
-		this.setVarietal(stripVarietals(this.varietal));
-		this.setLabel_URL(stripURL(this.label_url));
-		this.setRating(stripRating(this.rating));
-	}
 }

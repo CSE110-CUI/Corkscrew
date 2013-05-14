@@ -26,14 +26,10 @@ public class WineInfo extends Activity {
 		
 		Intent i = getIntent();
 		Wine currentWine = (Wine)WineManager.getWineManager(this).getWineById(i.getExtras().getLong(("passedWine")));
-		
-		currentWine.stripJSON();
-		
+				
 		TextView name = (TextView) findViewById(R.id.textView1);
 		name.setText(currentWine.getName());	
 		
-		TextView country = (TextView) findViewById(R.id.TextView01);
-		country.setText(currentWine.getCountry());	
 		
 		TextView varietal = (TextView) findViewById(R.id.TextView03);
 		varietal.setText(currentWine.getVarietal());		
@@ -41,15 +37,12 @@ public class WineInfo extends Activity {
 		TextView region = (TextView) findViewById(R.id.TextView05);
 		region.setText(currentWine.getRegion());		
 		
-		TextView producer = (TextView) findViewById(R.id.TextView02);
-		producer.setText(currentWine.getProducer());	
-
 		
 		new DownloadImageTask((ImageView) findViewById(R.id.image))
-        .execute(currentWine.getLabel_URL());
+        .execute(currentWine.getImage());
 		
 		RatingBar wineRating = (RatingBar) findViewById(R.id.ratingBar1);
-		wineRating.setRating(Float.parseFloat(currentWine.getRating()));
+		wineRating.setRating(currentWine.getSnoothrank());
 		
 		
 	}
