@@ -5,6 +5,8 @@ import java.util.List;
 import edu.cui.wineapp.DisplaySearchActivity;
 import edu.cui.wineapp.R;
 
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.app.Activity;
@@ -13,6 +15,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -28,6 +31,7 @@ SearchView.OnCloseListener{
     private ArrayAdapter<String> myAdapter;
     ArrayList<Wine> myWineList;
 	ArrayList<String> wineNames = new ArrayList<String>();
+    SlidingMenu menu;
 
 	@Override 
     public void onListItemClick(ListView l, View v, int position, long id) {
@@ -53,6 +57,16 @@ SearchView.OnCloseListener{
         searchView.setOnCloseListener(this);
         mListView = (ListView) findViewById(android.R.id.list);
         mListView.setAdapter(myAdapter);
+        
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        
+        menu = new SlidingMenu(this);
+        menu.setMode(SlidingMenu.LEFT);
+        menu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
+        menu.setBehindWidth(300);
+        menu.setFadeDegree(0.35f);
+        menu.attachToActivity(this, SlidingMenu.SLIDING_WINDOW);        
+        
 		
 		Log.i("Inside_OnCreate","Basic Info");
 
@@ -66,6 +80,8 @@ SearchView.OnCloseListener{
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+	
+	
 	
 	public void search (View view){
 		
@@ -177,6 +193,16 @@ SearchView.OnCloseListener{
 		mListView.setAdapter(myAdapter);
     	myAdapter.notifyDataSetChanged();
 			return false;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			menu.toggle();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 }
