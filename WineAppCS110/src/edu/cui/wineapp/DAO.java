@@ -6,7 +6,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -24,6 +28,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 public class DAO{
 	//private static DAO ourInstance = new DAO();
@@ -45,7 +50,7 @@ public class DAO{
 	//	open();
 	}
 	public void open() throws SQLException {
-		wineDataBase = wineDBHelper.getWritableDatabase();
+		//wineDataBase = wineDBHelper.getWritableDatabase();
 		userDataBase = userDBHelper.getWritableDatabase();
 	}
 
@@ -123,23 +128,24 @@ public class DAO{
 	
 	  
 	public ArrayList<Wine> getWineByName(String name){
-		 ArrayList<Wine> winesInData = new ArrayList<Wine>();
+		// ArrayList<Wine> winesInData = new ArrayList<Wine>();
 
-		    Cursor cursor = wineDataBase.query(WineSQLiteHelper.TABLE_WINES, 
-		    		//allColumns
-		    		null
-		    		, 
-		    		WineSQLiteHelper.COLUMN_NAME + " LIKE '%" + name +"%'"
-		    		//"name = " + name
-		    		, null, null, null, null);
+			String url="http://hello-zhaoyang-udacity.appspot.com/";
+		    try {
+				url=url+"?q=WHERE "+"name='"+URLEncoder.encode(name,"UTF-8")+"'";
+			} catch (UnsupportedEncodingException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		    String response="";
+		    try {
+				response=getUrl(url);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+				return parseWines(response);
 
-		    cursor.moveToFirst();
-		    while (!cursor.isAfterLast()) {
-			      Wine wine = cursorToWine(cursor);
-			      winesInData.add(wine);
-			      cursor.moveToNext();
-			    }
-		    return winesInData;
 	}
 	
 	
@@ -174,17 +180,67 @@ public class DAO{
 		//return getAllWinesInwineDataBase();
 	}
 	public Wine getWineById(long wineId){
+		String url="http://hello-zhaoyang-udacity.appspot.com/";
+	    url+="?q=";
+	    try {
+			getUrl(url);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 
-	    Cursor cursor = wineDataBase.query(WineSQLiteHelper.TABLE_WINES,
-	        allColumns, WineSQLiteHelper.COLUMN_ID + " = " + wineId, null, null, null, null);
-	    if(cursor.moveToFirst()){
-	    	Wine newWine = cursorToWine(cursor);
-	    	cursor.close();
-	    	return newWine;
-	    }else{
-	    	return null;
-	    }
 	}
+	   public ArrayList<Wine> parseWines(String preParsed){
+	        JSONArray winesJSON = null; 
+	        ArrayList<Wine> thiswines=new ArrayList<Wine>();;
+	      //  Log.i("TRY",preParsed);
+		   try {
+				JSONObject myJSON = new JSONObject(preParsed);
+				winesJSON = myJSON.getJSONArray("wines");
+				//Log.i("TRY","made it past myJSON");
+				//Log.i("DEBUG",winesJSON.toString());
+				for(int i = 0; i < winesJSON.length(); i++){
+					JSONObject currentWine = winesJSON.getJSONObject(i);
+					
+					Wine newWine;
+					try {
+						newWine = new Wine(
+								//currentWine.getString(TAG_AVIN),
+								URLDecoder.decode(currentWine.getString("name"),"UTF-8"),
+								URLDecoder.decode(currentWine.getString("code"),"UTF-8"),
+								URLDecoder.decode(currentWine.getString("region"),"UTF-8"),
+								URLDecoder.decode(currentWine.getString("winery"),"UTF-8"),
+								URLDecoder.decode(currentWine.getString("varietal"),"UTF-8"),
+								URLDecoder.decode(currentWine.getString("price"),"UTF-8"),
+								URLDecoder.decode(currentWine.getString("vintage"),"UTF-8"),
+								URLDecoder.decode(currentWine.getString("type"),"UTF-8"),
+								URLDecoder.decode(currentWine.getString("image"),"UTF-8"),
+								URLDecoder.decode(currentWine.getString("rank"),"UTF-8"),
+								-1
+						);
+					} catch (Exception e) {
+						newWine = new Wine(
+								//currentWine.getString(TAG_AVIN),
+								currentWine.getString("name"),
+								currentWine.getString("code"),
+								currentWine.getString("region"),
+								currentWine.getString("winery"),
+								currentWine.getString("varietal"),
+								currentWine.getString("price"),
+								currentWine.getString("vintage"),
+								currentWine.getString("type"),
+								currentWine.getString("image"),
+								currentWine.getString("rank"),
+								-1
+						);
+					}
+				//	Log.i("DEBUG",newWine.toString());
+					thiswines.add(newWine);
+				}
+		   } catch (JSONException e) {e.printStackTrace();}  
+		   return thiswines;
+	   }
 	public User createUser(User user, String password){
 		 ContentValues values = new ContentValues();
 		 values.put(UserSQLiteHelper.COLUMN_NAME, user.getName());
@@ -207,9 +263,9 @@ public class DAO{
 		    cursor.close();
 		    return newUser;
 	}
-	public Wine createWine(Wine wine) {
+	public Wine createWine(Wine wine) throws UnsupportedEncodingException {
 		//openWineData();
-	    ContentValues values = new ContentValues();
+	   /** ContentValues values = new ContentValues();
 	   // values.put(WineSQLiteHelper.COLUMN_AVIN, wine.getAvin());
 	    values.put(WineSQLiteHelper.COLUMN_NAME, wine.getName());
 	    values.put(WineSQLiteHelper.COLUMN_CODE, wine.getCode());
@@ -230,9 +286,100 @@ public class DAO{
 	    cursor.moveToFirst();
 	    Wine newWine = cursorToWine(cursor);
 	    cursor.close();
+		**/
+		Wine newWine=wine;
+	    String url="http://hello-zhaoyang-udacity.appspot.com/";
+	    url+="?name="+URLEncoder.encode(newWine.getName(),"UTF-8");
+	    url+="&code="+URLEncoder.encode(newWine.getCode(),"UTF-8");
+	    url+="&region="+URLEncoder.encode(newWine.getRegion(),"UTF-8");
+	    url+="&winery="+URLEncoder.encode(newWine.getWinery(),"UTF-8");
+	    url+="&varietal="+URLEncoder.encode(newWine.getVarietal(),"UTF-8");
+	    url+="&price="+URLEncoder.encode(newWine.getPrice(),"UTF-8");
+	    url+="&vintage="+URLEncoder.encode(newWine.getVintage(),"UTF-8");
+	    url+="&type="+URLEncoder.encode(newWine.getType(),"UTF-8");
+	    url+="&image="+URLEncoder.encode(newWine.getImage_URL(),"UTF-8");
+	    url+="&rank="+URLEncoder.encode(newWine.getRank(),"UTF-8");
+	    //url+="&id="+URLEncoder.encode(newWine.getId(),"UTF-8");
+	    url+="&comments=No Comments";
+	    //Log.e("DEBUG",url);
+		String response = "ERROR";
+		try {
+			response = uploadUrl(url);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+				newWine = parseWines(response).get(0);
+	
+		//  Log.e("DEBUG",response);
 	  //  closeWineData();
 	    return newWine;
 	  }
+	 private String uploadUrl(String myurl) throws IOException {
+	     InputStream is = null;
+	     try {
+		         URL url = new URL(myurl);
+		         URI uri = null;
+				try {
+					uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
+				} catch (URISyntaxException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		         url = uri.toURL();
+		         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		         conn.setReadTimeout(10000 /* milliseconds */);
+		         conn.setConnectTimeout(15000 /* milliseconds */);
+		         conn.setRequestMethod("POST");
+		         conn.setDoInput(true);
+		         conn.connect();
+		         int response = conn.getResponseCode();
+		        // Log.e("DEBUG", "The response is: " + response);
+		         is = conn.getInputStream();
+		
+		         String contentAsString = readIt(is);
+		         return contentAsString;
+		
+	     } finally {if (is != null) {is.close();} }
+	 }
+	 private String getUrl(String myurl) throws IOException {
+	     InputStream is = null;
+	     try {
+		         URL url = new URL(myurl);
+		         URI uri = null;
+				try {
+					uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
+				} catch (URISyntaxException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		         url = uri.toURL();
+		         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		         conn.setReadTimeout(10000 /* milliseconds */);
+		         conn.setConnectTimeout(15000 /* milliseconds */);
+		         conn.setRequestMethod("GET");
+		         conn.setDoInput(true);
+		         conn.connect();
+		         int response = conn.getResponseCode();
+		         //Log.e("DEBUG", "The response is: " + response);
+		         is = conn.getInputStream();
+		
+		         String contentAsString = readIt(is);
+		         return contentAsString;
+		
+	     } finally {if (is != null) {is.close();} }
+	 }
+	 public String readIt(InputStream stream) throws IOException, UnsupportedEncodingException {
+		   
+		 	BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"));  
+		    StringBuilder sb = new StringBuilder();
+		    String line;
+		    
+		    while((line = reader.readLine()) != null){
+		    	sb.append(line+"\n");
+		    }
+		    reader.close();
+		    return sb.toString();
+		}
 	public boolean deleteUser(String name){
 		return false;
 	}
@@ -240,14 +387,14 @@ public class DAO{
 
 	    Cursor cursor = userDataBase.query(UserSQLiteHelper.TABLE_USERS,
 	        allColumnsforuser, UserSQLiteHelper.COLUMN_NAME + " = \"" + userName+ "\"", null, null, null, null);
-	    Log.e("ERROR",userName);
+	    //Log.e("ERROR",userName);
 	    if(cursor.moveToFirst()){
 	    	User newUser = cursorToUser(cursor);
 	    	cursor.close();
-	    	Log.e("ERROR","NOT NULL");
+	    	//Log.e("ERROR","NOT NULL");
 	    	return newUser;
 	    }else{
-	    	Log.e("ERROR","null");
+	    	//Log.e("ERROR","null");
 	    	return null;
 	    }
 	}
@@ -355,7 +502,12 @@ public class DAO{
 							-1
 					);
 					//Log.i("DEBUG",newWine.toString());
-					wines.add(createWine(newWine));
+					try {
+						wines.add(createWine(newWine));
+					} catch (UnsupportedEncodingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 		   } catch (JSONException e) {e.printStackTrace();}  
 	   }
@@ -371,7 +523,7 @@ public class DAO{
 		         conn.setDoInput(true);
 		         conn.connect();
 		         int response = conn.getResponseCode();
-		         Log.d(DEBUG_TAG, "The response is: " + response);
+		         //Log.d(DEBUG_TAG, "The response is: " + response);
 		         is = conn.getInputStream();
 		
 		         String contentAsString = readIt(is);
@@ -379,7 +531,6 @@ public class DAO{
 		
 	     } finally {if (is != null) {is.close();} }
 	 }
-	 
 	 public String readIt(InputStream stream) throws IOException, UnsupportedEncodingException {
 		   
 		 	BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"));  

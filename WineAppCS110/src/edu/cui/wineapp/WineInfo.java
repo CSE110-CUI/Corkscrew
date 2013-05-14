@@ -3,6 +3,7 @@ package edu.cui.wineapp;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,7 +26,10 @@ public class WineInfo extends Activity {
 		setContentView(R.layout.activity_wine_info);
 		
 		Intent i = getIntent();
-		Wine currentWine = (Wine)WineManager.getWineManager(this).getWineById(i.getExtras().getLong(("passedWine")));
+		Log.e("DEBUG",String.valueOf(i.getExtras().getString(("passedWine"))));
+		ArrayList<Wine> wines=WineManager.getWineManager(this).getWineByName(i.getExtras().getString(("passedWine")));
+		Log.e("DEBUG",String.valueOf(wines.size()));
+		Wine currentWine =wines.get(0);
 		
 		//currentWine.stripJSON();
 		
@@ -37,15 +41,17 @@ public class WineInfo extends Activity {
 		varietal.setText(currentWine.getVarietal());		
 		
 		TextView region = (TextView) findViewById(R.id.TextView05);
-		region.setText(currentWine.getRegion());		
-
+		region.setText("Region: "+currentWine.getRegion());		
+		
 		
 		new DownloadImageTask((ImageView) findViewById(R.id.image))
         .execute(currentWine.getImage_URL());
 		
 		RatingBar wineRating = (RatingBar) findViewById(R.id.ratingBar1);
 		String rank = currentWine.getRank();
-		if (rank=="n/a"){
+		Log.e("DEBUG",rank);
+		if (rank.contentEquals("n/a")){
+			Log.e("DEBUG","Convert n/a to 0");
 			rank="0";
 		}
 		wineRating.setRating(Float.parseFloat(rank));

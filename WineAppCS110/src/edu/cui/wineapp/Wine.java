@@ -73,7 +73,7 @@ public class Wine{
 		this.type = type;
 	}
 	public String getRegion() {
-		return "Region:     "+region;
+		return region;
 	}
 	public void setRegion(String region) {
 		this.region = region;
