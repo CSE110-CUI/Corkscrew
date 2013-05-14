@@ -19,6 +19,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -147,14 +148,9 @@ public class DAO{
 	  
 	public ArrayList<Wine> getWineByName(String name){
 		 ArrayList<Wine> winesInData = new ArrayList<Wine>();
-
-		    Cursor cursor = wineDataBase.query(WineSQLiteHelper.TABLE_WINES, 
-		    		//allColumns
-		    		null
-		    		, 
-		    		WineSQLiteHelper.COLUMN_NAME + " LIKE '%" + name +"%'"
-		    		//"name = " + name
-		    		, null, null, null, null);
+		 
+		 Cursor cursor = wineDataBase.query(WineSQLiteHelper.TABLE_WINES, null, 
+				 WineSQLiteHelper.COLUMN_NAME + " LIKE '%" + name + "%'", null, null, null, null);
 
 		    cursor.moveToFirst();
 		    while (!cursor.isAfterLast()) {
@@ -162,6 +158,7 @@ public class DAO{
 			      winesInData.add(wine);
 			      cursor.moveToNext();
 			    }
+		    cursor.close();
 		    return winesInData;
 	}
 	
@@ -221,23 +218,42 @@ public class DAO{
 	}
 	public Wine createWine(Wine wine) {
 		//openWineData();
+		long insertId = -1;
+		Wine newWine = null;
+		
 	    ContentValues values = new ContentValues();
 	    values.put(WineSQLiteHelper.COLUMN_NAME, wine.getName());
+	    values.put(WineSQLiteHelper.COLUMN_CODE, wine.getCode());
 	    values.put(WineSQLiteHelper.COLUMN_REGION, wine.getRegion());
+	    values.put(WineSQLiteHelper.COLUMN_WINERY, wine.getWinery());
+	    values.put(WineSQLiteHelper.COLUMN_WINERYID, wine.getWinery_id());
 	    values.put(WineSQLiteHelper.COLUMN_VARIETAL, wine.getVarietal());
+	    values.put(WineSQLiteHelper.COLUMN_PRICE, wine.getPrice());
+	    values.put(WineSQLiteHelper.COLUMN_VINTAGE, wine.getVintage());
+	    values.put(WineSQLiteHelper.COLUMN_TYPE, wine.getType());
+	    values.put(WineSQLiteHelper.COLUMN_LINK, wine.getLink());
+	    values.put(WineSQLiteHelper.COLUMN_TAGS, wine.getTags());
+	    values.put(WineSQLiteHelper.COLUMN_IMAGE, wine.getImage());
+	    values.put(WineSQLiteHelper.COLUMN_SNOOTHRANK, wine.getSnoothrank());
+	    values.put(WineSQLiteHelper.COLUMN_AVAILABILITY, wine.getAvailability());
+	    values.put(WineSQLiteHelper.COLUMN_NUMMERCHANTS, wine.getNum_merchants());
+	    values.put(WineSQLiteHelper.COLUMN_NUMREVIEWS, wine.getNum_reviews());
 	    
 	    
-	    
-	    long insertId = wineDataBase.insert(WineSQLiteHelper.TABLE_WINES, null,
-	        values);
-	    Cursor cursor = wineDataBase.query(WineSQLiteHelper.TABLE_WINES,
-	        null, WineSQLiteHelper.COLUMN_ID + " = " + insertId, null,
-	        null, null, null);
-	    cursor.moveToFirst();
-	    Wine newWine = cursorToWine(cursor);
-	    cursor.close();
+	    try{
+	    	insertId = wineDataBase.insertOrThrow(WineSQLiteHelper.TABLE_WINES, null, values);
+	    	Cursor cursor = wineDataBase.query(WineSQLiteHelper.TABLE_WINES,
+	    			null, WineSQLiteHelper.COLUMN_ID + " = " + insertId, null,
+	    			null, null, null);
+	    			cursor.moveToFirst();
+	    	newWine = cursorToWine(cursor);
+	    	cursor.close();
 	  //  closeWineData();
-	    return newWine;
+	    	
+	    }catch(SQLiteConstraintException e){
+	    	
+	    }
+	    	return newWine;
 	  }
 	public boolean deleteUser(String name){
 		return false;

@@ -29,6 +29,15 @@ SearchView.OnCloseListener{
     ArrayList<Wine> myWineList;
 	ArrayList<String> wineNames = new ArrayList<String>();
 
+	@Override 
+    public void onListItemClick(ListView l, View v, int position, long id) {
+		Wine wineToPass = myWineList.get(position);
+		Intent i = new Intent(this,WineInfo.class);
+		Bundle bundle2 = new Bundle();
+	    bundle2.putLong("passedWine", wineToPass.getId());
+		i.putExtras(bundle2);
+		startActivity(i);
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +100,10 @@ SearchView.OnCloseListener{
 	@Override
 	public boolean onQueryTextChange(String parseText) throws SQLiteException{
 		if(parseText.length() >= 3){
+			
+			myWineList = new ArrayList<Wine>();
+			wineNames = new ArrayList<String>();
+			
 		
 			Log.i("Inside_QTChange","Text>=3");
 			
@@ -104,37 +117,43 @@ SearchView.OnCloseListener{
 			WineManager wManager = new WineManager(this);
 			
 			try{
-				myWineList = wManager.getWineByName(parseText);
 				Log.i("Inside_QTChange","TRY");	
+				myWineList = wManager.getWineByName(parseText);
 				
-				for(int i = 0; i < myWineList.size(); ++i){wineNames.add(myWineList.get(i).toString());}
+				for(int i = 0; i < myWineList.size(); ++i){
+					Log.i("PARSINGWINES",myWineList.get(i).getName());
+					wineNames.add(myWineList.get(i).getName());
+					}
+				
+				for(int i = 0; i < wineNames.size(); ++i){
+					Log.i("PARSNG_WINSZ",wineNames.get(i));
+				}
 				
 				myAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,wineNames);
 				mListView.setAdapter(myAdapter);
 		    	myAdapter.notifyDataSetChanged();
 				
 			}catch (SQLiteException e){
-				myWineList = wManager.downloadWineByName(parseText);
 				Log.i("Inside_QTChange","CATCH");
+				myWineList = wManager.downloadWineByName(parseText);
 				
 				for(int i = 0; i < myWineList.size(); ++i){wineNames.add(myWineList.get(i).toString());}
 				
 				myAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,wineNames);
 				mListView.setAdapter(myAdapter);
 		    	myAdapter.notifyDataSetChanged();
-				
-				throw e;
-			}finally{
-							
-
 			}
+			return true;
 		}
+		
 		return false;
 	}
 
 	@Override
 	public boolean onQueryTextSubmit(String arg0) {
 		wineNames = new ArrayList<String>();
+		myWineList = new ArrayList<Wine>();
+		
 		
 		Log.i("Inside_QTChange","Text>=3");
 		
@@ -151,7 +170,7 @@ SearchView.OnCloseListener{
 		
 		for(int i = 0; i < myWineList.size(); ++i){
 			Wine currWine = myWineList.get(i);
-			wineNames.add(currWine.getName());
+			if(currWine!=null) wineNames.add(currWine.getName());
 		}
 		
 		myAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,wineNames);

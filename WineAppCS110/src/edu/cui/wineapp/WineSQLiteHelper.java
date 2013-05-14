@@ -48,7 +48,8 @@ public class WineSQLiteHelper extends SQLiteOpenHelper {
   	  	  + COLUMN_IMAGE + " text not null, "
   	  	  + COLUMN_SNOOTHRANK + " text not null, "
   	  	  + COLUMN_AVAILABILITY + " text not null, "
-  	  	  + COLUMN_NUMMERCHANTS + " text not null);";
+  	  	  + COLUMN_NUMMERCHANTS + " text not null,"
+	  	  + COLUMN_NUMREVIEWS + " text not null);";
 
   public WineSQLiteHelper(Context context) {
     super(context, DATABASE_NAME, null, DATABASE_VERSION);
