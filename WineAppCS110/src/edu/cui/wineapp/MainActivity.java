@@ -26,7 +26,6 @@ import android.widget.SimpleCursorAdapter;
 public class MainActivity extends ListActivity implements SearchView.OnQueryTextListener,
 SearchView.OnCloseListener{
 
-    //Testing Commit
 
 	public final static String EXTRA_MESSAGE = "com.cui.wineapp.MESSAGE";
     private ListView mListView;
