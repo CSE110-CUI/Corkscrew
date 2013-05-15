@@ -25,7 +25,9 @@ import android.widget.SimpleCursorAdapter;
 
 public class MainActivity extends ListActivity implements SearchView.OnQueryTextListener,
 SearchView.OnCloseListener{
-	
+
+    //Testing Commit
+
 	public final static String EXTRA_MESSAGE = "com.cui.wineapp.MESSAGE";
     private ListView mListView;
     private ArrayAdapter<String> myAdapter;
@@ -136,15 +138,15 @@ SearchView.OnCloseListener{
 				Log.i("Inside_QTChange","TRY");	
 				myWineList = wManager.getWineByName(parseText);
 				
-				for(int i = 0; i < myWineList.size(); ++i){
-					Log.i("PARSINGWINES",myWineList.get(i).getName());
-					wineNames.add(myWineList.get(i).getName());
-					}
+				for(Wine currWine : myWineList){
+					Log.i("PARSINGWINES",currWine.getName());
+					wineNames.add(currWine.getName());
+                }
 				
-				for(int i = 0; i < wineNames.size(); ++i){
-					Log.i("PARSNG_WINSZ",wineNames.get(i));
+				for(String currWine : wineNames){
+					Log.i("PARSNG_WINSZ",currWine);
 				}
-				
+
 				myAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,wineNames);
 				mListView.setAdapter(myAdapter);
 		    	myAdapter.notifyDataSetChanged();
@@ -153,8 +155,10 @@ SearchView.OnCloseListener{
 				Log.i("Inside_QTChange","CATCH");
 				myWineList = wManager.downloadWineByName(parseText);
 				
-				for(int i = 0; i < myWineList.size(); ++i){wineNames.add(myWineList.get(i).toString());}
-				
+				for(Wine currWine: myWineList){
+                    wineNames.add(currWine.getName());
+                }
+
 				myAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,wineNames);
 				mListView.setAdapter(myAdapter);
 		    	myAdapter.notifyDataSetChanged();
@@ -184,8 +188,7 @@ SearchView.OnCloseListener{
 		myWineList = wManager.downloadWineByName(arg0);
 		
 		
-		for(int i = 0; i < myWineList.size(); ++i){
-			Wine currWine = myWineList.get(i);
+		for(Wine currWine : myWineList){
 			if(currWine!=null) wineNames.add(currWine.getName());
 		}
 		
