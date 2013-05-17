@@ -1,81 +1,85 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".WineInfo" >
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                tools:context=".WineInfo">
 
     <ImageView
-        android:id="@+id/image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:maxWidth="75dp"
-        android:minHeight="75dp"
-        android:minWidth="75dp"
-        android:src="@drawable/ic_launcher" />
+            android:id="@+id/image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:maxWidth="75dp"
+            android:minHeight="75dp"
+            android:minWidth="75dp"
+            android:src="@drawable/ic_launcher"/>
 
     <TextView
-        android:id="@+id/TextView03"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textView1"
-        android:text="Varietal"
-        android:textSize="12sp" />
+            android:id="@+id/TextView03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView1"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/textView1"
+            android:text="Varietal"
+            android:textSize="12sp"/>
 
     <TextView
-        android:id="@+id/TextView01"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/TextView03"
-        android:layout_alignRight="@+id/TextView03"
-        android:layout_below="@+id/TextView03"
-        android:text="Country"
-        android:textSize="12sp" />
+            android:id="@+id/TextView01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/TextView03"
+            android:layout_alignRight="@+id/TextView03"
+            android:layout_below="@+id/TextView03"
+            android:text="Country"
+            android:textSize="12sp"/>
 
     <TextView
-        android:id="@+id/TextView05"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/TextView01"
-        android:layout_alignRight="@+id/TextView01"
-        android:layout_below="@+id/TextView01"
-        android:text="Region"
-        android:textSize="12sp" />
+            android:id="@+id/TextView05"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/TextView01"
+            android:layout_alignRight="@+id/TextView01"
+            android:layout_below="@+id/TextView01"
+            android:text="Region"
+            android:textSize="12sp"/>
 
     <TextView
-        android:id="@+id/TextView02"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/TextView05"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/TextView05"
-        android:text="Producer"
-        android:textSize="12sp" />
+            android:id="@+id/TextView02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/TextView05"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/TextView05"
+            android:text="Producer"
+            android:textSize="12sp"/>
 
     <TextView
-        android:id="@+id/textView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/image"
-        android:layout_marginLeft="15dp"
-        android:layout_toRightOf="@+id/image"
-        android:text="Name"
-        android:textSize="12sp" />
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/image"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/image"
+            android:text="Name"
+            android:textSize="12sp"/>
 
     <RatingBar
-        android:id="@+id/ratingBar1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/image"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:numStars="5" />
+            android:id="@+id/ratingBar1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/image"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:numStars="5"/>
+    <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/listView" android:layout_below="@+id/ratingBar1" android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>
