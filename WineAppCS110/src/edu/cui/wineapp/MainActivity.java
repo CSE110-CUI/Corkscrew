@@ -187,19 +187,18 @@ public class MainActivity extends ListActivity implements SearchView.OnQueryText
         searchView.setOnCloseListener(this);
         mListView = (ListView) findViewById(android.R.id.list);
 
-
         WineManager wManager = new WineManager(this);
         myWineList = wManager.downloadWineByName(arg0);
 
-
         for (Wine currWine : myWineList) {
-            if (currWine != null) wineNames.add(currWine.getName());
+            wineNames.add(currWine.getName());
         }
 
         myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, wineNames);
         mListView.setAdapter(myAdapter);
         myAdapter.notifyDataSetChanged();
-        return false;
+
+        return true;
     }
 
     @Override
