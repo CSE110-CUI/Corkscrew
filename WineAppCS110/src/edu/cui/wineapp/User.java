@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.content.Context;
 
 public class User {
+    //Okay
 	private String name=null;
 	private int age=-1;
 	private float weight=-1;
