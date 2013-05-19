@@ -23,6 +23,8 @@ public class MainActivity extends ListActivity implements SearchView.OnQueryText
         SearchView.OnCloseListener {
 
 
+    //Testing commmits
+
     public final static String EXTRA_MESSAGE = "com.cui.wineapp.MESSAGE";
     ArrayList<Wine> myWineList;
     ArrayList<String> wineNames = new ArrayList<String>();
