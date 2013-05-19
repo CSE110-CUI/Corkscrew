@@ -6,6 +6,7 @@ import android.content.Context;
 
 public class User {
     //Okay
+    //Another line
 	private String name=null;
 	private int age=-1;
 	private float weight=-1;
