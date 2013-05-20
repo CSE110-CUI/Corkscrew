@@ -27,9 +27,9 @@ public class WineInfo extends Activity {
 		
 		Intent i = getIntent();
 		Log.e("DEBUG",String.valueOf(i.getExtras().getString(("passedWine"))));
-		ArrayList<Wine> wines=WineManager.getWineManager(this).getWineByName(i.getExtras().getString(("passedWine")));
-		Log.e("DEBUG",String.valueOf(wines.size()));
-		Wine currentWine =wines.get(0);
+		Wine wines=WineManager.getWineManager(this).getSnoothWineDetailByCode(i.getExtras().getString(("passedWine")));
+		Log.e("DEBUG",String.valueOf(wines.getName()));
+		Wine currentWine =wines;
 		
 		//currentWine.stripJSON();
 		
@@ -45,7 +45,7 @@ public class WineInfo extends Activity {
 		
 		
 		new DownloadImageTask((ImageView) findViewById(R.id.image))
-        .execute(currentWine.getImage_URL());
+        .execute(currentWine.getFoods().get(0).getImage());
 		
 		RatingBar wineRating = (RatingBar) findViewById(R.id.ratingBar1);
 		String rank = currentWine.getRank();

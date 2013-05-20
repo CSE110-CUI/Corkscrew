@@ -1,5 +1,8 @@
 package edu.cui.wineapp;
 
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -34,5 +37,16 @@ public class UserManager {
 	}
 	public static boolean deleteUser(String name){
 		return dao.deleteUser(name);
+	}
+	public ArrayList<Comment> testget (String q){
+		return dao.getCommentsByQuery(q);
+	}
+	public void testpost(String w,String u, String c){
+		try {
+			dao.setComment(w, u, c);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

@@ -35,8 +35,8 @@ public class DAO{
 	private static Context context = null;
 	private SQLiteDatabase wineDataBase=null;
 	private WineSQLiteHelper wineDBHelper=null;
-	private SQLiteDatabase userDataBase = null;
-	private UserSQLiteHelper userDBHelper = null;
+	private static SQLiteDatabase userDataBase = null;
+	private static UserSQLiteHelper userDBHelper = null;
 	private String[] allColumns = { WineSQLiteHelper.COLUMN_ID,WineSQLiteHelper.COLUMN_NAME,WineSQLiteHelper.COLUMN_CODE,WineSQLiteHelper.COLUMN_REGION,WineSQLiteHelper.COLUMN_WINERY,WineSQLiteHelper.COLUMN_VARIETAL,WineSQLiteHelper.COLUMN_PRICE,WineSQLiteHelper.COLUMN_VINTAGE,WineSQLiteHelper.COLUMN_TYPE,WineSQLiteHelper.COLUMN_LABEL_URL,WineSQLiteHelper.COLUMN_RANK};
 	private String[] allColumnsforuser = {UserSQLiteHelper.COLUMN_ID,UserSQLiteHelper.COLUMN_NAME,UserSQLiteHelper.COLUMN_AGE,UserSQLiteHelper.COLUMN_WEIGHT,UserSQLiteHelper.COLUMN_EMAIL,UserSQLiteHelper.COLUMN_SEX,UserSQLiteHelper.COLUMN_COUNTRY,UserSQLiteHelper.COLUMN_PHOTOURL,UserSQLiteHelper.COLUMN_PASSWORD};
 	private ArrayList<Wine> wines=new ArrayList<Wine>();
@@ -87,20 +87,16 @@ public class DAO{
 	  }
 
 	public ArrayList<Wine> getAllWinesInwineDataBase() {
-	    ArrayList<Wine> winesInData = new ArrayList<Wine>();
+		String url="http://hello-zhaoyang-udacity.appspot.com/";
 
-	    Cursor cursor = wineDataBase.query(WineSQLiteHelper.TABLE_WINES,
-	        allColumns, null, null, null, null, null);
-
-	    cursor.moveToFirst();
-	    while (!cursor.isAfterLast()) {
-	      Wine wine = cursorToWine(cursor);
-	      winesInData.add(wine);
-	      cursor.moveToNext();
-	    }
-	    // Make sure to close the cursor
-	    cursor.close();
-	    return winesInData;
+	    String response="";
+	    try {
+			response=getUrl(url);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			return parseWines(response);	  
 	  }
 	private Wine cursorToWine(Cursor cursor) {
 	    Wine wine = new Wine(cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4),cursor.getString(5),cursor.getString(6),cursor.getString(7),cursor.getString(8),cursor.getString(9),cursor.getString(10),cursor.getLong(0));
@@ -126,74 +122,219 @@ public class DAO{
 	    return user;
 	  }
 	
-	  
-	public ArrayList<Wine> getWineByName(String name){
-		// ArrayList<Wine> winesInData = new ArrayList<Wine>();
+	public ArrayList<Wine> getWineByQuery(String query){
+		String apiKey 		= "ra4c57ui7tkz3knjur913q2ubeekm9dnoulmu9j40lmrehjy";
+	    String searchTerm 	= query;
+	    String urlPreTerm 	= "http://api.snooth.com/wines/";
+	    String urlPostTerm 	= "?akey="+apiKey+"&format=json&"+searchTerm;
+	    String snoothUrl 	= urlPreTerm + urlPostTerm;
 
-			String url="http://hello-zhaoyang-udacity.appspot.com/";
-		    try {
-				url=url+"?q=WHERE "+"name='"+URLEncoder.encode(name,"UTF-8")+"'";
-			} catch (UnsupportedEncodingException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 		    String response="";
 		    try {
-				response=getUrl(url);
+				response=getUrl(snoothUrl);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-				return parseWines(response);
+		   // ArrayList<Wine> returnwines=new ArrayList<Wine>();
+				ArrayList<Wine> thiswines = parseSnoothWine(response);
+			//	for(int i = 0 ; i < thiswines.size(); i++){
+			//		try {
+			//			createWine(thiswines.get(i));
+				//	} catch (UnsupportedEncodingException e) {
+					//	e.printStackTrace();
+					//}
+			//	}
+			return thiswines;
+	}
+	public ArrayList<Wine> getWineByColor(String color){
+		String apiKey 		= "ra4c57ui7tkz3knjur913q2ubeekm9dnoulmu9j40lmrehjy";
+	    String searchTerm 	= color;
+	    String urlPreTerm 	= "http://api.snooth.com/wines/";
+	    String urlPostTerm 	= "?akey="+apiKey+"&format=json"+"&q=wine&color="+searchTerm+"&n=25";
+	    String snoothUrl 	= urlPreTerm + urlPostTerm;
 
+		    String response="";
+		    try {
+				response=getUrl(snoothUrl);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		   // ArrayList<Wine> returnwines=new ArrayList<Wine>();
+				ArrayList<Wine> thiswines = parseSnoothWine(response);
+	//			for(int i = 0 ; i < thiswines.size(); i++){
+		//			try {
+			//			createWine(thiswines.get(i));
+				//	} catch (UnsupportedEncodingException e) {
+					//	e.printStackTrace();
+					//}
+			//	}
+			return thiswines;
+	}
+
+	public ArrayList<Wine> getWineByName(String name){
+		// ArrayList<Wine> winesInData = new ArrayList<Wine>();
+		String apiKey 		= "ra4c57ui7tkz3knjur913q2ubeekm9dnoulmu9j40lmrehjy";
+	    String searchTerm 	= name;
+	    String urlPreTerm 	= "http://api.snooth.com/wines/";
+	    String urlPostTerm 	= "?akey="+apiKey+"&format=json"+"&q="+searchTerm+"&n=25";
+	    String snoothUrl 	= urlPreTerm + urlPostTerm;
+
+		    String response="";
+		    try {
+				response=getUrl(snoothUrl);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		    //ArrayList<Wine> returnwines=new ArrayList<Wine>();
+				ArrayList<Wine> thiswines = parseSnoothWine(response);
+				//for(int i = 0 ; i < thiswines.size(); i++){
+					//try {
+						//createWine(thiswines.get(i));
+					//} catch (UnsupportedEncodingException e) {
+						//e.printStackTrace();
+					//}
+				//}
+			return thiswines;
+	}
+	//URLEncoder.encode failuer will throw exception
+	public void setComment(String winecode, String user_id,String comment) throws UnsupportedEncodingException{
+		String url="http://hello-zhaoyang-udacity.appspot.com/comments";
+	    url+="?wine="+URLEncoder.encode(winecode,"UTF-8");
+	    url+="&user="+URLEncoder.encode(user_id,"UTF-8");
+	    url+="&comment="+URLEncoder.encode(comment,"UTF-8");
+	    String response = "ERROR";
+		try {
+			response = uploadUrl(url);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	public ArrayList<Comment> getCommentsByQuery(String q){
+		String url="http://hello-zhaoyang-udacity.appspot.com/comments";
+	    url=url+"?q="+q;
+	    String response="";
+	    try {
+			response=getUrl(url);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			return parseComments(response);
 	}
 	
-	
-	
-	//GETTER AND SETTER FROM ONLINE
+	private ArrayList<Comment> parseComments(String response) {
+		// TODO Auto-generated method stub
+		JSONArray winesJSON = null; 
+        ArrayList<Comment> thisComments=new ArrayList<Comment>();
+      //  Log.i("TRY",preParsed);
+	   try {
+			JSONObject myJSON = new JSONObject(response);
+			winesJSON = myJSON.getJSONArray("comments");
+			//Log.i("TRY","made it past myJSON");
+			//Log.i("DEBUG",winesJSON.toString());
+			for(int i = 0; i < winesJSON.length(); i++){
+				JSONObject currentWine = winesJSON.getJSONObject(i);
+				
+				Comment newComment;
+				//Log.e("DEBUG",currentWine.getString("comment"));
+					newComment = new Comment(
+							//currentWine.getString(TAG_AVIN),
+							currentWine.getString("winecode"),
+							currentWine.getString("userid"),
+							currentWine.getString("comment"),
+							currentWine.getString("date")
+							//currentWine.getString("id")
+					);
+			
+			//	Log.i("DEBUG",newWine.toString());
+				thisComments.add(newComment);
+			}
+	   } catch (JSONException e) {e.printStackTrace();}  
+	   return thisComments;
+	}
+	//GETTER AND SETTER FROM ONLINE/
+	/**
 	public ArrayList<Wine> downloadWineByName(String name){
 	    String apiKey 		= "ra4c57ui7tkz3knjur913q2ubeekm9dnoulmu9j40lmrehjy";
 	    String searchTerm 	= name;
 	    String urlPreTerm 	= "http://api.snooth.com/wines/";
 	    String urlPostTerm 	= "?akey="+apiKey+"&format=json"+"&q="+searchTerm+"&n=25";
 	    String stringUrl 	= urlPreTerm + urlPostTerm;
-	    Log.e("DEBUG","url has been built");
-	   // ConnectivityManager connMgr = 
-	   // 		(ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
-	    Log.e("DEBUG","Manager has been built");
-	//	NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-		
-	//	if (networkInfo != null && networkInfo.isConnected()) {
-	//		return null;//
+	  //  Log.e("DEBUG","url has been built");
+
 	    new DownloadWebpageText().execute(stringUrl);
-		//} 
-	//	else {
-	//		Log.e("DEBUG","No network connection available.");
-	//	}
+
 	    Log.e("DEBUG","Wine has been built");
-	   // if(wines.size()==0){
-	   // 	Log.e("DEBUG","error");
-	   // }else{
-	   // 	Log.e("DEBUG",wines.get(0).toString());
-	  //  }
+
 	    return wines;
-		//return getAllWinesInwineDataBase();
-	}
-	public Wine getWineById(long wineId){
+	}**/
+	/**
+	 * public Wine getWineByCertainName(String name){
 		String url="http://hello-zhaoyang-udacity.appspot.com/";
-	    url+="?q=";
 	    try {
-			getUrl(url);
+			url=url+"?q=WHERE "+"name='"+URLEncoder.encode(name,"UTF-8")+"'";
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	    String response="";
+	    try {
+			response=getUrl(url);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
-
-	}
-	   public ArrayList<Wine> parseWines(String preParsed){
+			return parseWines(response).get(0);
+	}**/
+	public ArrayList<Wine> parseSnoothWine(String preParsed){
+		  JSONArray winesJSON = null; 
+		  ArrayList<Wine> thiswines=new ArrayList<Wine>();
+	       String TAG_WINES = "wines"; 
+	        // private static final String TAG_AVIN = "avin";
+	        String TAG_NAME = "name";
+	        String TAG_CODE = "code";
+	       //  private static final String TAG_COUNTRY = "country";
+	        String TAG_REGION = "region";
+	   			String TAG_WINERY = "winery";
+	   			String TAG_VARIETAL = "varietal";
+	       String TAG_PRICE="price";
+	        String TAG_VINTAGE = "vintage";
+	        String TAG_TYPE = "type";
+		  String TAG_LABEL = "image";
+		  String TAG_RANK = "snoothrank";
+	    	try {
+				JSONObject myJSON = new JSONObject(preParsed);
+				winesJSON = myJSON.getJSONArray(TAG_WINES);
+				Log.i("TRY","made it past myJSON");
+				//Log.i("DEBUG",winesJSON.toString());
+				for(int i = 0; i < winesJSON.length(); i++){
+					JSONObject currentWine = winesJSON.getJSONObject(i);
+					
+					Wine newWine = new Wine(
+							//currentWine.getString(TAG_AVIN),
+							currentWine.getString(TAG_NAME),
+							currentWine.getString(TAG_CODE),
+							currentWine.getString(TAG_REGION),
+							currentWine.getString(TAG_WINERY),
+							currentWine.getString(TAG_VARIETAL),
+							currentWine.getString(TAG_PRICE),
+							currentWine.getString(TAG_VINTAGE),
+							currentWine.getString(TAG_TYPE),
+							currentWine.getString(TAG_LABEL),
+							currentWine.getString(TAG_RANK),
+							-1
+					);
+					thiswines.add(newWine);
+				}
+		   } catch (JSONException e) {e.printStackTrace();} 
+	    	return thiswines;
+	   }
+	public ArrayList<Wine> parseWines(String preParsed){
 	        JSONArray winesJSON = null; 
-	        ArrayList<Wine> thiswines=new ArrayList<Wine>();;
+	        ArrayList<Wine> thiswines=new ArrayList<Wine>();
 	      //  Log.i("TRY",preParsed);
 		   try {
 				JSONObject myJSON = new JSONObject(preParsed);
@@ -262,6 +403,30 @@ public class DAO{
 		    User newUser = cursorToUser(cursor);
 		    cursor.close();
 		    return newUser;
+	}
+	public Wine createLocalWine(Wine wine){
+		  ContentValues values = new ContentValues();
+		   // values.put(WineSQLiteHelper.COLUMN_AVIN, wine.getAvin());
+		    values.put(WineSQLiteHelper.COLUMN_NAME, wine.getName());
+		    values.put(WineSQLiteHelper.COLUMN_CODE, wine.getCode());
+		    //values.put(WineSQLiteHelper.COLUMN_COUNTRY, wine.getCountry());
+		    values.put(WineSQLiteHelper.COLUMN_REGION, wine.getRegion());
+		    values.put(WineSQLiteHelper.COLUMN_WINERY, wine.getWinery());
+		    values.put(WineSQLiteHelper.COLUMN_VARIETAL, wine.getVarietal());
+		    values.put(WineSQLiteHelper.COLUMN_PRICE, wine.getPrice());
+		    values.put(WineSQLiteHelper.COLUMN_VINTAGE, wine.getVintage());
+		    values.put(WineSQLiteHelper.COLUMN_TYPE, wine.getType());
+		    values.put(WineSQLiteHelper.COLUMN_LABEL_URL, wine.getImage_URL());
+		    values.put(WineSQLiteHelper.COLUMN_RANK, wine.getRank());
+		    long insertId = wineDataBase.insert(WineSQLiteHelper.TABLE_WINES, null,
+		        values);
+		    Cursor cursor = wineDataBase.query(WineSQLiteHelper.TABLE_WINES,
+		        allColumns, WineSQLiteHelper.COLUMN_ID + " = " + insertId, null,
+		        null, null, null);
+		    cursor.moveToFirst();
+		    Wine newWine = cursorToWine(cursor);
+		    cursor.close();
+			return newWine;
 	}
 	public Wine createWine(Wine wine) throws UnsupportedEncodingException {
 		//openWineData();
@@ -546,4 +711,91 @@ public class DAO{
 	
 
     }
+	public Wine getSnoothWineDetailByCode(String code) {
+		// TODO Auto-generated method stub
+		String apiKey 		= "ra4c57ui7tkz3knjur913q2ubeekm9dnoulmu9j40lmrehjy";
+	    String searchTerm 	= code;
+	    String urlPreTerm 	= "http://api.snooth.com/wine/";
+	    String urlPostTerm 	= "?akey="+apiKey+"&format=json"+"&id="+searchTerm+"&food=1&photos=1";
+	    String snoothUrl 	= urlPreTerm + urlPostTerm;
+
+		    String response="";
+		    try {
+				response=getUrl(snoothUrl);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		    ArrayList<Wine> returnwines=new ArrayList<Wine>();
+				ArrayList<Wine> thiswines = parseSnoothDetailWine(response);
+				for(int i = 0 ; i < thiswines.size(); i++){
+					try {
+						returnwines.add(createWine(thiswines.get(i)));
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					}
+				}
+			return thiswines.get(0);
+	}
+	private ArrayList<Wine> parseSnoothDetailWine(String response) {
+		// TODO Auto-generated method stub
+		JSONArray winesJSON = null; 
+		JSONArray foodJSON = null;
+		  ArrayList<Wine> thiswines=new ArrayList<Wine>();
+	       String TAG_WINES = "wines"; 
+	        // private static final String TAG_AVIN = "avin";
+	        String TAG_NAME = "name";
+	        String TAG_CODE = "code";
+	       //  private static final String TAG_COUNTRY = "country";
+	        String TAG_REGION = "region";
+	   			String TAG_WINERY = "winery";
+	   			String TAG_VARIETAL = "varietal";
+	       String TAG_PRICE="price";
+	        String TAG_VINTAGE = "vintage";
+	        String TAG_TYPE = "type";
+		  String TAG_LABEL = "image";
+		  String TAG_RANK = "snoothrank";
+		  String TAG_NOTE="wm_notes";
+	    	try {
+				JSONObject myJSON = new JSONObject(response);
+				winesJSON = myJSON.getJSONArray(TAG_WINES);
+				Log.i("TRY","made it past myJSON");
+				//Log.i("DEBUG",winesJSON.toString());
+				for(int i = 0; i < winesJSON.length(); i++){
+					JSONObject currentWine = winesJSON.getJSONObject(i);
+					
+					Wine newWine = new Wine(
+							//currentWine.getString(TAG_AVIN),
+							currentWine.getString(TAG_NAME),
+							currentWine.getString(TAG_CODE),
+							currentWine.getString(TAG_REGION),
+							currentWine.getString(TAG_WINERY),
+							currentWine.getString(TAG_VARIETAL),
+							currentWine.getString(TAG_PRICE),
+							currentWine.getString(TAG_VINTAGE),
+							currentWine.getString(TAG_TYPE),
+							currentWine.getString(TAG_LABEL),
+							currentWine.getString(TAG_RANK),
+							-1
+					);
+					newWine.addNote(currentWine.getString(TAG_NOTE));
+					foodJSON = currentWine.getJSONArray("recipes");
+					for(int i1 = 0 ; i1 < foodJSON.length();i1++){
+						JSONObject currentFood = foodJSON.getJSONObject(i1);
+						food newFood = new food(
+								currentFood.getString("name"),
+								currentFood.getString("link"),
+								currentFood.getString("source_link"),
+								currentFood.getInt("source_id"),
+								currentFood.getString("image")
+								);
+						newWine.addFood(newFood);
+					}
+					//newWine.addFood(new food(currentWine.getString(TAG_NAME),))
+					thiswines.add(newWine);
+				}
+		   } catch (JSONException e) {e.printStackTrace();} 
+	    	return thiswines;
+	}
+
 }

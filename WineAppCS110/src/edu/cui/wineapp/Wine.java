@@ -1,6 +1,7 @@
 package edu.cui.wineapp;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Wine{
 	private long id;
@@ -16,6 +17,8 @@ public class Wine{
 	private String type;
 	private String label_url;
 	private String rank;
+	private ArrayList<food> foods = new ArrayList<food>();
+	private String note;
 	
 	public Wine(String name,String code, String region, String winery,
 		String varietal,String price,String vintage,String type, String label_url, String rating,long id) {
@@ -33,6 +36,17 @@ public class Wine{
 		this.varietal = varietal;
 		this.label_url = label_url;
 		this.rank = rating;
+	}
+	public ArrayList<food> getFoods(){
+		return foods;
+	}
+	public boolean addFood(food newfood){
+		if (foods.contains(newfood)){
+			return false;
+		}else{
+	    foods.add(newfood);
+	    return true;
+		}
 	}
 	public long getId(){
 		return id;
@@ -194,6 +208,13 @@ public class Wine{
 			
 			return s;
 		}
+	public void addNote(String string) {
+		this.note=string;
+		// TODO Auto-generated method stub		
+	}
+	public String getNote(){
+		return this.note;
+	}
 		
 //	public void stripJSON(){
 		

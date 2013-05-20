@@ -43,13 +43,17 @@ public class DisplaySearchActivity extends ListActivity {
 		User account = new User("Zhaoyang_Zeng", 19, (float)50.0, "zeng0129@gmail.com","b","c","d",(long)-1);
 		User account2 = new User("Zhaoyang_Zeng2", 19, (float)50.0, "zeng0129@gmail.com","b","c","d",(long)-1);
 	    userManager.createUser(account, "asdf");
-	    boolean flag = userManager.setUserEmail("Zhaoyang_Zeng","bilibili2");
-	    if (flag==true){
-	    	if(userManager.getUserByName("Zhaoyang_Zeng2123")==null){
-	    		Log.e("ERROR","YES");
-	    	}
-	    Toast.makeText(this,userManager.getUserByName("Zhaoyang_Zeng").getName(), Toast.LENGTH_SHORT).show();
+	    userManager.testpost("wine", "zeng", "1");
+	    userManager.testpost("wine", "zeng", "2");
+	    userManager.testpost("wine", "zeng", "3");
+	    userManager.testpost("wine", "zeng", "4");
+	    
+	    ArrayList<Comment> test= userManager.testget("WHERE winecode = 'wine' LIMIT 5");
+	    for(int i = 0 ; i < test.size();i++){
+	    //Log.e("DEBUG",test.get(i).getComment());
+	    Toast.makeText(this,test.get(i).getComment(), Toast.LENGTH_SHORT).show();
 	    }
+		
 		for(int i = 0; i < prodInfo.length; ++i) prodInfo[i] = "Loading...";
 				
 		Intent intent 	= getIntent();
@@ -66,7 +70,7 @@ public class DisplaySearchActivity extends ListActivity {
 		Intent i = new Intent(this,WineInfo.class);
 		Bundle bundle2 = new Bundle();
 		Log.e("DEBUG",wineToPass.getName());
-	    bundle2.putString("passedWine", wineToPass.getName());
+	    bundle2.putString("passedWine", wineToPass.getCode());
 		i.putExtras(bundle2);
 		startActivity(i);
 	}
@@ -77,7 +81,7 @@ private class DownloadWebpageText extends AsyncTask<String, String, String>{
 	protected String doInBackground(String... arg0) {
 		// TODO Auto-generated method stub
 		String message = arg0[0];
-		wines = wineManager.downloadWineByName(message);
+		wines = wineManager.getWineByQuery("q="+message+"&n=25");
 		return null;
 	}   	
 	protected void onPostExecute(String result) {
