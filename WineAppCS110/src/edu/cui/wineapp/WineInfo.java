@@ -19,10 +19,14 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+
+import com.viewpagerindicator.TabPageIndicator;
+import com.viewpagerindicator.TitlePageIndicator;
 
 public class WineInfo extends FragmentActivity {
 
@@ -31,6 +35,8 @@ public class WineInfo extends FragmentActivity {
     DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
     ViewPager mViewPager;
 
+    TabPageIndicator myInd;
+    
     static ArrayList<String> Cheeses;
     static int NUM_ITEMS = 2;
 
@@ -52,6 +58,8 @@ public class WineInfo extends FragmentActivity {
                         getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mDemoCollectionPagerAdapter);
+        TabPageIndicator titleIndicator = (TabPageIndicator)findViewById(R.id.indicator);
+        titleIndicator.setViewPager(mViewPager);
 
 
         foodNames = new ArrayList<String>();
@@ -153,7 +161,7 @@ public class WineInfo extends FragmentActivity {
 
         @Override
         public int getCount() {
-            return 100;
+            return 4;
         }
 
         @Override
