@@ -5,14 +5,19 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.*;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,10 +28,11 @@ public class WineInfo extends FragmentActivity {
 
     ArrayList<String> foodNames;
 
-    ViewPager mPager;
-    pgrAdapter mAdapter;
+    DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
+    ViewPager mViewPager;
+
     static ArrayList<String> Cheeses;
-    static int NUM_ITEMS = 3;
+    static int NUM_ITEMS = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +47,11 @@ public class WineInfo extends FragmentActivity {
         setContentView(R.layout.activity_wine_info);
 
 
-        mAdapter = new pgrAdapter(getSupportFragmentManager());
-
-        mPager = (ViewPager) findViewById(R.id.pager);
-        mPager.setAdapter(mAdapter);
+        mDemoCollectionPagerAdapter =
+                new DemoCollectionPagerAdapter(
+                        getSupportFragmentManager());
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager.setAdapter(mDemoCollectionPagerAdapter);
 
 
         foodNames = new ArrayList<String>();
@@ -129,72 +136,49 @@ public class WineInfo extends FragmentActivity {
         }
     }
 
-    public static class pgrAdapter extends FragmentPagerAdapter {
-        public pgrAdapter(FragmentManager fm) {
+    public class DemoCollectionPagerAdapter extends FragmentPagerAdapter {
+        public DemoCollectionPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
-        public int getCount() {
-            return NUM_ITEMS;
+        public Fragment getItem(int i) {
+            Fragment fragment = new DemoObjectFragment();
+            Bundle args = new Bundle();
+            // Our object is just an integer :-P
+            args.putInt(DemoObjectFragment.ARG_OBJECT, i + 1);
+            fragment.setArguments(args);
+            return fragment;
         }
 
         @Override
-        public Fragment getItem(int position) {
-            return ArrayListFragment.newInstance(position);
+        public int getCount() {
+            return 100;
         }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return "OBJECT " + (position + 1);
+        }
+
     }
 
-    public static class ArrayListFragment extends ListFragment {
-        int mNum;
-
-        /**
-         * Create a new instance of CountingFragment, providing "num"
-         * as an argument.
-         */
-        static ArrayListFragment newInstance(int num) {
-            ArrayListFragment f = new ArrayListFragment();
-
-            // Supply num input as an argument.
-            Bundle args = new Bundle();
-            args.putInt("num", num);
-            f.setArguments(args);
-
-            return f;
-        }
-
-        /**
-         * When creating, retrieve this instance's number from its arguments.
-         */
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            mNum = getArguments() != null ? getArguments().getInt("num") : 1;
-        }
-
-        /**
-         * The Fragment's UI is just a simple text view showing its
-         * instance number.
-         */
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View v = inflater.inflate(R.layout.fragment_pager_list, container, false);
-            View tv = v.findViewById(R.id.text);
-            ((TextView) tv).setText("Fragment #" + mNum);
-            return v;
-        }
+    // Instances of this class are fragments representing a single
+// object in our collection.
+    public static class DemoObjectFragment extends Fragment {
+        public static final String ARG_OBJECT = "object";
 
         @Override
-        public void onActivityCreated(Bundle savedInstanceState) {
-            super.onActivityCreated(savedInstanceState);
-            setListAdapter(new ArrayAdapter<String>(getActivity(),
-                    android.R.layout.simple_list_item_1, Cheeses));
-        }
-
-        @Override
-        public void onListItemClick(ListView l, View v, int position, long id) {
-            Log.i("FragmentList", "Item clicked: " + id);
+        public View onCreateView(LayoutInflater inflater,
+                                 ViewGroup container, Bundle savedInstanceState) {
+            // The last two arguments ensure LayoutParams are inflated
+            // properly.
+            View rootView = inflater.inflate(
+                    R.layout.fragment_pager_list, container, false);
+            Bundle args = getArguments();
+            ((TextView) rootView.findViewById(R.id.textView)).setText(
+                    Integer.toString(args.getInt(ARG_OBJECT)));
+            return rootView;
         }
     }
 
