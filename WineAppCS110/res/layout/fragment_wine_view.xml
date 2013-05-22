@@ -4,11 +4,12 @@
               android:layout_height="match_parent"
               android:background="@android:drawable/gallery_thumb">
 
-    <TextView android:id="@+id/text1"
-              android:layout_width="match_parent" android:layout_height="wrap_content"
-              android:gravity="center_vertical|center_horizontal"
-              android:textAppearance="?android:attr/textAppearanceMedium"
-              android:text="@string/hello_world"/>
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <!-- The frame layout is here since we will be showing either
     the empty view or the list view.  -->
@@ -21,11 +22,12 @@
              find it -->
 
         <!-- Here is the view to show if the list is emtpy -->
+
         <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/textView" android:layout_gravity="center"/>
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="454dp"
+            android:text="New Text" />
 
     </FrameLayout>
 

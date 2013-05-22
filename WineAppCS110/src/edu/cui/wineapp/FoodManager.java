@@ -18,10 +18,10 @@ public class FoodManager {
         return new FoodManager(context);
     }
 
-    public ArrayList<Food> downloadFoodPairings(String name) {
+    public ArrayList<Food> downloadFoodPairings(Wine passedWine) {
         //ArrayList<Food> myFoods = dao.downloadFoodPairings(name);
         //Log.e("FoodManager.java/downloadFoodPairings","Local myFoods.size() = "+Integer.toString(myFoods.size()));
-        return dao.downloadFoodPairings(name);
+        return dao.downloadFoodPairings(passedWine.getCode());
     }
 
 }

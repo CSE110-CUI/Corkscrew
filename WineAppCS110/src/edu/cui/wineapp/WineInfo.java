@@ -9,12 +9,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -26,46 +28,35 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import com.viewpagerindicator.TabPageIndicator;
-import com.viewpagerindicator.TitlePageIndicator;
 
 public class WineInfo extends FragmentActivity {
 
     ArrayList<String> foodNames;
 
-    DemoCollectionPagerAdapter mDemoCollectionPagerAdapter;
+    CollectionAdapter mAdapter;
     ViewPager mViewPager;
+    DetailedWine currentWine;
+    //Bundle currWine = new Bundle();
 
-    TabPageIndicator myInd;
-    
-    static ArrayList<String> Cheeses;
-    static int NUM_ITEMS = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Cheeses = new ArrayList<String>();
-
-        Cheeses.add("One");
-        Cheeses.add("Two");
-        Cheeses.add("Three");
-
         setContentView(R.layout.activity_wine_info);
-
-
-        mDemoCollectionPagerAdapter =
-                new DemoCollectionPagerAdapter(
-                        getSupportFragmentManager());
+        Bundle currWine = new Bundle();
+        
+        mAdapter = new CollectionAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setAdapter(mDemoCollectionPagerAdapter);
+        mViewPager.setAdapter(mAdapter);
+        
         TabPageIndicator titleIndicator = (TabPageIndicator)findViewById(R.id.indicator);
         titleIndicator.setViewPager(mViewPager);
-
 
         foodNames = new ArrayList<String>();
 
         Intent i = getIntent();
-        Wine currentWine = (Wine) WineManager.getWineManager(this).getWineById(i.getExtras().getLong(("passedWine")));
+        Wine currentWineBASIC = (Wine) WineManager.getWineManager(this).getWineById(i.getExtras().getLong(("passedWine")));
+        currentWine = WineManager.getWineManager(this).downloadDetailedWine(currentWineBASIC);
 
         TextView name = (TextView) findViewById(R.id.textView1);
         name.setText(currentWine.getName());
@@ -78,6 +69,8 @@ public class WineInfo extends FragmentActivity {
         region.setText(currentWine.getRegion());
 
 
+
+        
         new DownloadImageTask((ImageView) findViewById(R.id.image))
                 .execute(currentWine.getImage());
 
@@ -85,10 +78,7 @@ public class WineInfo extends FragmentActivity {
         wineRating.setRating(currentWine.getSnoothrank());
 
 
-        //FoodManager fManager = new FoodManager(this);
-        ArrayList<Food> myFoods =
-                //fManager.downloadFoodPairings(currentWine.getCode());
-                currentWine.getFoodPairings(this);
+        ArrayList<Food> myFoods = currentWine.getFoodPairings(this);
         Log.e("WineInfo.java/onCreate", "Local myFoods.size() = " + Integer.toString(myFoods.size()));
 
         for (int count = 0; count < myFoods.size(); count++) {
@@ -144,18 +134,21 @@ public class WineInfo extends FragmentActivity {
         }
     }
 
-    public class DemoCollectionPagerAdapter extends FragmentPagerAdapter {
-        public DemoCollectionPagerAdapter(FragmentManager fm) {
+    public class CollectionAdapter extends FragmentPagerAdapter {
+        public CollectionAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public Fragment getItem(int i) {
-            Fragment fragment = new DemoObjectFragment();
-            Bundle args = new Bundle();
+            Fragment fragment = new WineViewFragment();
+            Bundle currWine = new Bundle();
             // Our object is just an integer :-P
-            args.putInt(DemoObjectFragment.ARG_OBJECT, i + 1);
-            fragment.setArguments(args);
+            currWine.putInt(WineViewFragment.ARG_VIEW_INDEX, i);
+            currWine.putSerializable(WineViewFragment.ARG_WINE, currentWine);
+            //currWine.putSerializable(WineViewFragment.ARG_CONTEXT, getApplicationContext());
+
+            fragment.setArguments(currWine);
             return fragment;
         }
 
@@ -166,31 +159,83 @@ public class WineInfo extends FragmentActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return "OBJECT " + (position + 1);
+            if(position == 0) return "Overview";
+            else if(position == 1) return "Notes";
+            else if(position == 2) return "Reviews";
+            else if(position == 3) return "More Info";
+        	return "OBJECT " + (position + 1);
         }
 
     }
 
     // Instances of this class are fragments representing a single
 // object in our collection.
-    public static class DemoObjectFragment extends Fragment {
-        public static final String ARG_OBJECT = "object";
+    public static class WineViewFragment extends Fragment {
+        public static final String ARG_VIEW_INDEX = "view_indx";
+        public static final String ARG_WINE = "currWine";
+        public static final String ARG_CONTEXT = "currWine";
+
+       
+        //private ArrayList<String> reviewBodies;
+        
+        ArrayAdapter<String> myAdapter;
+
 
         @Override
         public View onCreateView(LayoutInflater inflater,
                                  ViewGroup container, Bundle savedInstanceState) {
+        	
+        	
             // The last two arguments ensure LayoutParams are inflated
             // properly.
-            View rootView = inflater.inflate(
-                    R.layout.fragment_pager_list, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_wine_view, container, false);
             Bundle args = getArguments();
-            ((TextView) rootView.findViewById(R.id.textView)).setText(
-                    Integer.toString(args.getInt(ARG_OBJECT)));
+            Bundle currWine = getArguments();
+            DetailedWine dWine = (DetailedWine)currWine.getSerializable(ARG_WINE);
+            
+            /*
+            for(Review r : dWine.getReviews()){
+            	reviewBodies.add(r.getBody());
+            }
+            Log.e("WineInfo.java/WineViewFragment/onCreateView","reviewBodies.size() "+Integer.toString((dWine.getReviews().size())));
+            Log.e("WineInfo.java/WineViewFragment/onCreateView","reviewBodies.size() "+Integer.toString((reviewBodies.size())));
+            
+           myAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, reviewBodies);
+            setListAdapter(myAdapter);
+
+            */
+            ((TextView) rootView.findViewById(R.id.textView)).setText(Integer.toString(args.getInt(ARG_VIEW_INDEX)));
+            
+            switch(args.getInt(ARG_VIEW_INDEX)){
+        		case 0:
+        			rootView = inflater.inflate(R.layout.fragment_wine_view, container, false);
+        			((TextView) rootView.findViewById(R.id.textView)).setText(dWine.getWm_notes());
+        			//rootView = inflater.inflate(R.layout.fragment_wine_info_reviews, container, false);
+
+        			break;
+        		case 2:
+        			//rootView = inflater.inflate(R.layout.fragment_wine_info_reviews, container, false);
+        			
+    				
+        			
+        }
+        
+            
+            
             return rootView;
         }
     }
-
 }
+    
+    
+    
+    
+
+
+
+    
+    
+
 
 
 

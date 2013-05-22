@@ -396,10 +396,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int activity_main=0x7f030001;
         public static final int activity_wine_info=0x7f030002;
         public static final int drawer_list_item=0x7f030003;
-        public static final int fragment_pager_list=0x7f030004;
-        public static final int linear_sandbox=0x7f030005;
-        public static final int relative_sandbox=0x7f030006;
-        public static final int wine_result=0x7f030007;
+        public static final int fragment_wine_info_reviews=0x7f030004;
+        public static final int fragment_wine_view=0x7f030005;
+        public static final int linear_sandbox=0x7f030006;
+        public static final int relative_sandbox=0x7f030007;
+        public static final int wine_result=0x7f030008;
     }
     public static final class menu {
         public static final int display_search=0x7f0c0000;

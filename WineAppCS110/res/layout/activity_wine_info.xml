@@ -78,30 +78,30 @@
             android:layout_marginTop="16dp"
             android:numStars="5"/>
 <!--  
-	<com.viewpagerindicator.TabPageIndicator
-    	    android:id="@+id/indicator"
-	        android:layout_height="wrap_content"
-        	android:layout_width="match_parent"
-        	android:layout_below="@+id/ratingBar1"/>
+    <com.viewpagerindicator.TabPageIndicator
+            android:id="@+id/indicator"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/ratingBar1"/>
 
 
     <android.support.v4.view.ViewPager
             android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-        	android:layout_below="@+id/indicator"/>
+            android:layout_below="@+id/indicator"/>
 -->
     
         <com.viewpagerindicator.TabPageIndicator
         android:id="@+id/indicator"
         android:layout_height="wrap_content"
-        	android:layout_width="match_parent"
-        	android:layout_below="@+id/ratingBar1"/>
+            android:layout_width="match_parent"
+            android:layout_below="@+id/ratingBar1"/>
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-        	android:layout_below="@+id/indicator"/>
+            android:layout_below="@+id/indicator"/>
     
     
     

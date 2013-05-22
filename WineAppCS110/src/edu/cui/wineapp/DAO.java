@@ -15,6 +15,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Currency;
 
 public class DAO {
     private static Context context = null;
@@ -22,6 +23,7 @@ public class DAO {
     private WineSQLiteHelper wineDBHelper = null;
     private SQLiteDatabase userDataBase = null;
     private UserSQLiteHelper userDBHelper = null;
+    
     private String[] allColumnsforuser = {
             UserSQLiteHelper.COLUMN_ID,
             UserSQLiteHelper.COLUMN_NAME,
@@ -32,8 +34,31 @@ public class DAO {
             UserSQLiteHelper.COLUMN_COUNTRY,
             UserSQLiteHelper.COLUMN_PHOTOURL,
             UserSQLiteHelper.COLUMN_PASSWORD};
-    private ArrayList<Wine> wines = new ArrayList<Wine>();
-    private ArrayList<Food> foods = new ArrayList<Food>();
+    
+    public static final String TAG_WINES = "wines";
+    public static final String TAG_ID = "_id";
+    public static final String TAG_NAME = "name";
+    public static final String TAG_CODE = "code";
+    public static final String TAG_REGION = "region";
+    public static final String TAG_WINERY = "winery";
+    public static final String TAG_WINERYID = "winery_id";
+    public static final String TAG_VARIETAL = "varietal";
+    public static final String TAG_PRICE = "price";
+    public static final String TAG_VINTAGE = "vintage";
+    public static final String TAG_TYPE = "type";
+    public static final String TAG_LINK = "link";
+    public static final String TAG_TAGS = "tags";
+    public static final String TAG_IMAGE = "image";
+    public static final String TAG_SNOOTHRANK = "snoothrank";
+    public static final String TAG_AVAILABILITY = "available";
+    public static final String TAG_NUMMERCHANTS = "num_merchants";
+    public static final String TAG_NUMREVIEWS = "num_reviews";
+
+    
+    
+    private JSONArray winesJSON = null;
+    private JSONArray foodsJSON = null;
+    private JSONArray detailedWinesJSON = null;
     private String apiKey = "ra4c57ui7tkz3knjur913q2ubeekm9dnoulmu9j40lmrehjy";
 
 
@@ -159,23 +184,177 @@ public class DAO {
     }
 
     public ArrayList<Food> downloadFoodPairings(String wineID) {
-
+    	
         String urlPreTerm = "http://api.snooth.com/wine/?akey=";
         String urlPostTerm = "&id=" + wineID + "&food=1";
         String stringUrl = urlPreTerm + apiKey + urlPostTerm;
 
-        Log.i("downloadFoodPairings", "URL Built");
+        Log.i("DAO.java/downloadFoodPairings", "preFoodReturn");
 
-        new DownloadWebpageText().execute(stringUrl);
+        return parseFoodXML(new DownloadWebpageText().execute(stringUrl));
+    }
+    
+    public DetailedWine downloadDetailedWine(String name) {
+        String searchTerm = name;
+        String urlPreTerm = "http://api.snooth.com/wine/";
+        String urlPostTerm = "?akey=" + apiKey + "&id=" + searchTerm + "&food=1&i=1&photos=1";
+        String stringUrl = urlPreTerm + urlPostTerm;
 
-        Log.i("downloadFoodPairings", "ArrayList<Food> foods built");
-        return foods;
+        return parseDetailedWineXML(new DownloadWebpageText().execute(stringUrl));
+    }
+    
+    public DetailedWine parseDetailedWineXML(String preParsed) {
+    	DetailedWine detailedWine = new DetailedWine();
+        long wineRank = 0;
 
+        try {
+            JSONObject myJSON = new JSONObject(preParsed);
+            foodsJSON = myJSON.getJSONArray(TAG_WINES);
+            myJSON = foodsJSON.getJSONObject(0);
+            JSONObject currentWine = myJSON;
+            
+            try {
+                wineRank = myJSON.getLong(TAG_SNOOTHRANK);
+            } catch (JSONException e) {
+                wineRank = 0;
+            }
+            
+           detailedWine = new DetailedWine(
+                    -1,
+                    currentWine.getString(TAG_NAME),
+                    currentWine.getString(TAG_CODE),
+                    currentWine.getString(TAG_REGION),
+                    currentWine.getString(TAG_WINERY),
+                    currentWine.getString(TAG_WINERYID),
+                    currentWine.getString(TAG_VARIETAL),
+                    currentWine.getLong(TAG_PRICE),
+                    currentWine.getString(TAG_VINTAGE),
+                    currentWine.getString(TAG_TYPE),
+                    currentWine.getString(TAG_LINK),
+                	"",
+                	currentWine.getString(TAG_IMAGE),
+                    wineRank,
+                    currentWine.getString(TAG_AVAILABILITY),
+                    currentWine.getString(TAG_NUMMERCHANTS),
+                    currentWine.getString(TAG_NUMREVIEWS),
+                    currentWine.getString("wm_notes"),
+                    currentWine.getString("winery_tasting_notes"),
+                    currentWine.getString("sugar"),
+                    Float.parseFloat(currentWine.getString("alcohol")),
+                    Float.parseFloat(currentWine.getString("ph")),
+                    currentWine.getString("acidity"),
+                    getReviewArrayListFromJSON(myJSON),
+                    getRecipeArrayListFromJSON(myJSON)
+            															);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        
+        finally{
+        	return detailedWine;
+        }
+    }
+    
+    private ArrayList<Review> getReviewArrayListFromJSON(JSONObject myJSON){
+    	ArrayList<Review> helperReviews = new ArrayList<Review>();
+    	
+    	try{
+	    	JSONArray myJSONArr = myJSON.getJSONArray("reviews");
+	    	for(int i = 0; i < myJSONArr.length(); ++i){
+	    		JSONObject currentReview = myJSONArr.getJSONObject(i);
+	            Log.e("Current Food Name", currentReview.getString("name"));
+	
+	            Review myReview = new Review(
+	                    currentReview.getString("name"),
+	                    Float.parseFloat(currentReview.getString("rating")),
+	                    currentReview.getString("body"),
+	                    currentReview.getInt("date"),
+	                    currentReview.getString("lang"),
+	                    currentReview.getInt("source")
+	            );
+	//NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE
+	            helperReviews.add(myReview);
+	//NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE
+	
+	    	}
+    	}catch(JSONException e){
+    		e.printStackTrace();
+    	}
+    	finally{
+    		return helperReviews;
+    	}
+    }
+    
+    private ArrayList<Food> getRecipeArrayListFromJSON(JSONObject myJSON){
+    	
+    	ArrayList<Food> helperFoods = new ArrayList<Food>();
+    	
+    	try{
+	    	JSONArray myJSONArr = myJSON.getJSONArray("recipes");
+	        for (int i = 0; i < myJSONArr.length(); i++) {
+	            JSONObject currentFood = myJSONArr.getJSONObject(i);
+	            Log.e("Current Food Name", currentFood.getString("name"));
+	
+	            Food newFood = new Food(
+	                    currentFood.getString("name"),
+	                    currentFood.getString("link"),
+	                    currentFood.getString("source_link"),
+	                    currentFood.getInt("source_id"),
+	                    currentFood.getString("image")
+	            );
+	//NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE
+	            helperFoods.add(newFood);
+	//NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE
+	
+	        }
+    	}catch(JSONException e){
+        	e.printStackTrace();
+        }
+    	finally{
+    		return helperFoods;
+    	}
+    }
+    
+    
+    public ArrayList<Food> parseFoodXML(String preParsed) {
+    	ArrayList<Food> foods = new ArrayList<Food>();
+    	
+        try {
+            JSONObject myJSON = new JSONObject(preParsed);
+            foodsJSON = myJSON.getJSONArray(TAG_WINES);
+            myJSON = foodsJSON.getJSONObject(0);
+            foodsJSON = myJSON.getJSONArray("recipes");
+            
+            for (int i = 0; i < foodsJSON.length(); i++) {
+                JSONObject currentFood = foodsJSON.getJSONObject(i);
+                Log.e("Current Food Name", currentFood.getString("name"));
+
+                Food newFood = new Food(
+                        currentFood.getString("name"),
+                        currentFood.getString("link"),
+                        currentFood.getString("source_link"),
+                        currentFood.getInt("source_id"),
+                        currentFood.getString("image")
+                );
+//NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE
+                foods.add(newFood);
+//NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        
+        finally{
+        	return foods;
+        }
     }
 
 
     //GETTER AND SETTER FROM ONLINE
     public ArrayList<Wine> downloadWineByName(String name) {
+    	
+    	
         String searchTerm = name;
         String urlPreTerm = "http://api.snooth.com/wines/";
         String urlPostTerm = "?akey=" + apiKey + "&q=" + searchTerm;
@@ -184,12 +363,58 @@ public class DAO {
         Log.e("DEBUG", "url has been built");
         Log.e("DEBUG", "Manager has been built");
 
-        new DownloadWebpageText().execute(stringUrl);
-
-        Log.e("DEBUG", "Wine has been built");
-
-        return wines;
+        return parseWineXML(new DownloadWebpageText().execute(stringUrl));
     }
+    
+    public ArrayList<Wine> parseWineXML(String preParsed) {
+        ArrayList<Wine> wines = new ArrayList<Wine>();
+    	
+        long wineRank = 0;
+        try {
+            JSONObject myJSON = new JSONObject(preParsed);
+            winesJSON = myJSON.getJSONArray(TAG_WINES);
+            for (int i = 0; i < winesJSON.length(); i++) {
+                JSONObject currentWine = winesJSON.getJSONObject(i);
+
+                try {
+                    wineRank = currentWine.getLong(TAG_SNOOTHRANK);
+                } catch (JSONException e) {
+                    wineRank = 0;
+                }
+
+                Wine newWine = new Wine(
+                        -1,
+                        currentWine.getString(TAG_NAME),
+                        currentWine.getString(TAG_CODE),
+                        currentWine.getString(TAG_REGION),
+                        currentWine.getString(TAG_WINERY),
+                        currentWine.getString(TAG_WINERYID),
+                        currentWine.getString(TAG_VARIETAL),
+                        currentWine.getLong(TAG_PRICE),
+                        currentWine.getString(TAG_VINTAGE),
+                        currentWine.getString(TAG_TYPE),
+                        currentWine.getString(TAG_LINK),
+                        currentWine.getString(TAG_TAGS),
+                        currentWine.getString(TAG_IMAGE),
+                        wineRank,
+                        currentWine.getString(TAG_AVAILABILITY),
+                        currentWine.getString(TAG_NUMMERCHANTS),
+                        currentWine.getString(TAG_NUMREVIEWS)
+                );
+                //Log.i("DEBUG",newWine.toString());
+                wines.add(createWine(newWine));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        finally{
+        	return wines;
+        }
+    }
+
+
+    
+
 
     public Wine getWineById(long wineId) {
 
@@ -347,108 +572,24 @@ public class DAO {
     private class DownloadWebpageText {
         private static final String DEBUG_TAG = "HttpExample";
 
-        public static final String TAG_WINES = "wines";
-        public static final String TAG_ID = "_id";
-        public static final String TAG_NAME = "name";
-        public static final String TAG_CODE = "code";
-        public static final String TAG_REGION = "region";
-        public static final String TAG_WINERY = "winery";
-        public static final String TAG_WINERYID = "winery_id";
-        public static final String TAG_VARIETAL = "varietal";
-        public static final String TAG_PRICE = "price";
-        public static final String TAG_VINTAGE = "vintage";
-        public static final String TAG_TYPE = "type";
-        public static final String TAG_LINK = "link";
-        public static final String TAG_TAGS = "tags";
-        public static final String TAG_IMAGE = "image";
-        public static final String TAG_SNOOTHRANK = "snoothrank";
-        public static final String TAG_AVAILABILITY = "available";
-        public static final String TAG_NUMMERCHANTS = "num_merchants";
-        public static final String TAG_NUMREVIEWS = "num_reviews";
-
-        JSONArray winesJSON = null;
-        JSONArray foodsJSON = null;
-
-        protected void execute(String... urls) {
-            String result = "";
+        protected String execute(String... urls) {
+        	String fetchResult = "";
             try {
-                downloadUrl(urls[0]);
+                fetchResult = downloadUrl(urls[0]);
+            	return fetchResult;
+
             } catch (IOException e) {
                 Log.e("DEBUG", "Unable to retrieve web page. URL may be invalid.");
+                fetchResult = "Unable to retrieve web page. URL may be invalid.";
+            }
+            finally{
+            	return fetchResult;
             }
         }
 
-        public void parseWineXML(String preParsed) {
-            long wineRank = 0;
-            try {
-                JSONObject myJSON = new JSONObject(preParsed);
-                winesJSON = myJSON.getJSONArray(TAG_WINES);
-                for (int i = 0; i < winesJSON.length(); i++) {
-                    JSONObject currentWine = winesJSON.getJSONObject(i);
-
-                    try {
-                        wineRank = currentWine.getLong(TAG_SNOOTHRANK);
-                    } catch (JSONException e) {
-                        wineRank = 0;
-                    }
-
-                    Wine newWine = new Wine(
-                            -1,
-                            currentWine.getString(TAG_NAME),
-                            currentWine.getString(TAG_CODE),
-                            currentWine.getString(TAG_REGION),
-                            currentWine.getString(TAG_WINERY),
-                            currentWine.getString(TAG_WINERYID),
-                            currentWine.getString(TAG_VARIETAL),
-                            currentWine.getLong(TAG_PRICE),
-                            currentWine.getString(TAG_VINTAGE),
-                            currentWine.getString(TAG_TYPE),
-                            currentWine.getString(TAG_LINK),
-                            currentWine.getString(TAG_TAGS),
-                            currentWine.getString(TAG_IMAGE),
-                            wineRank,
-                            currentWine.getString(TAG_AVAILABILITY),
-                            currentWine.getString(TAG_NUMMERCHANTS),
-                            currentWine.getString(TAG_NUMREVIEWS)
-                    );
-                    //Log.i("DEBUG",newWine.toString());
-                    wines.add(createWine(newWine));
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-        public void parseFoodXML(String preParsed) {
-            long wineRank = 0;
-            try {
-                JSONObject myJSON = new JSONObject(preParsed);
-                foodsJSON = myJSON.getJSONArray(TAG_WINES);
-                myJSON = foodsJSON.getJSONObject(0);
-                foodsJSON = myJSON.getJSONArray("recipes");
-                for (int i = 0; i < foodsJSON.length(); i++) {
-                    JSONObject currentFood = foodsJSON.getJSONObject(i);
-                    Log.e("Current Food Name", currentFood.getString("name"));
-
-                    Food newFood = new Food(
-                            currentFood.getString("name"),
-                            currentFood.getString("link"),
-                            currentFood.getString("source_link"),
-                            currentFood.getInt("source_id"),
-                            currentFood.getString("image")
-                    );
-//NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE
-                    foods.add(newFood);
-//NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE
-
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-        private void downloadUrl(String myurl) throws IOException {
+        private String downloadUrl(String myurl) throws IOException {
             InputStream is = null;
+            String fetchResult = "";
             try {
                 URL url = new URL(myurl);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -461,31 +602,29 @@ public class DAO {
                 Log.d(DEBUG_TAG, "The response is: " + response);
                 is = conn.getInputStream();
 
-                readIt(is);
+                fetchResult = readIt(is);
 
             } finally {
                 if (is != null) {
                     is.close();
                 }
+                
+                return fetchResult;
             }
         }
 
-        public void readIt(InputStream stream) throws IOException, UnsupportedEncodingException {
+        public String readIt(InputStream stream) throws IOException, UnsupportedEncodingException {
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
             StringBuilder sb = new StringBuilder();
             String line;
-            boolean foodFlag = false;
 
             while ((line = reader.readLine()) != null) {
-                if (line.contains("recipes")) foodFlag = true;
                 sb.append(line + "\n");
             }
             reader.close();
             String result = sb.toString();
-            if (foodFlag) {
-                parseFoodXML(result);
-            } else parseWineXML(result);
+            return result;
         }
 
 

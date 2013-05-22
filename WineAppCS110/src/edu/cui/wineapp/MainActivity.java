@@ -193,7 +193,8 @@ public class MainActivity extends ListActivity implements SearchView.OnQueryText
         myWineList = wManager.downloadWineByName(arg0);
 
         for (Wine currWine : myWineList) {
-            wineNames.add(currWine.getName());
+        	if(currWine != null)
+        		wineNames.add(currWine.getName());
         }
 
         myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, wineNames);

@@ -22,6 +22,10 @@ public class WineManager {
 			return dao.downloadWineByName(name);
 		}
 		
+		public DetailedWine downloadDetailedWine(Wine passedWine){
+			return dao.downloadDetailedWine(passedWine.getCode());			
+		}
+		
 		public Wine getWineById(long wineId){
 			return dao.getWineById(wineId);
 		}

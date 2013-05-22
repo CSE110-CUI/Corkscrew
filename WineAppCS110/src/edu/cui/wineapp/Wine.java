@@ -22,6 +22,7 @@ public class Wine {
     private String availability;
     private String num_merchants;
     private String num_reviews;
+    
 
     public Wine(long id, String name, String code, String region, String winery,
                 String winery_id, String varietal, float price, String vintage,
@@ -186,7 +187,7 @@ public class Wine {
     }
 
     public ArrayList<Food> getFoodPairings(Context context) {
-        return new FoodManager(context).downloadFoodPairings(getCode());
+        return new FoodManager(context).downloadFoodPairings(this);
     }
 
 
