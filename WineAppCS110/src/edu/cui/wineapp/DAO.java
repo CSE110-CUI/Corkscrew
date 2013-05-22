@@ -148,6 +148,21 @@ public class DAO{
 			return thiswines;
 	}
 	public ArrayList<Wine> getWineByColor(String color){
+        ArrayList<Wine> winesInData = new ArrayList<Wine>();
+
+        Cursor cursor = wineDataBase.query(WineSQLiteHelper.TABLE_WINES, null,
+                WineSQLiteHelper.COLUMN_TYPE + " LIKE '%" + color + "%'", null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Wine wine = cursorToWine(cursor);
+            winesInData.add(wine);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        if (winesInData.size()<=25){
+        	return winesInData;
+        }else{
 		String apiKey 		= "ra4c57ui7tkz3knjur913q2ubeekm9dnoulmu9j40lmrehjy";
 	    String searchTerm 	= color;
 	    String urlPreTerm 	= "http://api.snooth.com/wines/";
@@ -171,10 +186,26 @@ public class DAO{
 					//}
 			//	}
 			return thiswines;
+        }
 	}
 
 	public ArrayList<Wine> getWineByName(String name){
 		// ArrayList<Wine> winesInData = new ArrayList<Wine>();
+        ArrayList<Wine> winesInData = new ArrayList<Wine>();
+
+        Cursor cursor = wineDataBase.query(WineSQLiteHelper.TABLE_WINES, null,
+                WineSQLiteHelper.COLUMN_NAME + " LIKE '%" + name + "%'", null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Wine wine = cursorToWine(cursor);
+            winesInData.add(wine);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        if (winesInData.size()!=0){
+        	return winesInData;
+        }else{
 		String apiKey 		= "ra4c57ui7tkz3knjur913q2ubeekm9dnoulmu9j40lmrehjy";
 	    String searchTerm 	= name;
 	    String urlPreTerm 	= "http://api.snooth.com/wines/";
@@ -198,6 +229,7 @@ public class DAO{
 					//}
 				//}
 			return thiswines;
+			}
 	}
 	//URLEncoder.encode failuer will throw exception
 	public void setComment(String winecode, String user_id,String comment) throws UnsupportedEncodingException{
@@ -212,6 +244,7 @@ public class DAO{
 			e.printStackTrace();
 		}
 	}
+	//Get comments from online database//
 	public ArrayList<Comment> getCommentsByQuery(String q){
 		String url="http://hello-zhaoyang-udacity.appspot.com/comments";
 	    url=url+"?q="+q;
@@ -666,13 +699,7 @@ public class DAO{
 							currentWine.getString(TAG_RANK),
 							-1
 					);
-					//Log.i("DEBUG",newWine.toString());
-					try {
-						wines.add(createWine(newWine));
-					} catch (UnsupportedEncodingException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					wines.add(createLocalWine(newWine));
 				}
 		   } catch (JSONException e) {e.printStackTrace();}  
 	   }
