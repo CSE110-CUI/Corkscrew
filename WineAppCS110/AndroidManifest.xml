@@ -42,6 +42,7 @@
         <activity
                 android:name="edu.cui.wineapp.WineInfo"
                 android:label="@string/title_activity_wine_info">
+            	android:theme="@style/Theme.MyTheme"
         </activity>
     </application>
 

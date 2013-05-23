@@ -3,6 +3,7 @@ package edu.cui.wineapp;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.util.Log;
 
 public class WineManager {
 		private static Context context = null;
@@ -23,7 +24,10 @@ public class WineManager {
 		}
 		
 		public DetailedWine downloadDetailedWine(Wine passedWine){
-			return dao.downloadDetailedWine(passedWine.getCode());			
+			return dao.downloadDetailedWine(passedWine.getCode());
+			//DetailedWine dWine = dao.downloadDetailedWine(passedWine.getCode());
+			//Log.e("WineManager.java/downloadDetailedWine","Reviews Array size = "+dWine.getReviews().size());
+			//return dWine;
 		}
 		
 		public Wine getWineById(long wineId){

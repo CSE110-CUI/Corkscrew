@@ -1,9 +1,12 @@
 package edu.cui.wineapp;
 
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
+
 import android.content.Context;
 import android.util.Log;
 
-public class UserManager {
+public class UserManager{
 	private static Context context = null;
 	private static DAO dao = null; 
 	//private static UserManager ourInstance = new UserManager();
@@ -35,4 +38,15 @@ public class UserManager {
 	public static boolean deleteUser(String name){
 		return dao.deleteUser(name);
 	}
+	
+	
+	public void testpost(String w,String u, String c){
+		try {
+		dao.setComment(w, u, c);
+		} catch (UnsupportedEncodingException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		}
+	}
+	
 }

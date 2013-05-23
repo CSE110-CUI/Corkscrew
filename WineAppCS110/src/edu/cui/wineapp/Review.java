@@ -1,6 +1,8 @@
 package edu.cui.wineapp;
 
-public class Review {
+import java.io.Serializable;
+
+public class Review implements Serializable{
 	
 	private String name;
 	private float rating;

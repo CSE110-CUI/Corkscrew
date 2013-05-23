@@ -1,8 +1,12 @@
 package edu.cui.wineapp;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -36,14 +40,28 @@ public class WineInfo extends FragmentActivity {
     CollectionAdapter mAdapter;
     ViewPager mViewPager;
     DetailedWine currentWine;
-    //Bundle currWine = new Bundle();
-
+    Context context = null;
+    //UserManager myUM = null;
+    ArrayList<Comment> commentArrayList;
+    ArrayList<String>  commentBodyArrayList;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+    	
+        Typeface robottoBlack = Typeface.createFromAsset(getAssets(),
+                "fonts/Roboto-Black.ttf");        
+        Typeface robottoBold = Typeface.createFromAsset(getAssets(),
+                        "fonts/Roboto-BoldCondensed.ttf");
+    	
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wine_info);
-        Bundle currWine = new Bundle();
+        
+    	//myUM = UserManager.getUserManager(this);
+
+        //myUM.testpost("1", "1", "1");
+        
         
         mAdapter = new CollectionAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -60,13 +78,21 @@ public class WineInfo extends FragmentActivity {
 
         TextView name = (TextView) findViewById(R.id.textView1);
         name.setText(currentWine.getName());
+        name.setTypeface(robottoBold);
 
+
+
+        
 
         TextView varietal = (TextView) findViewById(R.id.TextView03);
         varietal.setText(currentWine.getVarietal());
 
         TextView region = (TextView) findViewById(R.id.TextView05);
         region.setText(currentWine.getRegion());
+        
+        TextView wineRating = (TextView) findViewById(R.id.TextView01);
+        wineRating.setText((int)currentWine.getSnoothrank() * 20 > 0 ? Integer.toString((int)currentWine.getSnoothrank() * 20) : "NA");
+        wineRating.setTextColor(Color.parseColor("#A60000"));
 
 
 
@@ -74,12 +100,10 @@ public class WineInfo extends FragmentActivity {
         new DownloadImageTask((ImageView) findViewById(R.id.image))
                 .execute(currentWine.getImage());
 
-        RatingBar wineRating = (RatingBar) findViewById(R.id.ratingBar1);
-        wineRating.setRating(currentWine.getSnoothrank());
 
 
         ArrayList<Food> myFoods = currentWine.getFoodPairings(this);
-        Log.e("WineInfo.java/onCreate", "Local myFoods.size() = " + Integer.toString(myFoods.size()));
+        Log.i("WineInfo.java/onCreate", "Local myFoods.size() = " + Integer.toString(myFoods.size()));
 
         for (int count = 0; count < myFoods.size(); count++) {
             foodNames.add(myFoods.get(count).getName());
@@ -141,14 +165,40 @@ public class WineInfo extends FragmentActivity {
 
         @Override
         public Fragment getItem(int i) {
-            Fragment fragment = new WineViewFragment();
             Bundle currWine = new Bundle();
-            // Our object is just an integer :-P
-            currWine.putInt(WineViewFragment.ARG_VIEW_INDEX, i);
-            currWine.putSerializable(WineViewFragment.ARG_WINE, currentWine);
-            //currWine.putSerializable(WineViewFragment.ARG_CONTEXT, getApplicationContext());
+            Fragment fragment;
+            
+            fragment = null;
+        	
+            //Overview
+        	if(i == 0){
+        		fragment = new WineOverviewFragment();
+                currWine.putSerializable(WineOverviewFragment.ARG_WINE, currentWine);
+                fragment.setArguments(currWine);
 
-            fragment.setArguments(currWine);
+        	}
+        	
+        	//Notes
+        	else if(i == 1){
+        		fragment = new WineNotesFragment();
+                currWine.putSerializable(WineOverviewFragment.ARG_WINE, currentWine);
+                fragment.setArguments(currWine);
+        	}
+        	
+        	//Reviews
+        	else if(i == 2){
+        		fragment = new WineReviewFragment();
+                currWine.putSerializable(WineReviewFragment.ARG_WINE, currentWine);
+                fragment.setArguments(currWine);
+        	}
+        	
+        	//Food Pairings
+        	else if(i == 3){
+        		fragment = new WineOverviewFragment();
+                currWine.putSerializable(WineOverviewFragment.ARG_WINE, currentWine);
+                fragment.setArguments(currWine);
+        	}
+
             return fragment;
         }
 
@@ -168,63 +218,6 @@ public class WineInfo extends FragmentActivity {
 
     }
 
-    // Instances of this class are fragments representing a single
-// object in our collection.
-    public static class WineViewFragment extends Fragment {
-        public static final String ARG_VIEW_INDEX = "view_indx";
-        public static final String ARG_WINE = "currWine";
-        public static final String ARG_CONTEXT = "currWine";
-
-       
-        //private ArrayList<String> reviewBodies;
-        
-        ArrayAdapter<String> myAdapter;
-
-
-        @Override
-        public View onCreateView(LayoutInflater inflater,
-                                 ViewGroup container, Bundle savedInstanceState) {
-        	
-        	
-            // The last two arguments ensure LayoutParams are inflated
-            // properly.
-            View rootView = inflater.inflate(R.layout.fragment_wine_view, container, false);
-            Bundle args = getArguments();
-            Bundle currWine = getArguments();
-            DetailedWine dWine = (DetailedWine)currWine.getSerializable(ARG_WINE);
-            
-            /*
-            for(Review r : dWine.getReviews()){
-            	reviewBodies.add(r.getBody());
-            }
-            Log.e("WineInfo.java/WineViewFragment/onCreateView","reviewBodies.size() "+Integer.toString((dWine.getReviews().size())));
-            Log.e("WineInfo.java/WineViewFragment/onCreateView","reviewBodies.size() "+Integer.toString((reviewBodies.size())));
-            
-           myAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, reviewBodies);
-            setListAdapter(myAdapter);
-
-            */
-            ((TextView) rootView.findViewById(R.id.textView)).setText(Integer.toString(args.getInt(ARG_VIEW_INDEX)));
-            
-            switch(args.getInt(ARG_VIEW_INDEX)){
-        		case 0:
-        			rootView = inflater.inflate(R.layout.fragment_wine_view, container, false);
-        			((TextView) rootView.findViewById(R.id.textView)).setText(dWine.getWm_notes());
-        			//rootView = inflater.inflate(R.layout.fragment_wine_info_reviews, container, false);
-
-        			break;
-        		case 2:
-        			//rootView = inflater.inflate(R.layout.fragment_wine_info_reviews, container, false);
-        			
-    				
-        			
-        }
-        
-            
-            
-            return rootView;
-        }
-    }
 }
     
     

@@ -51,6 +51,7 @@ public class DisplaySearchActivity extends ListActivity {
             // TODO Auto-generated method stub
             String message = arg0[0];
             wines = wineManager.downloadWineByName(message);
+
             return null;
         }
 

@@ -304,6 +304,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int default_underline_indicator_fades=0x7f070004;
     }
     public static final class color {
+        public static final int dark_burgundy=0x7f060011;
         public static final int default_circle_indicator_fill_color=0x7f060008;
         public static final int default_circle_indicator_page_color=0x7f060009;
         public static final int default_circle_indicator_stroke_color=0x7f06000a;
@@ -321,8 +322,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int vpi__bright_foreground_holo_light=0x7f060003;
         public static final int vpi__bright_foreground_inverse_holo_dark=0x7f060006;
         public static final int vpi__bright_foreground_inverse_holo_light=0x7f060007;
-        public static final int vpi__dark_theme=0x7f060011;
-        public static final int vpi__light_theme=0x7f060012;
+        public static final int vpi__dark_theme=0x7f060012;
+        public static final int vpi__light_theme=0x7f060013;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -364,15 +365,15 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int TextView05=0x7f05000d;
         public static final int action_settings=0x7f050018;
         public static final int bottom=0x7f050003;
+        public static final int comment=0x7f050011;
         public static final int drawer_layout=0x7f050006;
         public static final int image=0x7f050009;
-        public static final int indicator=0x7f050010;
+        public static final int indicator=0x7f05000f;
         public static final int left_drawer=0x7f050008;
         public static final int listView=0x7f050014;
         public static final int none=0x7f050000;
-        public static final int pager=0x7f050011;
+        public static final int pager=0x7f050010;
         public static final int progressBar1=0x7f050005;
-        public static final int ratingBar1=0x7f05000f;
         public static final int relativeLayout1=0x7f050016;
         public static final int searchView=0x7f050015;
         public static final int searchView1=0x7f050007;
@@ -397,10 +398,12 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int activity_wine_info=0x7f030002;
         public static final int drawer_list_item=0x7f030003;
         public static final int fragment_wine_info_reviews=0x7f030004;
-        public static final int fragment_wine_view=0x7f030005;
-        public static final int linear_sandbox=0x7f030006;
-        public static final int relative_sandbox=0x7f030007;
-        public static final int wine_result=0x7f030008;
+        public static final int fragment_wine_notes=0x7f030005;
+        public static final int fragment_wine_view=0x7f030006;
+        public static final int linear_sandbox=0x7f030007;
+        public static final int list_item_black=0x7f030008;
+        public static final int relative_sandbox=0x7f030009;
+        public static final int wine_result=0x7f03000a;
     }
     public static final class menu {
         public static final int display_search=0x7f0c0000;
@@ -442,10 +445,19 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
          */
         public static final int AppBaseTheme=0x7f0a0005;
         /**  Application theme. 
- All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f0a0006;
+        public static final int MyTabPageIndicator=0x7f0a0007;
+        /**          <item name="android:dividerPadding">10dp</item>
+        <item name="android:showDividers">middle</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:fadingEdge">horizontal</item>
+        <item name="android:fadingEdgeLength">8dp</item> 
+         */
+        public static final int MyTabPageIndicator_Text=0x7f0a0008;
         public static final int TextAppearance_TabPageIndicator=0x7f0a0003;
+        public static final int Theme_MyTheme=0x7f0a0009;
         public static final int Theme_PageIndicatorDefaults=0x7f0a0000;
         public static final int Widget=0x7f0a0001;
         public static final int Widget_IconPageIndicator=0x7f0a0004;

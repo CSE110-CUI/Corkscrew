@@ -1,9 +1,11 @@
 package edu.cui.wineapp;
 
+import java.io.Serializable;
+
 /**
  * Created by Chris on 5/16/13.
  */
-public class Food {
+public class Food implements Serializable{
 
     private String name;
     private String link;

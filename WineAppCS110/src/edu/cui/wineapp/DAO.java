@@ -13,13 +13,16 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Currency;
 
 public class DAO {
     private static Context context = null;
-    private SQLiteDatabase wineDataBase = null;
+    private static SQLiteDatabase wineDataBase = null;	//If it doesn't work, remove static.
     private WineSQLiteHelper wineDBHelper = null;
     private SQLiteDatabase userDataBase = null;
     private UserSQLiteHelper userDBHelper = null;
@@ -246,6 +249,7 @@ public class DAO {
                     getReviewArrayListFromJSON(myJSON),
                     getRecipeArrayListFromJSON(myJSON)
             															);
+           			Log.i("DAO.java/parseDetailedWineXML","Sugar: "+ currentWine.getString("sugar") +" Alcohol: " + Float.parseFloat(currentWine.getString("alcohol")));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -262,7 +266,7 @@ public class DAO {
 	    	JSONArray myJSONArr = myJSON.getJSONArray("reviews");
 	    	for(int i = 0; i < myJSONArr.length(); ++i){
 	    		JSONObject currentReview = myJSONArr.getJSONObject(i);
-	            Log.e("Current Food Name", currentReview.getString("name"));
+	            Log.i("DAO.java/getReviewArrayListFromJSON", "Current Review Name: "+currentReview.getString("name"));
 	
 	            Review myReview = new Review(
 	                    currentReview.getString("name"),
@@ -277,6 +281,8 @@ public class DAO {
 	//NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE
 	
 	    	}
+	    	
+	    	Log.i("DAO.java/getReviewArrayListFromJSON","helperReviews.size() "+helperReviews.size());
     	}catch(JSONException e){
     		e.printStackTrace();
     	}
@@ -293,7 +299,7 @@ public class DAO {
 	    	JSONArray myJSONArr = myJSON.getJSONArray("recipes");
 	        for (int i = 0; i < myJSONArr.length(); i++) {
 	            JSONObject currentFood = myJSONArr.getJSONObject(i);
-	            Log.e("Current Food Name", currentFood.getString("name"));
+	            Log.i("Current Food Name", currentFood.getString("name"));
 	
 	            Food newFood = new Food(
 	                    currentFood.getString("name"),
@@ -327,7 +333,7 @@ public class DAO {
             
             for (int i = 0; i < foodsJSON.length(); i++) {
                 JSONObject currentFood = foodsJSON.getJSONObject(i);
-                Log.e("Current Food Name", currentFood.getString("name"));
+                Log.i("Current Food Name", currentFood.getString("name"));
 
                 Food newFood = new Food(
                         currentFood.getString("name"),
@@ -360,8 +366,8 @@ public class DAO {
         String urlPostTerm = "?akey=" + apiKey + "&q=" + searchTerm;
         String stringUrl = urlPreTerm + urlPostTerm;
 
-        Log.e("DEBUG", "url has been built");
-        Log.e("DEBUG", "Manager has been built");
+        Log.i("DEBUG", "url has been built");
+        Log.i("DEBUG", "Manager has been built");
 
         return parseWineXML(new DownloadWebpageText().execute(stringUrl));
     }
@@ -511,6 +517,27 @@ public class DAO {
             return null;
         }
     }
+    
+    
+    public ArrayList<Wine> getWineByQuery(String query){			//Tomas method
+    	String apiKey = "ra4c57ui7tkz3knjur913q2ubeekm9dnoulmu9j40lmrehjy";
+    	String searchTerm = query;
+    	String urlPreTerm = "http://api.snooth.com/wines/";
+    	String urlPostTerm = "?akey="+apiKey+"&format=json&"+searchTerm;
+    	String snoothUrl = urlPreTerm + urlPostTerm;
+
+    	String response="";
+    	try {
+    		response=new DownloadWebpageText().downloadUrl(snoothUrl);
+    	} catch (IOException e) {
+    		// TODO Auto-generated catch block
+    		e.printStackTrace();
+    	}
+
+    	ArrayList<Wine> thiswines = parseWineXML(response); //MAY CAUSE PROBLEM
+
+    	return thiswines;
+    }
 
     public boolean setUserEmail(String userName, String newEmail) {
         /**Cursor cursor = userDataBase.query(UserSQLiteHelper.TABLE_USERS,
@@ -568,6 +595,109 @@ public class DAO {
     public boolean verify(String username, String password) {
         return false;
     }
+    
+//    "WHERE winecode = 'wine' LIMIT 5"
+//     How to use rawQuery
+//     TABLE COLUMNS : winecode userid comment date
+
+    //String 
+    //WHERE winecode = currWine.getCode()
+    //
+    //
+    //
+    
+    public void setComment(String winecode, String user_id,String comment) throws UnsupportedEncodingException{
+    	String url="http://hello-zhaoyang-udacity.appspot.com/comments";
+    	url+="?wine="+URLEncoder.encode(winecode,"UTF-8");
+    	url+="&user="+URLEncoder.encode(user_id,"UTF-8");
+    	url+="&comment="+URLEncoder.encode(comment,"UTF-8");
+    	String response = "ERROR";
+    	try {
+    		response = uploadUrl(url);
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    }
+    
+    public ArrayList<Comment> getCommentsByQuery(String q){
+    	String url="http://hello-zhaoyang-udacity.appspot.com/comments";
+    	url=url+"?q="+q;
+    	String response="";
+		//response=new DownloadWebpageText().execute(url);		//May cause issues
+    	try {
+			response = new DownloadWebpageText().downloadUrl(url);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return parseComments(response);
+    }
+    
+    //.getCommentsByQuery("WHERE winecode = '"+currentWine.getCode()+"');
+    // GAE Database Query
+    // Google Database
+    
+    private ArrayList<Comment> parseComments(String response) {
+    	// TODO Auto-generated method stub
+    	JSONArray winesJSON = null;
+    	ArrayList<Comment> thisComments=new ArrayList<Comment>();
+    	// Log.i("TRY",preParsed);
+    	try {
+    		JSONObject myJSON = new JSONObject(response);
+    		winesJSON = myJSON.getJSONArray("comments");
+    		//Log.i("TRY","made it past myJSON");
+    		//Log.i("DEBUG",winesJSON.toString());
+    		for(int i = 0; i < winesJSON.length(); i++){
+    			JSONObject currentWine = winesJSON.getJSONObject(i);
+
+    			Comment newComment;
+    			//Log.e("DEBUG",currentWine.getString("comment"));
+    			newComment = new Comment(
+    					//currentWine.getString(TAG_AVIN),
+    					currentWine.getString("winecode"),
+    					currentWine.getString("userid"),
+    					currentWine.getString("comment"),
+    					currentWine.getString("date")
+    					//currentWine.getString("id")
+    					);
+
+    			// Log.i("DEBUG",newWine.toString());
+    			thisComments.add(newComment);
+    		}
+    	} catch (JSONException e) {e.printStackTrace();}
+    	return thisComments;
+    }
+
+
+    
+    private String uploadUrl(String myurl) throws IOException {
+    	InputStream is = null;
+    	try {
+    		URL url = new URL(myurl);
+    		URI uri = null;
+    		try {
+    			uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
+    		} catch (URISyntaxException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+    		url = uri.toURL();
+    		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+    		conn.setReadTimeout(10000 /* milliseconds */);
+    		conn.setConnectTimeout(15000 /* milliseconds */);
+    		conn.setRequestMethod("POST");
+    		conn.setDoInput(true);
+    		conn.connect();
+    		int response = conn.getResponseCode();
+    		// Log.e("DEBUG", "The response is: " + response);
+    		is = conn.getInputStream();
+
+    		String contentAsString = new DownloadWebpageText().readIt(is);
+    		return contentAsString;
+
+    	} finally {if (is != null) {is.close();} }
+    }
+    
 
     private class DownloadWebpageText {
         private static final String DEBUG_TAG = "HttpExample";
@@ -576,7 +706,7 @@ public class DAO {
         	String fetchResult = "";
             try {
                 fetchResult = downloadUrl(urls[0]);
-            	return fetchResult;
+            	//return fetchResult;
 
             } catch (IOException e) {
                 Log.e("DEBUG", "Unable to retrieve web page. URL may be invalid.");
