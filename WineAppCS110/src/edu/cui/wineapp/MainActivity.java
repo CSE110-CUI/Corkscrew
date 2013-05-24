@@ -13,18 +13,16 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends ListActivity implements SearchView.OnQueryTextListener,
-        SearchView.OnCloseListener {
-
-
-    //Testing commmits
-
+public class MainActivity extends ListActivity implements SearchView.OnQueryTextListener, SearchView.OnCloseListener
+{
     public final static String EXTRA_MESSAGE = "com.cui.wineapp.MESSAGE";
     ArrayList<Wine> myWineList;
     ArrayList<String> wineNames = new ArrayList<String>();
@@ -35,10 +33,12 @@ public class MainActivity extends ListActivity implements SearchView.OnQueryText
     private ActionBarDrawerToggle mDrawerToggle;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
-    private ArrayList<String> mPlanetTitles = new ArrayList<String>();
+    private ArrayList<String> sideMenu = new ArrayList<String>();
 
+    //-----------------------------------------------------------------------------------------------------------------
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
+    public void onListItemClick(ListView l, View v, int position, long id)
+    {
         Wine wineToPass = myWineList.get(position);
         Intent i = new Intent(this, WineInfo.class);
         Bundle bundle2 = new Bundle();
@@ -47,8 +47,10 @@ public class MainActivity extends ListActivity implements SearchView.OnQueryText
         startActivity(i);
     }
 
+    //-----------------------------------------------------------------------------------------------------------------
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -56,18 +58,18 @@ public class MainActivity extends ListActivity implements SearchView.OnQueryText
         setContentView(R.layout.activity_main);
 
         mTitle = mDrawerTitle = getTitle();
-        mPlanetTitles.add("Test1");
-        mPlanetTitles.add("Test2");
-        mPlanetTitles.add("Test3");
+        sideMenu.add("Choose-a-Wine");
+        sideMenu.add("Build-a-Wine");
+        sideMenu.add("Pair-a-Wine");
+        sideMenu.add("Wine History");
 
         mTitle = mDrawerTitle = getTitle();
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        // set a custom shadow that overlays the main content when the drawer opens
-        // set up the drawer's list view with items and click listener
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-                R.layout.drawer_list_item, mPlanetTitles));
-
+        
+        // set up the drawer's list view with items (using custom adapter) and click listener
+        mDrawerList.setAdapter(new CustomAdapter(this, sideMenu));
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         SearchView searchView = (SearchView) findViewById(R.id.searchView1);
         searchView.setIconifiedByDefault(false);
@@ -80,54 +82,87 @@ public class MainActivity extends ListActivity implements SearchView.OnQueryText
         getActionBar().setHomeButtonEnabled(true);
 
         mDrawerToggle = new ActionBarDrawerToggle(
-                this,                  /* host Activity */
-                mDrawerLayout,         /* DrawerLayout object */
-                R.drawable.ic_launcher,  /* nav drawer image to replace 'Up' caret */
-                R.string.drawer_open,  /* "open drawer" description for accessibility */
-                R.string.drawer_close  /* "close drawer" description for accessibility */
-        ) {
-            public void onDrawerClosed(View view) {
+                    this,    					// host activity
+        		mDrawerLayout,				// DrawerLayout object
+        		R.drawable.ic_launcher,		// nav drawer image to replace 'Up' caret
+        		R.string.drawer_open,		// "open drawer" description for accessibility
+        		R.string.drawer_close)		// "close drawer" description for accessibility
+        {
+            public void onDrawerClosed(View view)
+            {
                 getActionBar().setTitle(mTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
-            public void onDrawerOpened(View drawerView) {
+            public void onDrawerOpened(View drawerView)
+            {
                 getActionBar().setTitle(mDrawerTitle);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
+        
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        if (savedInstanceState == null) {
-            //selectItem(0);
+        if (savedInstanceState == null)
+        {
+            // selectItem(0);
         }
 
         Log.i("Inside_OnCreate", "Basic Info");
-
-
-        //	setListAdapter(myAdapter);
     }
-
+    
+    //-----------------------------------------------------------------------------------------------------------------
+    // the click listener for ListView in the Navigation drawer
+    private class DrawerItemClickListener implements ListView.OnItemClickListener
+    {
+    	@Override
+    	public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+    	{
+    		selectItem(position);
+    	}
+    }
+    
+    //-----------------------------------------------------------------------------------------------------------------
+    private void selectItem(int position)
+    {
+    	mDrawerList.setItemChecked(position, true);
+    	setTitle(sideMenu.get(position));
+    	mDrawerLayout.closeDrawer(mDrawerList);
+    }
+    
+    //-----------------------------------------------------------------------------------------------------------------
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public void setTitle(CharSequence title)
+    {
+        mTitle = title;
+        getActionBar().setTitle(mTitle);
+    }
+    
+    //-----------------------------------------------------------------------------------------------------------------
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
+    //-----------------------------------------------------------------------------------------------------------------
     @Override
-    public boolean onClose() {
+    public boolean onClose()
+    {
         // TODO Auto-generated method stub
         return false;
     }
 
+    //-----------------------------------------------------------------------------------------------------------------
     @Override
-    public boolean onQueryTextChange(String parseText) throws SQLiteException {
+    public boolean onQueryTextChange(String parseText) throws SQLiteException
+    {
         if (parseText.length() >= 3) {
 
             myWineList = new ArrayList<Wine>();
             wineNames = new ArrayList<String>();
-
 
             Log.i("Inside_QTChange", "Text>=3");
 
@@ -137,19 +172,21 @@ public class MainActivity extends ListActivity implements SearchView.OnQueryText
             searchView.setOnCloseListener(this);
             mListView = (ListView) findViewById(android.R.id.list);
 
-
             WineManager wManager = new WineManager(this);
 
-            try {
+            try
+            {
                 Log.i("Inside_QTChange", "TRY");
                 myWineList = wManager.getWineByName(parseText);
 
-                for (Wine currWine : myWineList) {
+                for (Wine currWine : myWineList)
+                {
                     Log.i("PARSINGWINES", currWine.getName());
                     wineNames.add(currWine.getName());
                 }
 
-                for (String currWine : wineNames) {
+                for (String currWine : wineNames)
+                {
                     Log.i("PARSNG_WINSZ", currWine);
                 }
 
@@ -157,11 +194,14 @@ public class MainActivity extends ListActivity implements SearchView.OnQueryText
                 mListView.setAdapter(myAdapter);
                 myAdapter.notifyDataSetChanged();
 
-            } catch (SQLiteException e) {
+            }
+            catch (SQLiteException e)
+            {
                 Log.i("Inside_QTChange", "CATCH");
                 myWineList = wManager.downloadWineByName(parseText);
 
-                for (Wine currWine : myWineList) {
+                for (Wine currWine : myWineList)
+                {
                     wineNames.add(currWine.getName());
                 }
 
@@ -175,11 +215,12 @@ public class MainActivity extends ListActivity implements SearchView.OnQueryText
         return false;
     }
 
+    //-----------------------------------------------------------------------------------------------------------------
     @Override
-    public boolean onQueryTextSubmit(String arg0) {
+    public boolean onQueryTextSubmit(String arg0)
+    {
         wineNames = new ArrayList<String>();
         myWineList = new ArrayList<Wine>();
-
 
         Log.i("Inside_QTChange", "Text>=3");
 
@@ -192,9 +233,9 @@ public class MainActivity extends ListActivity implements SearchView.OnQueryText
         WineManager wManager = new WineManager(this);
         myWineList = wManager.downloadWineByName(arg0);
 
-        for (Wine currWine : myWineList) {
-        	if(currWine != null)
-        		wineNames.add(currWine.getName());
+        for (Wine currWine : myWineList)
+        {
+            wineNames.add(currWine.getName());
         }
 
         myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, wineNames);
@@ -204,21 +245,27 @@ public class MainActivity extends ListActivity implements SearchView.OnQueryText
         return true;
     }
 
+    //-----------------------------------------------------------------------------------------------------------------
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         // The action bar home/up action should open or close the drawer.
         // ActionBarDrawerToggle will take care of this.
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
+        if (mDrawerToggle.onOptionsItemSelected(item))
+        {
             return true;
         }
         // Handle action buttons
-        switch (item.getItemId()) {
+        switch (item.getItemId())
+        {
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    private int getSearchViewX() {
+    //-----------------------------------------------------------------------------------------------------------------
+    private int getSearchViewX()
+    {
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
@@ -226,12 +273,13 @@ public class MainActivity extends ListActivity implements SearchView.OnQueryText
         return size.x;
     }
 
-    private int getSearchViewY() {
+    //-----------------------------------------------------------------------------------------------------------------
+    private int getSearchViewY()
+    {
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
 
         return size.y;
     }
-
 }
