@@ -11,9 +11,10 @@ import java.util.ArrayList;
 
 public class CustomAdapter extends ArrayAdapter<String>
 {
-    private final Context context;
+	private final Context context;
 	private final ArrayList<String> values;
 	
+	//-----------------------------------------------------------------------------------------------------------------
 	public CustomAdapter(Context context, ArrayList<String> values)
 	{
 		super(context, R.layout.rowlayout, values);
@@ -21,6 +22,7 @@ public class CustomAdapter extends ArrayAdapter<String>
 		this.values = values;
 	}
 	
+	//-----------------------------------------------------------------------------------------------------------------
 	public View getView(int position, View convertView, ViewGroup parent)
 	{
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
