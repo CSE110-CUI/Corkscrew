@@ -19,6 +19,7 @@ public class WineNotesFragment extends ListFragment {
 	public static DetailedWine dWine;
 	public int currentCommentCount = 0;
 	public int prevCommentCount = -1;
+	public int commentLength = 0;
 
 	public View onCreateView(LayoutInflater inflater,
 			ViewGroup container, Bundle savedInstanceState){
@@ -34,20 +35,21 @@ public class WineNotesFragment extends ListFragment {
 
 			@Override
 			public boolean onEditorAction(TextView v, int actionId,	KeyEvent event){
-				
+				commentLength = commentBox.getText().toString().length();
 				boolean handled = false;
 				
 				if (actionId == EditorInfo.IME_ACTION_SEND){
 					
 					UserManager.getUserManager(getActivity()).setComment(
 							dWine.getCode(), "USER_ID_GOES_HERE", commentBox.getText().toString());
-					
 					commentBox.setText("");
 					handled = true;
 				}
 				
 				prevCommentCount = currentCommentCount;
-				do updateComments(); while(prevCommentCount == currentCommentCount);
+				if(commentLength > 0){
+					do updateComments(); while(prevCommentCount == currentCommentCount);
+				}
 				return handled;
 			}});
 		
