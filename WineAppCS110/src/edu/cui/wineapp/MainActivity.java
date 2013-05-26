@@ -16,14 +16,11 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
-
 import java.util.ArrayList;
+
 
 public class MainActivity extends ListActivity implements SearchView.OnQueryTextListener,
         SearchView.OnCloseListener {
-
-
-    //Testing commmits
 
     public final static String EXTRA_MESSAGE = "com.cui.wineapp.MESSAGE";
     ArrayList<Wine> myWineList;
@@ -54,6 +51,9 @@ public class MainActivity extends ListActivity implements SearchView.OnQueryText
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+       
+
 
         mTitle = mDrawerTitle = getTitle();
         mPlanetTitles.add("Test1");
@@ -124,9 +124,17 @@ public class MainActivity extends ListActivity implements SearchView.OnQueryText
     @Override
     public boolean onQueryTextChange(String parseText) throws SQLiteException {
         if (parseText.length() >= 3) {
-
-            myWineList = new ArrayList<Wine>();
+        	
             wineNames = new ArrayList<String>();
+wineNames = new ArrayList<String>();
+
+        	
+            myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, wineNames);
+            myAdapter.notifyDataSetChanged();
+            myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, wineNames);
+            myAdapter.notifyDataSetChanged();
+
+
 
 
             Log.i("Inside_QTChange", "Text>=3");
@@ -171,7 +179,11 @@ public class MainActivity extends ListActivity implements SearchView.OnQueryText
             }
             return true;
         }
+        wineNames = new ArrayList<String>();
 
+    	
+        myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, wineNames);
+        myAdapter.notifyDataSetChanged();
         return false;
     }
 

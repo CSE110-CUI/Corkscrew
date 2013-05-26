@@ -625,7 +625,8 @@ public class DAO {
     	String response="";
 		//response=new DownloadWebpageText().execute(url);		//May cause issues
     	try {
-			response = new DownloadWebpageText().downloadUrl(url);
+			response= downloadUrl(url);
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -686,6 +687,33 @@ public class DAO {
     		conn.setReadTimeout(10000 /* milliseconds */);
     		conn.setConnectTimeout(15000 /* milliseconds */);
     		conn.setRequestMethod("POST");
+    		conn.setDoInput(true);
+    		conn.connect();
+    		int response = conn.getResponseCode();
+    		// Log.e("DEBUG", "The response is: " + response);
+    		is = conn.getInputStream();
+
+    		String contentAsString = new DownloadWebpageText().readIt(is);
+    		return contentAsString;
+
+    	} finally {if (is != null) {is.close();} }
+    }
+    private String downloadUrl(String myurl) throws IOException {
+    	InputStream is = null;
+    	try {
+    		URL url = new URL(myurl);
+    		URI uri = null;
+    		try {
+    			uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
+    		} catch (URISyntaxException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+    		url = uri.toURL();
+    		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+    		conn.setReadTimeout(10000 /* milliseconds */);
+    		conn.setConnectTimeout(15000 /* milliseconds */);
+    		conn.setRequestMethod("GET");
     		conn.setDoInput(true);
     		conn.connect();
     		int response = conn.getResponseCode();

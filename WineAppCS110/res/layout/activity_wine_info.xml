@@ -7,7 +7,9 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".WineInfo" >
-
+    
+    
+	<!-- Image -->
     <ImageView
         android:id="@+id/image"
         android:layout_width="wrap_content"
@@ -18,50 +20,10 @@
         android:minHeight="75dp"
         android:minWidth="75dp"
         android:src="@drawable/ic_launcher" />
-
+    
+    <!-- Name -->
     <TextView
-        android:id="@+id/TextView03"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textView1"
-        android:text="Varietal"
-        android:textSize="12sp" />
-    <!--  -->
-
-    <TextView
-        android:id="@+id/TextView01"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/TextView03"
-        android:layout_alignRight="@+id/TextView03"
-        android:layout_below="@+id/TextView03"
-        android:text="Country"
-        android:textSize="12sp" />
-
-    <TextView
-        android:id="@+id/TextView05"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/TextView01"
-        android:layout_alignRight="@+id/TextView01"
-        android:layout_below="@+id/TextView01"
-        android:text="Region"
-        android:textSize="12sp" />
-
-    <TextView
-        android:id="@+id/TextView02"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/TextView05"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/TextView05"
-        android:text="Producer"
-        android:textSize="12sp" />
-
-    <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/textview_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/image"
@@ -70,26 +32,48 @@
         android:text="Name"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <!--
-    <com.viewpagerindicator.TabPageIndicator
-            android:id="@+id/indicator"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_below="@+id/ratingBar1"/>
+    <!-- Varietal -->
+    <TextView
+        android:id="@+id/textview_varietal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textview_name"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/textview_region"
+        android:text="Varietal"
+        android:textSize="12sp" />
 
+    <!-- Rating -->
 
-    <android.support.v4.view.ViewPager
-            android:id="@+id/pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/indicator"/>
-    -->
+    <TextView
+        android:id="@+id/textview_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textview_varietal"
+        android:layout_alignRight="@+id/textview_varietal"
+        android:layout_below="@+id/textview_varietal"
+        android:text="Rating"
+        android:textSize="12sp" />
+	
+    <!-- Region -->
+
+    <TextView
+        android:id="@+id/textview_region"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textview_rating"
+        android:layout_alignRight="@+id/textview_name"
+        android:layout_below="@+id/textview_name"
+        android:text="Region"
+        android:textSize="12sp" />
+    
+     
 
     <com.viewpagerindicator.TabPageIndicator
         android:id="@+id/indicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/image"
+        android:layout_below="@+id/textview_rating"
         android:gravity="center_horizontal" />
 
     <android.support.v4.view.ViewPager
