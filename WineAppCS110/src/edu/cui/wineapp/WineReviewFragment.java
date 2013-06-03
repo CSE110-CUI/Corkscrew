@@ -3,6 +3,7 @@ package edu.cui.wineapp;
 import java.util.ArrayList;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
-public class WineReviewFragment extends ListFragment {
+public class WineReviewFragment extends Fragment {
     public static final String ARG_WINE = "currWine";
 
     @Override
@@ -27,7 +28,6 @@ public class WineReviewFragment extends ListFragment {
         for(Review r: dWine.getReviews())
         	reviewBodies.add(r.getBody());
         
-        setListAdapter(new ArrayAdapter<String>(getActivity().getApplicationContext(), R.layout.list_item_black, reviewBodies));        
         return rootView;
     }
 }

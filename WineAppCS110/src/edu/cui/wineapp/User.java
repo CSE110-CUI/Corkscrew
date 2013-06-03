@@ -3,6 +3,7 @@ package edu.cui.wineapp;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.text.format.Time;
 
 public class User {
 	private String name=null;
@@ -15,6 +16,10 @@ public class User {
 	private ArrayList<Wine> drinkedWines=null;
 	private ArrayList<String> comments=null;
 	private long id;
+	private String currentWine = "To Get Started, Search a Wine Below!";
+	private Time lastDrinkTime = null;
+	private double BAC;
+	
 	
 	public User(String name, int age, float weight, String email, String sex, String country, String photourl, long id){
 		this.name = name;
@@ -85,5 +90,23 @@ public class User {
 	public static boolean setComments(String comment){
 		return dao.setUserComments(comment);
 	}
-**/	
+**/
+	public String getCurrentWine() {
+		return currentWine;
+	}
+	public void setCurrentWine(Wine basicWine) {
+		this.currentWine = basicWine.getName();
+	}
+	public Time getLastDrinkTime() {
+		return lastDrinkTime;
+	}
+	public void setLastDrinkTime(Time lastDrinkTime) {
+		this.lastDrinkTime = lastDrinkTime;
+	}
+	public double getBAC() {
+		return BAC;
+	}
+	public void setBAC(double bAC) {
+		BAC = bAC;
+	}	
 }

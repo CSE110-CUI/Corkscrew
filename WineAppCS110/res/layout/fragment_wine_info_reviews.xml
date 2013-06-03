@@ -1,17 +1,94 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="8dp" >
 
-<!--      android:background="@android:drawable/gallery_thumb" -->
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="vertical" >
+        
+        <!-- Professional? Review Identifier -->
+	    <TextView
+	        android:id="@+id/source"
+	        style="@style/CardText"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_above="@+id/name"
+	        android:layout_alignParentLeft="true"
+	        android:layout_marginLeft="14dp"
+	        android:text="JUST AN AVERAGE JOE"
+	        android:textSize="10px" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/linearLayout1"
+        android:gravity="center_vertical"
+        android:orientation="vertical" >
     
+        <!-- Reviewer Name -->
+	    <TextView
+	        android:id="@+id/name"
+	        style="@style/CardText"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_marginLeft="14dp"
+	        android:paddingBottom="8dp"
+	        android:text="Viewtiful Joe"
+	        android:textSize="20px"
+	        android:textStyle="bold" />
+    </LinearLayout>
 
-        <ListView
-        android:id="@id/android:list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-        </ListView>
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/linearLayout2"
+        android:layout_below="@+id/linearLayout2"
+        android:gravity="center_vertical"
+        android:paddingBottom="8dp" >
 
-
-
-</LinearLayout>
+        <!-- Rating -->
+        <TextView
+            android:id="@+id/rating"
+            style="@style/CardText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="90%"
+            android:textColor="#33b5e5"
+            android:textSize="36px"
+            android:textStyle="bold"
+            android:layout_marginLeft="5dp"
+        	android:padding="10dp" />
+        
+        <!-- Separator -->
+        <View
+            android:id="@+id/separator"
+            android:layout_width="1dip"
+            android:layout_height="fill_parent"
+            android:layout_alignBottom="@+id/body"
+            android:layout_alignTop="@+id/body"
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@+id/rating"
+            android:background="#d5d5d5" />
+        
+        <!-- Review Body -->
+	    <TextView
+	        android:id="@+id/body"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:paddingLeft="6dp"
+	        android:text="Whoa! This wine is simply VIEWTIFUL! Juicy! Henshin-a-go-go, baby!"
+	        android:textSize="16px" />
+    </LinearLayout>
+    
+</RelativeLayout>

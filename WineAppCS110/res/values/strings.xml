@@ -10,6 +10,6 @@
     <string name="title_activity_wine_info">WineInfo</string>
     <string name="drawer_open">Search</string>
     <string name="drawer_close">Search</string>
-
+    <string name="title_activity_wine_cellar">Wine Cellar</string>
 
 </resources>

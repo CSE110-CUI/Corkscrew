@@ -1,65 +1,94 @@
 package edu.cui.wineapp;
 
+import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.SearchView.OnCloseListener;
 
 import java.util.ArrayList;
 
-public class DisplaySearchActivity extends ListActivity {
+import com.fima.cardsui.views.CardUI;
+
+public class DisplaySearchActivity extends Activity {
 
 
-    private ArrayList<Wine> wines;
-    private WineManager wineManager;
-    private UserManager userManager;
-    private String[] prodInfo = new String[25];
+	private ArrayList<Wine> wines;
+	private ArrayList<String> wineNames;
+	CardUI mCardView;
+    Bundle bundle = new Bundle();
 
-    ArrayAdapter<String> myAdapter;
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_display_search);
+        
+        wineNames = new ArrayList<String>();
+        wines = new ArrayList<Wine>();
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+		String parseText = getIntent().getExtras().getString("passedSearchTerm");
 
-        for (int i = 0; i < prodInfo.length; ++i) prodInfo[i] = "Loading...";
+		mCardView = (CardUI) findViewById(R.id.cardsview);
+		mCardView.setSwipeable(false);
 
-        Intent intent = getIntent();
-        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-        wineManager = WineManager.getWineManager(this);
-        new DownloadWebpageText().execute(message);
-        myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, prodInfo);
-        setListAdapter(myAdapter);
-    }
+        //ListView mListView = (ListView) findViewById(android.R.id.list);
 
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        Wine wineToPass = (Wine) wines.get(position);
-        Intent i = new Intent(this, WineInfo.class);
-        Bundle bundle2 = new Bundle();
-        bundle2.putLong("passedWine", wineToPass.getId());
-        i.putExtras(bundle2);
-        startActivity(i);
-    }
-
-    private class DownloadWebpageText extends AsyncTask<String, String, String> {
-
-        @Override
-        protected String doInBackground(String... arg0) {
-            // TODO Auto-generated method stub
-            String message = arg0[0];
-            wines = wineManager.downloadWineByName(message);
-
-            return null;
+        WineManager wManager = new WineManager(this);
+        wines = wManager.downloadWineByName(parseText);
+/*
+        for (Wine currWine : wines) {
+			mCardView.addCard(new MyCard(currWine.getName()));
         }
+  */      
+        for(final Wine currWine:wines) {
+			
+			DisplaySearchCard currentCard = new DisplaySearchCard(currWine.getName(),"00",currWine.getRegion(),currWine.getVintage(), currWine.getType(), currWine.getWinery());
+			
+			//wineName = currWine.getCode();
+			
+			currentCard.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+			        Intent i = new Intent(getApplication().getApplicationContext(), WineInfo.class);
+			        bundle.putString("passedWine", currWine.getCode());
+			        i.putExtras(bundle);
+			        startActivity(i);
+				}
+			});
+			
+			mCardView.addCard(currentCard);
 
-        protected void onPostExecute(String result) {
-            for (int i = 0; i < 25; ++i) {
-                prodInfo[i] = wines.get(i).toString();
-            }
-            myAdapter.notifyDataSetChanged();
-        }
-    }
+		}
+		mCardView.refresh();
+        
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    getMenuInflater().inflate(R.menu.search_menu, menu);
+	    SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+	    // Configure the search info and add any event listeners
+	    
+	    searchView.setOnCloseListener(new OnCloseListener(){
+
+			@Override
+			public boolean onClose() {
+				// TODO Auto-generated method stub
+				return false;
+			}
+	    	
+	    });
+
+	    return super.onCreateOptionsMenu(menu);
+	}
+
 }

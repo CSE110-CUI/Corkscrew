@@ -26,8 +26,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:inputType="text"
-        android:ems="10"
-        android:maxLength="32"
         android:hint="Tasting Notes"
         android:imeOptions="actionSend" />
         

@@ -172,6 +172,10 @@ public class DAO {
 
     public ArrayList<Wine> getWineByName(String name) {
         ArrayList<Wine> winesInData = new ArrayList<Wine>();
+        //TODO: FIX THIS SERIOUSLY DO
+        if(name.contains("'")){
+        	name = name.replace('\'','|');
+        }
 
         Cursor cursor = wineDataBase.query(WineSQLiteHelper.TABLE_WINES, null,
                 WineSQLiteHelper.COLUMN_NAME + " LIKE '%" + name + "%'", null, null, null, null);
@@ -183,6 +187,11 @@ public class DAO {
             cursor.moveToNext();
         }
         cursor.close();
+        /*
+        if(winesInData.get(0).getName().contains("|")){
+            	 winesInData.get(0).setName(winesInData.get(0).getName().replace('|', '\''));
+        }
+        */
         return winesInData;
     }
 
@@ -206,9 +215,43 @@ public class DAO {
         return parseDetailedWineXML(new DownloadWebpageText().execute(stringUrl));
     }
     
+    public ArrayList<User> parseUserXML(String preParsed){    	
+    	JSONArray winesJSON = null;
+    	ArrayList<User> thisComments=new ArrayList<User>();
+    	// Log.i("TRY",preParsed);
+    	try {
+    		JSONObject myJSON = new JSONObject(preParsed);
+    		winesJSON = myJSON.getJSONArray("users");
+    		//Log.i("TRY","made it past myJSON");
+    		//Log.i("DEBUG",winesJSON.toString());
+    		for(int i = 0; i < winesJSON.length(); i++){
+    			JSONObject currentWine = winesJSON.getJSONObject(i);
+
+    			User newUser;
+    			//Log.e("DEBUG",currentWine.getString("comment"));
+    			newUser = new User(
+    					//currentWine.getString(TAG_AVIN),
+    					currentWine.getString("name"),
+    					Integer.parseInt(currentWine.getString("age")),
+    					Float.parseFloat(currentWine.getString("weight")),
+    					currentWine.getString("email"),
+    					currentWine.getString("sex"),
+    					currentWine.getString("country"),
+    					currentWine.getString("photourl"),
+    					Long.parseLong(currentWine.getString("userid"))
+    					);
+
+    			// Log.i("DEBUG",newWine.toString());
+    			thisComments.add(newUser);
+    		}
+    	} catch (JSONException e) {e.printStackTrace();}
+    	return thisComments;
+    }
+    
     public DetailedWine parseDetailedWineXML(String preParsed) {
     	DetailedWine detailedWine = new DetailedWine();
         long wineRank = 0;
+        long winePrice = 0;
 
         try {
             JSONObject myJSON = new JSONObject(preParsed);
@@ -220,6 +263,11 @@ public class DAO {
                 wineRank = myJSON.getLong(TAG_SNOOTHRANK);
             } catch (JSONException e) {
                 wineRank = 0;
+            }            
+            try {
+                winePrice = myJSON.getLong(TAG_PRICE);
+            } catch (JSONException e) {
+                winePrice = -1;
             }
             
            detailedWine = new DetailedWine(
@@ -230,8 +278,8 @@ public class DAO {
                     currentWine.getString(TAG_WINERY),
                     currentWine.getString(TAG_WINERYID),
                     currentWine.getString(TAG_VARIETAL),
-                    currentWine.getLong(TAG_PRICE),
-                    currentWine.getString(TAG_VINTAGE),
+					winePrice,
+					currentWine.getString(TAG_VINTAGE),
                     currentWine.getString(TAG_TYPE),
                     currentWine.getString(TAG_LINK),
                 	"",
@@ -268,16 +316,26 @@ public class DAO {
 	    		JSONObject currentReview = myJSONArr.getJSONObject(i);
 	            Log.i("DAO.java/getReviewArrayListFromJSON", "Current Review Name: "+currentReview.getString("name"));
 	
+	            int source = -1;
+	            
+	            try{
+                    source = currentReview.getInt("source");
+	            }catch(JSONException e){
+	            	Log.i("DAO.java/getReviewArrayListFromJSON","Catch: JSON Exception. No source provided");
+	            	source = -1;
+	            }
+	            
 	            Review myReview = new Review(
 	                    currentReview.getString("name"),
 	                    Float.parseFloat(currentReview.getString("rating")),
-	                    currentReview.getString("body"),
+	                    currentReview.getString("body").trim(),
 	                    currentReview.getInt("date"),
 	                    currentReview.getString("lang"),
-	                    currentReview.getInt("source")
+                    	source
 	            );
 	//NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE
-	            helperReviews.add(myReview);
+	            if(myReview.getBody().length() > 3)
+	            	helperReviews.add(myReview);
 	//NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE //NOTADDEDINDATABASE
 	
 	    	}
@@ -291,7 +349,8 @@ public class DAO {
     	}
     }
     
-    private ArrayList<Food> getRecipeArrayListFromJSON(JSONObject myJSON){
+    @SuppressWarnings("finally")
+	private ArrayList<Food> getRecipeArrayListFromJSON(JSONObject myJSON){
     	
     	ArrayList<Food> helperFoods = new ArrayList<Food>();
     	
@@ -322,7 +381,8 @@ public class DAO {
     }
     
     
-    public ArrayList<Food> parseFoodXML(String preParsed) {
+    @SuppressWarnings("finally")
+	public ArrayList<Food> parseFoodXML(String preParsed) {
     	ArrayList<Food> foods = new ArrayList<Food>();
     	
         try {
@@ -363,7 +423,7 @@ public class DAO {
     	
         String searchTerm = name;
         String urlPreTerm = "http://api.snooth.com/wines/";
-        String urlPostTerm = "?akey=" + apiKey + "&q=" + searchTerm;
+        String urlPostTerm = "?akey=" + apiKey + "&q=" + searchTerm  + "&n=99"+"&s=sr";
         String stringUrl = urlPreTerm + urlPostTerm;
 
         Log.i("DEBUG", "url has been built");
@@ -372,10 +432,12 @@ public class DAO {
         return parseWineXML(new DownloadWebpageText().execute(stringUrl));
     }
     
-    public ArrayList<Wine> parseWineXML(String preParsed) {
+    @SuppressWarnings("finally")
+	public ArrayList<Wine> parseWineXML(String preParsed) {
         ArrayList<Wine> wines = new ArrayList<Wine>();
     	
         long wineRank = 0;
+        long winePrice = 0;
         try {
             JSONObject myJSON = new JSONObject(preParsed);
             winesJSON = myJSON.getJSONArray(TAG_WINES);
@@ -386,8 +448,36 @@ public class DAO {
                     wineRank = currentWine.getLong(TAG_SNOOTHRANK);
                 } catch (JSONException e) {
                     wineRank = 0;
+                    Log.e("DAO.java.parseWineXML()","Catch: wineRank set to 0");
+                }
+                
+                
+                try {
+                	winePrice = currentWine.getLong(TAG_PRICE);
+                } catch (JSONException e) {
+                	winePrice = -1;
+                	Log.e("DAO.java.parseWineXML()","Catch: winePrice set to -1");
                 }
 
+                //Log.e("DAO.java/parseWineXML","Wine before object creation: "+currentWine.getString(TAG_NAME));
+/*
+                Log.e("DAO.java/parseWineXML","Name: "+currentWine.getString(TAG_NAME));
+                Log.e("DAO.java/parseWineXML","Code: "+currentWine.getString(TAG_CODE));
+                Log.e("DAO.java/parseWineXML","Region: "+currentWine.getString(TAG_REGION));
+                Log.e("DAO.java/parseWineXML",currentWine.getString(TAG_WINERY));
+                Log.e("DAO.java/parseWineXML",currentWine.getString(TAG_WINERYID));
+                Log.e("DAO.java/parseWineXML",currentWine.getString(TAG_VARIETAL));
+                Log.e("DAO.java/parseWineXML",currentWine.getString(TAG_PRICE));
+                Log.e("DAO.java/parseWineXML",currentWine.getString(TAG_VINTAGE));
+                Log.e("DAO.java/parseWineXML",currentWine.getString(TAG_TYPE));
+                Log.e("DAO.java/parseWineXML",currentWine.getString(TAG_LINK));
+                Log.e("DAO.java/parseWineXML",currentWine.getString(TAG_TAGS));
+                Log.e("DAO.java/parseWineXML",currentWine.getString(TAG_IMAGE));
+                Log.e("DAO.java/parseWineXML","WineRank: "+wineRank);
+                Log.e("DAO.java/parseWineXML",currentWine.getString(TAG_AVAILABILITY));
+                Log.e("DAO.java/parseWineXML",currentWine.getString(TAG_NUMMERCHANTS));
+                Log.e("DAO.java/parseWineXML",currentWine.getString(TAG_NUMREVIEWS));
+*/
                 Wine newWine = new Wine(
                         -1,
                         currentWine.getString(TAG_NAME),
@@ -396,8 +486,8 @@ public class DAO {
                         currentWine.getString(TAG_WINERY),
                         currentWine.getString(TAG_WINERYID),
                         currentWine.getString(TAG_VARIETAL),
-                        currentWine.getLong(TAG_PRICE),
-                        currentWine.getString(TAG_VINTAGE),
+                    	winePrice,
+                		currentWine.getString(TAG_VINTAGE),
                         currentWine.getString(TAG_TYPE),
                         currentWine.getString(TAG_LINK),
                         currentWine.getString(TAG_TAGS),
@@ -407,11 +497,15 @@ public class DAO {
                         currentWine.getString(TAG_NUMMERCHANTS),
                         currentWine.getString(TAG_NUMREVIEWS)
                 );
-                //Log.i("DEBUG",newWine.toString());
-                wines.add(createWine(newWine));
+                
+                if(newWine.getName()!=null)
+                	Log.e("DAO.java/parseWineXML","Wine creation succeeded: "+i);
+
+                //wines.add(createWine(newWine));
+                wines.add(newWine);
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+        	e.printStackTrace();
         }
         finally{
         	return wines;
@@ -434,7 +528,22 @@ public class DAO {
             return null;
         }
     }
-
+    
+    public Wine getWineByNameFromDB(String wineName){
+    	Log.e("DAO.java/createWine","Wine name: "+ wineName);
+    	Cursor cursor = 
+    			//wineDataBase.query(WineSQLiteHelper.TABLE_WINES, 
+    			//null, WineSQLiteHelper.COLUMN_NAME + " = " + wineName, null, null, null, null);
+    			wineDataBase.rawQuery("SELECT * FROM "+WineSQLiteHelper.TABLE_WINES+" WHERE "+ WineSQLiteHelper.COLUMN_NAME+" = "+wineName, null);
+    	if(cursor.moveToFirst()){
+    		Wine newWine = cursorToWine(cursor);
+    		cursor.close();
+    		return newWine;
+    	} else{
+    		return null;
+    	}
+    }
+/*
     public User createUser(User user, String password) {
         ContentValues values = new ContentValues();
         values.put(UserSQLiteHelper.COLUMN_NAME, user.getName());
@@ -457,12 +566,15 @@ public class DAO {
         cursor.close();
         return newUser;
     }
+    */
 
     public Wine createWine(Wine wine) {
         //openWineData();
         long insertId = -1;
-        Wine newWine = null;
+        Wine newWine = wine;
 
+    	Log.i("DAO.java/createWine","Trying Wine: "+wine.getName());
+        
         ContentValues values = new ContentValues();
         values.put(WineSQLiteHelper.COLUMN_NAME, wine.getName());
         values.put(WineSQLiteHelper.COLUMN_CODE, wine.getCode());
@@ -483,6 +595,7 @@ public class DAO {
 
 
         try {
+//        	Log.e("DAO.java/createWine","ID: "+wineDataBase.insertOrThrow(WineSQLiteHelper.TABLE_WINES, null, values));
             insertId = wineDataBase.insertOrThrow(WineSQLiteHelper.TABLE_WINES, null, values);
             Cursor cursor = wineDataBase.query(WineSQLiteHelper.TABLE_WINES,
                     null, WineSQLiteHelper.COLUMN_ID + " = " + insertId, null,
@@ -493,7 +606,9 @@ public class DAO {
             //  closeWineData();
 
         } catch (SQLiteConstraintException e) {
-
+        	Log.e("DAO.java/createWine","Wine already in database, ignoring");
+        	Log.e("DAO.java/createWine","Wine name: "+ wine.getName());
+        	//newWine = getWineByNameFromDB(wine.getName());
         }
         return newWine;
     }
@@ -502,23 +617,213 @@ public class DAO {
         return false;
     }
 
-    public User getUserByName(String userName) {
+    
+    public User createUserOnServer(String name, int age, float weight, String email, String sex, String country, String photourl, long userid) throws UnsupportedEncodingException{
+    	String url="http://hello-zhaoyang-udacity.appspot.com/users";
+    	url+="?command=signup";
+    	url+="&userid="+URLEncoder.encode(Long.toString(userid),"UTF-8");
+    	url+="&age="+URLEncoder.encode(Integer.toString(age),"UTF-8");
+    	url+="&weight="+URLEncoder.encode(Integer.toString((int)weight),"UTF-8");
+    	url+="&email="+URLEncoder.encode(email,"UTF-8");
+    	url+="&sex="+URLEncoder.encode(sex,"UTF-8");
+    	url+="&country="+URLEncoder.encode(country,"UTF-8");
+    	url+="&photourl="+URLEncoder.encode(photourl,"UTF-8");
+    	url+="&name="+URLEncoder.encode(name,"UTF-8");
 
-        Cursor cursor = userDataBase.query(UserSQLiteHelper.TABLE_USERS,
-                allColumnsforuser, UserSQLiteHelper.COLUMN_NAME + " = \"" + userName + "\"", null, null, null, null);
-        Log.e("ERROR", userName);
-        if (cursor.moveToFirst()) {
-            User newUser = cursorToUser(cursor);
-            cursor.close();
-            Log.e("ERROR", "NOT NULL");
-            return newUser;
-        } else {
-            Log.e("ERROR", "null");
-            return null;
-        }
+    	String response = "ERROR";
+    	try {
+    		response = uploadUrl(url);
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    	
+    	return new User(name, age, weight, email, sex, country, photourl, userid);
     }
     
+    public boolean changeAge(String newAge) throws UnsupportedEncodingException{
+    	String url="http://hello-zhaoyang-udacity.appspot.com/users";
+    	url+="?command=setting";
+    	url+="&userid="+URLEncoder.encode(Long.toString(UserManager.getUserManager(context).getLocalUser().getId()),"UTF-8");
+    	url+="&colum=age";
+    	url+="&newvalue="+URLEncoder.encode(newAge,"UTF-8");
+
+    	String response = "ERROR";
+    	boolean isValid = true;
+    	try {
+    		response = uploadUrl(url);
+    		isValid = true;
+    		
+    	} catch (IOException e) {
+			isValid = false;
+    	}
+    	
+    	return isValid;
+    }
+
+    public boolean changeWeight(String newWeight) throws UnsupportedEncodingException{
+    	String url="http://hello-zhaoyang-udacity.appspot.com/users";
+    	url+="?command=setting";
+    	url+="&userid="+URLEncoder.encode(Long.toString(UserManager.getUserManager(context).getLocalUser().getId()),"UTF-8");
+    	url+="&colum=weight";
+    	url+="&newvalue="+URLEncoder.encode(newWeight,"UTF-8");
+
+    	String response = "ERROR";
+    	boolean isValid = true;
+    	try {
+    		response = uploadUrl(url);
+    		isValid = true;
+    		
+    	} catch (IOException e) {
+			isValid = false;
+    	}
+    	
+    	return isValid;
+    }
     
+    public boolean changeSex(String newSex) throws UnsupportedEncodingException{
+    	String url="http://hello-zhaoyang-udacity.appspot.com/users";
+    	url+="?command=setting";
+    	url+="&userid="+URLEncoder.encode(Long.toString(UserManager.getUserManager(context).getLocalUser().getId()),"UTF-8");
+    	url+="&colum=sex";
+    	url+="&newvalue="+URLEncoder.encode(newSex,"UTF-8");
+
+    	String response = "ERROR";
+    	boolean isValid = true;
+    	try {
+    		response = uploadUrl(url);
+    		isValid = true;
+    		
+    	} catch (IOException e) {
+			isValid = false;
+    	}
+    	
+    	return isValid;
+    }
+    
+    public boolean changeCountry(String newCountry) throws UnsupportedEncodingException{
+    	String url="http://hello-zhaoyang-udacity.appspot.com/users";
+    	url+="?command=setting";
+    	url+="&userid="+URLEncoder.encode(Long.toString(UserManager.getUserManager(context).getLocalUser().getId()),"UTF-8");
+    	url+="&colum=country";
+    	url+="&newvalue="+URLEncoder.encode(newCountry,"UTF-8");
+
+    	String response = "ERROR";
+    	boolean isValid = true;
+    	try {
+    		response = uploadUrl(url);
+    		isValid = true;
+    		
+    	} catch (IOException e) {
+			isValid = false;
+    	}
+    	
+    	return isValid;
+    }
+    
+    public boolean changePhotourl(String newPhotourl) throws UnsupportedEncodingException{
+    	String url="http://hello-zhaoyang-udacity.appspot.com/users";
+    	url+="?command=setting";
+    	url+="&userid="+URLEncoder.encode(Long.toString(UserManager.getUserManager(context).getLocalUser().getId()),"UTF-8");
+    	url+="&colum=photourl";
+    	url+="&newvalue="+URLEncoder.encode(newPhotourl,"UTF-8");
+
+    	String response = "ERROR";
+    	boolean isValid = true;
+    	try {
+    		response = uploadUrl(url);
+    		isValid = true;
+    		
+    	} catch (IOException e) {
+			isValid = false;
+    	}
+    	
+    	return isValid;
+    }
+    
+    public ArrayList<User> loginServer(String userid){
+    	String url = "http://hello-zhaoyang-udacity.appspot.com/users";
+    	url+="?command=login";
+    	try {
+			url+="&userid="+URLEncoder.encode(userid,"UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+    	
+    	String response = "ERROR";
+    	try {
+    		response = uploadUrl(url);
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    	
+    	return parseUserXML(response);
+    	
+    }
+    /*
+     * COMMAND REQ- USER DB
+     * 
+     * command = signup
+     * 		userid	-- unique
+     * 		age
+     * 		weight
+     * 		email
+     * 		sex
+     * 		country
+     * 		photourl
+     * 		password
+     * 		
+     * 		I don't need to check for user exists
+     * 
+     * 		succesful response -- OK USER HAS BEEN CREATED
+     * 
+     * command = login
+     * 		userid
+     * 		password
+     * 
+     * 		returns json file
+     * 
+     * 
+     * command = setting 
+     * 
+     * 		(ALLOWS FOR CHANGING ASPECTS OF EXISTING USER PROFILE)
+     * 
+     * 		userid
+     * 		colum
+     * 			age
+     * 			weight
+     * 			sex
+     * 			country
+     * 			photourl
+     * 		newvalue
+     * 		
+     * command = winehistory
+     * 		userid
+     * 		
+     * 		returns jsonfile
+     * 
+     * command = drink
+     * 		userid
+     * 		winecode
+     * 
+     * command = clearhistory
+     * 		userid
+     * 
+     * 		clears entire wine history
+     * 
+     * 
+     * hello-zhaoyang-udacity.appspot.com/
+     * 										winehistory
+     * 											GET
+     * 												SUPPORTS RAW QUERY
+     * 											POST
+     * 										user
+     * 											GET
+     * 											POST
+     */	
+    
+    
+
     public ArrayList<Wine> getWineByQuery(String query){			//Tomas method
     	String apiKey = "ra4c57ui7tkz3knjur913q2ubeekm9dnoulmu9j40lmrehjy";
     	String searchTerm = query;
@@ -530,7 +835,6 @@ public class DAO {
     	try {
     		response=new DownloadWebpageText().downloadUrl(snoothUrl);
     	} catch (IOException e) {
-    		// TODO Auto-generated catch block
     		e.printStackTrace();
     	}
 
@@ -539,62 +843,6 @@ public class DAO {
     	return thiswines;
     }
 
-    public boolean setUserEmail(String userName, String newEmail) {
-        /**Cursor cursor = userDataBase.query(UserSQLiteHelper.TABLE_USERS,
-         allColumnsforuser, UserSQLiteHelper.COLUMN_NAME + " = \"" + userName+ "\"", null, null, null, null);
-
-         if(cursor.moveToFirst()){
-         User newUser = cursorToUser(cursor);
-         cursor.close();
-         return newUser;
-         }else{
-         return null;
-         }**/
-        ContentValues arg = new ContentValues();
-        arg.put("email", newEmail);
-        int num = userDataBase.update(UserSQLiteHelper.TABLE_USERS, arg, "name=?", new String[]{userName});
-        if (num == 0) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    public boolean setUserPassWord(String password) {
-        return false;
-    }
-
-    public boolean setUserWeight(float weight) {
-        return false;
-    }
-
-    public boolean setUserAge(int age) {
-        return false;
-    }
-
-    public boolean setUserSex(String sex) {
-        return false;
-    }
-
-    public boolean setUserCountry(String country) {
-        return false;
-    }
-
-    public boolean setUserPhoto(String url) {
-        return false;
-    }
-
-    public boolean setUserName(String email) {
-        return false;
-    }
-
-    public boolean setUserComments(String comment) {
-        return false;
-    }
-
-    public boolean verify(String username, String password) {
-        return false;
-    }
     
 //    "WHERE winecode = 'wine' LIMIT 5"
 //     How to use rawQuery
@@ -626,12 +874,23 @@ public class DAO {
 		//response=new DownloadWebpageText().execute(url);		//May cause issues
     	try {
 			response= downloadUrl(url);
-			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     	return parseComments(response);
+    }
+    
+    public void getUserFromDB(String winecode, String user_id,String comment) throws UnsupportedEncodingException{
+    	String url="http://hello-zhaoyang-udacity.appspot.com/comments";
+    	url+="?wine="+URLEncoder.encode(winecode,"UTF-8");
+    	url+="&user="+URLEncoder.encode(user_id,"UTF-8");
+    	url+="&comment="+URLEncoder.encode(comment,"UTF-8");
+    	String response = "ERROR";
+    	try {
+    		response = uploadUrl(url);
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
     }
     
     //.getCommentsByQuery("WHERE winecode = '"+currentWine.getCode()+"');
@@ -639,7 +898,6 @@ public class DAO {
     // Google Database
     
     private ArrayList<Comment> parseComments(String response) {
-    	// TODO Auto-generated method stub
     	JSONArray winesJSON = null;
     	ArrayList<Comment> thisComments=new ArrayList<Comment>();
     	// Log.i("TRY",preParsed);
@@ -676,23 +934,34 @@ public class DAO {
     	try {
     		URL url = new URL(myurl);
     		URI uri = null;
+    		
+    		
+    		
     		try {
     			uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
     		} catch (URISyntaxException e) {
-    			// TODO Auto-generated catch block
     			e.printStackTrace();
     		}
+    		
+
     		url = uri.toURL();
+    		
+
     		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
     		conn.setReadTimeout(10000 /* milliseconds */);
     		conn.setConnectTimeout(15000 /* milliseconds */);
     		conn.setRequestMethod("POST");
     		conn.setDoInput(true);
     		conn.connect();
-    		int response = conn.getResponseCode();
     		// Log.e("DEBUG", "The response is: " + response);
+    		
+
+    		
     		is = conn.getInputStream();
 
+	    	Log.e("INSIDE","HERE");	
+
+    		
     		String contentAsString = new DownloadWebpageText().readIt(is);
     		return contentAsString;
 
@@ -700,6 +969,7 @@ public class DAO {
     }
     private String downloadUrl(String myurl) throws IOException {
     	InputStream is = null;
+    	Log.e("DAO.java/downloadUrl","MADE IT");
     	try {
     		URL url = new URL(myurl);
     		URI uri = null;
@@ -716,7 +986,6 @@ public class DAO {
     		conn.setRequestMethod("GET");
     		conn.setDoInput(true);
     		conn.connect();
-    		int response = conn.getResponseCode();
     		// Log.e("DEBUG", "The response is: " + response);
     		is = conn.getInputStream();
 
@@ -730,14 +999,12 @@ public class DAO {
     private class DownloadWebpageText {
         private static final String DEBUG_TAG = "HttpExample";
 
-        protected String execute(String... urls) {
+        @SuppressWarnings("finally")
+		protected String execute(String... urls) {
         	String fetchResult = "";
             try {
                 fetchResult = downloadUrl(urls[0]);
-            	//return fetchResult;
-
             } catch (IOException e) {
-                Log.e("DEBUG", "Unable to retrieve web page. URL may be invalid.");
                 fetchResult = "Unable to retrieve web page. URL may be invalid.";
             }
             finally{
@@ -745,7 +1012,8 @@ public class DAO {
             }
         }
 
-        private String downloadUrl(String myurl) throws IOException {
+        @SuppressWarnings("finally")
+		private String downloadUrl(String myurl) throws IOException {
             InputStream is = null;
             String fetchResult = "";
             try {
@@ -763,10 +1031,7 @@ public class DAO {
                 fetchResult = readIt(is);
 
             } finally {
-                if (is != null) {
-                    is.close();
-                }
-                
+                if (is != null) is.close();
                 return fetchResult;
             }
         }
@@ -778,6 +1043,7 @@ public class DAO {
             String line;
 
             while ((line = reader.readLine()) != null) {
+            	Log.e("DEBUG_DAO",line);
                 sb.append(line + "\n");
             }
             reader.close();

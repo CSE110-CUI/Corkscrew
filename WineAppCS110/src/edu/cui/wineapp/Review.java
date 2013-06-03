@@ -4,12 +4,12 @@ import java.io.Serializable;
 
 public class Review implements Serializable{
 	
-	private String name;
-	private float rating;
-	private String body;
-	private int date;
-	private String lang;
-	private int source;
+	private String name; //want
+	private float rating; //want
+	private String body; //want
+	private int date; //want
+	private String lang; //NOPE
+	private int source; //Pro Review!
 	
 	public Review(String name, float rating, String body, int date,
 			String lang, int source) {

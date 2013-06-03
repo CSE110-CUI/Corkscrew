@@ -23,11 +23,17 @@ public class WineManager {
 			return dao.downloadWineByName(name);
 		}
 		
-		public DetailedWine downloadDetailedWine(Wine passedWine){
-			return dao.downloadDetailedWine(passedWine.getCode());
+		public DetailedWine downloadDetailedWine(String passedWine){
+			//Log.e("WineManager.java/downloadDetailedWine","passedWine: "+passedWine.getName());
+			//GETS FROM LOCAL DATABASE ONLY -- IF YOU HAVE A PROBLEM, REMMEBER THAT
+			return dao.downloadDetailedWine(passedWine);
 			//DetailedWine dWine = dao.downloadDetailedWine(passedWine.getCode());
 			//Log.e("WineManager.java/downloadDetailedWine","Reviews Array size = "+dWine.getReviews().size());
 			//return dWine;
+		}
+		
+		public ArrayList<Wine> fetchAllWines(){
+			return dao.getAllWinesInwineDataBase();
 		}
 		
 		public Wine getWineById(long wineId){

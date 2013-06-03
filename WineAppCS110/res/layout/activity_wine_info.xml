@@ -74,7 +74,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textview_rating"
-        android:gravity="center_horizontal" />
+        android:gravity="center_horizontal" 
+        
+        
+        />
+    <!--  style="@style/MyTabPageIndicator" -->
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"

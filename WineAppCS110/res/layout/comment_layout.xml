@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <!-- User Picture -->
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="48px"
+        android:layout_height="48px"
+        android:layout_marginLeft="4px"
+        android:layout_marginRight="10px"
+    	android:layout_marginTop="10px"
+    	android:layout_marginBottom="10px"
+    	android:src="@drawable/ic_launcher">
+    </ImageView>
+
+    <!-- Username -->
+        <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/comment"
+        android:layout_alignParentTop="true"
+        android:text="@+id/name"
+        android:textColor="#33b5e5"
+        android:textSize="20px"
+        android:textStyle="bold" />
+    
+    <!-- Time of Post -->
+    <!-- android:text="@+id/time" -->
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/comment"
+        android:layout_alignBottom="@+id/comment"
+        android:layout_alignParentRight="true"
+        android:text="\t6 JUN 2013"
+        android:textColor="#7b7474"
+        android:textSize="14px" />
+    
+    <!-- User Comment -->
+    <TextView
+        android:id="@+id/comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name"
+        android:layout_toLeftOf="@+id/time"
+        android:layout_toRightOf="@+id/icon"
+        android:text="Henshin-a-go-go, baby! Let&apos;s go Six Machine! Viewtiful! >:P"
+        android:textColor="#ffffff"
+        android:textSize="16px" />
+
+    <!-- android:text="@+id/comment" -->
+
+
+</RelativeLayout>

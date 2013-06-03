@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="6dp" >
+
+    <!-- Wine Title -->
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" >
+
+        <TextView
+            android:id="@+id/title"
+            style="@style/CardTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.68"
+            android:text="Cabernet Sauvignon"
+            android:paddingBottom="8dp" 
+            android:scrollHorizontally="true"
+			android:ellipsize="end" 
+			android:maxLines="1"
+            />
+
+        <TextView
+            android:id="@+id/type"
+            style="@style/CardText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="R | W" />
+        
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/linearLayout1"
+        android:layout_marginTop="25dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        >
+
+            <!--  android:padding="10dp"--> 
+    
+    
+        <TextView
+            android:id="@+id/rank"
+            style="@style/CardText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="87%"
+            android:textColor="#33b5e5"
+            android:textStyle="bold"
+            android:layout_marginRight="30dp"/>
+        
+        <TextView
+            android:id="@+id/region"
+            style="@style/CardText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="France"
+            android:textSize="16px"
+            android:layout_marginRight="10dp" />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="1dip"
+            android:layout_height="fill_parent"
+            android:layout_marginRight="10dp"
+            android:background="#d5d5d5" />
+
+        <TextView
+            android:id="@+id/vintage"
+            style="@style/CardText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/view1"
+            android:layout_alignParentRight="true"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="1982" 
+            android:textSize="16px"
+            android:layout_marginRight="10dp" />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="1dip"
+            android:layout_height="fill_parent"
+            android:layout_alignBottom="@+id/view1"
+            android:layout_alignTop="@+id/region"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/region"
+            android:background="#d5d5d5" />
+
+        <TextView
+            android:id="@+id/price"
+            style="@style/CardText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="$47" 
+            android:textSize="16px"
+            android:layout_marginRight="10dp" />
+        
+        <View
+            android:id="@+id/view2"
+            android:layout_width="1dip"
+            android:layout_height="fill_parent"
+            android:layout_alignBottom="@+id/view1"
+            android:layout_alignTop="@+id/region"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/region"
+            android:background="#d5d5d5" />
+
+        <TextView
+            android:id="@+id/winery"
+            style="@style/CardText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Orfila"
+            android:textSize="16px"
+            android:layout_marginRight="10dp"/>
+
+    </LinearLayout>
+</RelativeLayout>
