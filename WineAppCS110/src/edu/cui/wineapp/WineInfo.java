@@ -1,5 +1,10 @@
 package edu.cui.wineapp;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,12 +25,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-
 import com.viewpagerindicator.TabPageIndicator;
+
+import edu.cui.wineapp.Controllers.UserManager;
+import edu.cui.wineapp.Models.Comment;
+import edu.cui.wineapp.Models.DetailedWine;
+import edu.cui.wineapp.Models.Food;
+import edu.cui.wineapp.Models.Wine;
 
 public class WineInfo extends FragmentActivity {
 

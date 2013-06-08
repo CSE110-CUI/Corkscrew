@@ -11,14 +11,18 @@
         android:orientation="vertical" 
                 android:background="@drawable/grey_background_pattern">
         
-
+<!--  
         <TextView
             android:id="@+id/textview_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Name"
             android:textAppearance="?android:attr/textAppearanceLarge" />
-
+-->
+<com.fima.cardsui.views.CardUI
+            android:id="@+id/cardName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
         <SearchView
             android:id="@+id/searchView1"
             android:layout_width="match_parent"

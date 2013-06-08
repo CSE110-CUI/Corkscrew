@@ -19,6 +19,9 @@ import java.util.ArrayList;
 
 import com.fima.cardsui.views.CardUI;
 
+import edu.cui.wineapp.Models.DisplaySearchCard;
+import edu.cui.wineapp.Models.Wine;
+
 public class DisplaySearchActivity extends Activity {
 
 
@@ -51,7 +54,7 @@ public class DisplaySearchActivity extends Activity {
   */      
         for(final Wine currWine:wines) {
 			
-			DisplaySearchCard currentCard = new DisplaySearchCard(currWine.getName(),"00",currWine.getRegion(),currWine.getVintage(), currWine.getType(), currWine.getWinery());
+			DisplaySearchCard currentCard = new DisplaySearchCard(currWine.getName(),String.valueOf(currWine.getSnoothrank()),currWine.getRegion(),currWine.getVintage(), currWine.getType(), currWine.getWinery(),String.valueOf(currWine.getPrice()));
 			
 			//wineName = currWine.getCode();
 			

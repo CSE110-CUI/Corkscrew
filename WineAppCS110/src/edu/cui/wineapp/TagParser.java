@@ -1,5 +1,6 @@
 package edu.cui.wineapp;
 
+import edu.cui.wineapp.Models.DetailedWine;
 import android.util.Log;
 
 public class TagParser {

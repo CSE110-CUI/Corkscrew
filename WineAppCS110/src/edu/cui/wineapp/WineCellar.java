@@ -3,13 +3,15 @@ package edu.cui.wineapp;
 
 import java.util.ArrayList;
 
-import com.origamilabs.library.views.StaggeredGridView;
-
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+
+import com.origamilabs.library.views.StaggeredGridView;
+
+import edu.cui.wineapp.Models.Wine;
 
 public class WineCellar extends Activity {
 

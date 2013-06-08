@@ -1,17 +1,21 @@
-package edu.cui.wineapp;
+package edu.cui.wineapp.Controllers;
 
 import android.content.Context;
 
 import java.util.ArrayList;
 
+import edu.cui.wineapp.DAOBU;
+import edu.cui.wineapp.Models.Food;
+import edu.cui.wineapp.Models.Wine;
+
 public class FoodManager {
     private static Context context = null;
-    private static DAO dao = null;
+    private static DAOBU dao = null;
     //private static WineManager ourInstance = new WineManager();
 
     public FoodManager(Context context) {
         this.context = context;
-        this.dao = DAO.getDAO(context);
+        this.dao = DAOBU.getDAO(context);
     }
 
     public static FoodManager getFoodManager(Context context) {

@@ -11,6 +11,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import edu.cui.wineapp.Controllers.UserManager;
+import edu.cui.wineapp.Models.Comment;
+import edu.cui.wineapp.Models.DetailedWine;
+import edu.cui.wineapp.Models.Food;
+import edu.cui.wineapp.Models.Review;
+import edu.cui.wineapp.Models.User;
+import edu.cui.wineapp.Models.Wine;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URI;

@@ -5,8 +5,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import edu.cui.wineapp.Models.DetailedWine;
 
 public class WineOverviewFragment extends Fragment {
     public static final String ARG_WINE = "currWine";

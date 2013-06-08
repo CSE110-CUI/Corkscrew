@@ -1,38 +1,33 @@
-package edu.cui.wineapp;
+package edu.cui.wineapp.Models;
 
+import edu.cui.wineapp.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-import com.fima.cardsui.objects.Card;
-
-public class DisplaySearchCard extends Card {
+public class CurrentlyDrinkingCard extends MyCard {
+	
 	String rank;
 	String region;
 	String vintage;
 	String color;
 	String winery;
-
-	public DisplaySearchCard(String title,String rank, String region, 
-			String vintage, String color, String winery){
-		super(title);
-		this.rank = rank;
-		this.region = region;
-		this.color = color;
-		this.vintage = vintage;
-		this.winery = winery;
-		//Name
-		//SnoothRank
-		//Region
-		//Vintage
-		//Color (orType?)
-		//Winery
+	String price;
+	
+	public CurrentlyDrinkingCard(Wine curWine) {
+		super(curWine.getName());
+		this.rank = String.valueOf(curWine.getSnoothrank());
+		this.region = curWine.getRegion();
+		this.color = curWine.getType();
+		this.vintage = curWine.getVintage();
+		this.winery = curWine.getWinery();
+		this.price = String.valueOf(curWine.getPrice());
 	}
 
 	@Override
 	public View getCardContent(Context context) {
-		View view = LayoutInflater.from(context).inflate(R.layout.display_wine_card_basic, null);
+		View view = LayoutInflater.from(context).inflate(R.layout.card_currentlydrinking, null);
 
 		((TextView) view.findViewById(R.id.title)).setText(title);
 		((TextView) view.findViewById(R.id.region)).setText(region);
@@ -40,13 +35,12 @@ public class DisplaySearchCard extends Card {
 		((TextView) view.findViewById(R.id.type)).setText(color);
 		((TextView) view.findViewById(R.id.winery)).setText(winery);
 		((TextView) view.findViewById(R.id.rank)).setText(rank);
+		((TextView) view.findViewById(R.id.price)).setText(price);
 		
 
 		
 		return view;
 	}
 
-	
-	
-	
+
 }

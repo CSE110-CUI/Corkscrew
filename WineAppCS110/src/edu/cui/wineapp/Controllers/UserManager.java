@@ -1,43 +1,31 @@
-package edu.cui.wineapp;
+package edu.cui.wineapp.Controllers;
 
-import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-import java.security.acl.LastOwnerException;
 import java.util.ArrayList;
 
 import android.content.Context;
 import android.text.format.Time;
-import android.util.Log;
+import edu.cui.wineapp.BAC;
+import edu.cui.wineapp.DAOBU;
+import edu.cui.wineapp.WineDAO;
+import edu.cui.wineapp.Models.Comment;
+import edu.cui.wineapp.Models.User;
+import edu.cui.wineapp.Models.Wine;
 
 public class UserManager{
 	private static Context context = null;
-	private static DAO dao = null; 
+	private static WineDAO WineDao = null; 
+	private static DAOBU dao = null;
 	private static User localUser;
 	//private static UserManager ourInstance = new UserManager();
 	private UserManager(Context context){
 		this.context = context;
-		dao=DAO.getDAO(context);
+		dao=DAOBU.getDAO(context);
 	}
 	
 	public static UserManager getUserManager(Context context){
 		return new UserManager(context);
 	}
-	
-
-	
-	/*
-	public static boolean createUser(User user, String password){
-/*		if(dao.getUserByName(user.getName())!=null){
-			return false;
-		}else{
-			Log.e("ERROR","ACCOUNT CREATED");
-			dao.createUser(user,password);
-			return true;
-		}
-		*/
-	//}
-//*/
-	
 
 	public static boolean deleteUser(String name){
 		return dao.deleteUser(name);
@@ -90,7 +78,7 @@ public class UserManager{
 		Time currentTime = new Time();
 		currentTime.setToNow();
 		
-		dao.createWine(basicWine);
+		WineDao.getDAO(context).createWine(basicWine);
 		
 		localUser.setCurrentWine(basicWine);
 		

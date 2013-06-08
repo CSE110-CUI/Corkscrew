@@ -1,4 +1,4 @@
-package edu.cui.wineapp;
+package edu.cui.wineapp.Models;
 
 public class Comment {
 	private String winecode;

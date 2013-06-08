@@ -1,9 +1,11 @@
-package edu.cui.wineapp;
+package edu.cui.wineapp.Models;
 
 import android.content.Context;
 import android.util.Log;
 
 import java.util.ArrayList;
+
+import edu.cui.wineapp.Controllers.FoodManager;
 
 public class Wine {
     private long id;

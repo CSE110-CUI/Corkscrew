@@ -1,4 +1,4 @@
-package edu.cui.wineapp;
+package edu.cui.wineapp.Models;
 
 import java.util.ArrayList;
 
@@ -16,7 +16,8 @@ public class User {
 	private ArrayList<Wine> drinkedWines=null;
 	private ArrayList<String> comments=null;
 	private long id;
-	private String currentWine = "To Get Started, Search a Wine Below!";
+	//private String currentWine = "To Get Started, Search a Wine Below!";
+	private Wine currentWine = null;
 	private Time lastDrinkTime = null;
 	private double BAC;
 	
@@ -91,11 +92,11 @@ public class User {
 		return dao.setUserComments(comment);
 	}
 **/
-	public String getCurrentWine() {
+	public Wine getCurrentWine() {
 		return currentWine;
 	}
 	public void setCurrentWine(Wine basicWine) {
-		this.currentWine = basicWine.getName();
+		this.currentWine = basicWine;
 	}
 	public Time getLastDrinkTime() {
 		return lastDrinkTime;

@@ -3,7 +3,8 @@ package edu.cui.wineapp;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.util.Log;
+import edu.cui.wineapp.Models.DetailedWine;
+import edu.cui.wineapp.Models.Wine;
 
 public class WineManager {
 		private static Context context = null;
@@ -41,6 +42,7 @@ public class WineManager {
 		}
 		
 		public ArrayList<Wine> getWineByName(String name){
+			//DAO dao = new
 			return dao.getWineByName(name);
 		}
 		

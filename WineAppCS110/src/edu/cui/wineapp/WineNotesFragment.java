@@ -7,20 +7,20 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
+import edu.cui.wineapp.Controllers.UserManager;
+import edu.cui.wineapp.Models.Comment;
+import edu.cui.wineapp.Models.DetailedWine;
 
 public class WineNotesFragment extends ListFragment {
 	public static final String ARG_WINE = "currWine";

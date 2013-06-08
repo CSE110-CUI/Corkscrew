@@ -36,6 +36,7 @@ public class StaggeredAdapter extends ArrayAdapter<String> {
 			holder = new ViewHolder();
 			holder.imageView = (ScaleImageView) convertView .findViewById(R.id.imageView1);
 			convertView.setTag(holder);
+			
 			/*
 			CardUI mCardView;
 			mCardView = (CardUI) convertView.findViewById(R.id.cardsview);

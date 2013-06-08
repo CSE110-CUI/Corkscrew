@@ -1,4 +1,4 @@
-package edu.cui.wineapp;
+package edu.cui.wineapp.Models;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.fima.cardsui.objects.Card;
+
+import edu.cui.wineapp.R;
 
 public class MyCard extends Card {
 
