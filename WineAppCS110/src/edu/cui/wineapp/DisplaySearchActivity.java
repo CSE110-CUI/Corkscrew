@@ -1,58 +1,53 @@
+
 package edu.cui.wineapp;
 
 import android.app.Activity;
-import android.app.ListActivity;
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.SearchView.OnCloseListener;
-
-import java.util.ArrayList;
-
-import com.fima.cardsui.views.CardUI;
-
-import edu.cui.wineapp.Models.DisplaySearchCard;
-import edu.cui.wineapp.Models.Wine;
+import edu.cui.wineapp.controllers.DisplaySearchController;
+import edu.cui.wineapp.views.DisplaySearchView;
 
 public class DisplaySearchActivity extends Activity {
 
 
-	private ArrayList<Wine> wines;
-	private ArrayList<String> wineNames;
-	CardUI mCardView;
+	//private ArrayList<Wine> wines;
+	//private ArrayList<String> wineNames;
+	public static DisplaySearchActivity disSearchAct;
+	
+	//CardUI mCardView;//
     Bundle bundle = new Bundle();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_search);
+        disSearchAct = this;
+        final DisplaySearchView dSearchView = new DisplaySearchView(this);
+        final DisplaySearchController dSearchController = new DisplaySearchController(this, dSearchView);
         
-        wineNames = new ArrayList<String>();
+        /*wineNames = new ArrayList<String>();
         wines = new ArrayList<Wine>();
+      
+        
 
 		String parseText = getIntent().getExtras().getString("passedSearchTerm");
 
-		mCardView = (CardUI) findViewById(R.id.cardsview);
-		mCardView.setSwipeable(false);
+		//mCardView = (CardUI) findViewById(R.id.cardsview);
+		dSearchView.getmCardView().setSwipeable(false);*/
 
         //ListView mListView = (ListView) findViewById(android.R.id.list);
 
-        WineManager wManager = new WineManager(this);
+/*        WineManager wManager = new WineManager(this);
         wines = wManager.downloadWineByName(parseText);
+ */
 /*
         for (Wine currWine : wines) {
 			mCardView.addCard(new MyCard(currWine.getName()));
         }
   */      
-        for(final Wine currWine:wines) {
+/*        for(final Wine currWine:wines) {
 			
 			DisplaySearchCard currentCard = new DisplaySearchCard(currWine.getName(),String.valueOf(currWine.getSnoothrank()),currWine.getRegion(),currWine.getVintage(), currWine.getType(), currWine.getWinery(),String.valueOf(currWine.getPrice()));
 			
@@ -68,11 +63,11 @@ public class DisplaySearchActivity extends Activity {
 				}
 			});
 			
-			mCardView.addCard(currentCard);
+			dSearchView.getmCardView().addCard(currentCard);
 
 		}
-		mCardView.refresh();
-        
+		dSearchView.getmCardView().refresh();
+*/        
 	}
 	
 	@Override
@@ -80,16 +75,6 @@ public class DisplaySearchActivity extends Activity {
 	    getMenuInflater().inflate(R.menu.search_menu, menu);
 	    SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
 	    // Configure the search info and add any event listeners
-	    
-	    searchView.setOnCloseListener(new OnCloseListener(){
-
-			@Override
-			public boolean onClose() {
-				// TODO Auto-generated method stub
-				return false;
-			}
-	    	
-	    });
 
 	    return super.onCreateOptionsMenu(menu);
 	}

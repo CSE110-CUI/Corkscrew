@@ -2,6 +2,8 @@ package edu.cui.wineapp;
 
 import java.sql.Date;
 
+import edu.cui.wineapp.models.BAC;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.text.format.Time;

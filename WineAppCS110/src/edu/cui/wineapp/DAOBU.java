@@ -9,11 +9,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import edu.cui.wineapp.Controllers.UserManager;
-import edu.cui.wineapp.Models.Comment;
-import edu.cui.wineapp.Models.DetailedWine;
-import edu.cui.wineapp.Models.Food;
-import edu.cui.wineapp.Models.User;
+import edu.cui.wineapp.models.Comment;
+import edu.cui.wineapp.models.DetailedWine;
+import edu.cui.wineapp.models.Food;
+import edu.cui.wineapp.models.User;
+import edu.cui.wineapp.models.managers.UserManager;
 
 import java.io.*;
 import java.net.HttpURLConnection;

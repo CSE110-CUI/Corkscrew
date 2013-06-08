@@ -39,12 +39,12 @@
             android:label="@string/title_activity_display_search" >
         </activity>
         <activity
-            android:name="edu.cui.wineapp.WineInfo"
+            android:name="edu.cui.wineapp.WineInfoActivity"
             android:label="@string/title_activity_wine_info" >
             	android:theme="@style/Theme.MyTheme"
         </activity>
         <activity
-            android:name="edu.cui.wineapp.WineCellar"
+            android:name="edu.cui.wineapp.WineCellarActivity"
             android:label="@string/title_activity_wine_cellar" >
         </activity>
     </application>

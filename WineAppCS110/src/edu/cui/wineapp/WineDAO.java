@@ -23,10 +23,10 @@ import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import edu.cui.wineapp.DAOBU.DownloadWebpageText;
-import edu.cui.wineapp.Models.DetailedWine;
-import edu.cui.wineapp.Models.Food;
-import edu.cui.wineapp.Models.Review;
-import edu.cui.wineapp.Models.Wine;
+import edu.cui.wineapp.models.DetailedWine;
+import edu.cui.wineapp.models.Food;
+import edu.cui.wineapp.models.Review;
+import edu.cui.wineapp.models.Wine;
 
 public class WineDAO {
 

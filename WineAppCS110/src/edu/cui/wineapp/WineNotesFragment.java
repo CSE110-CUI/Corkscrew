@@ -18,9 +18,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
-import edu.cui.wineapp.Controllers.UserManager;
-import edu.cui.wineapp.Models.Comment;
-import edu.cui.wineapp.Models.DetailedWine;
+import edu.cui.wineapp.models.Comment;
+import edu.cui.wineapp.models.DetailedWine;
+import edu.cui.wineapp.models.managers.UserManager;
+import edu.cui.wineapp.models.managers.WineInfoManager;
 
 public class WineNotesFragment extends ListFragment {
 	public static final String ARG_WINE = "currWine";
@@ -40,7 +41,8 @@ public class WineNotesFragment extends ListFragment {
 
 		contextForDialog = getActivity().getParent();
 		
-		dWine = (DetailedWine) getArguments().getSerializable(ARG_WINE);
+		//dWine = (DetailedWine) getArguments().getSerializable(ARG_WINE);
+		dWine = WineInfoManager.getDetailedWine();
 
 		updateComments();
 

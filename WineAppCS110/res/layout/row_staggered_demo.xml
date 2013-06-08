@@ -3,7 +3,7 @@
     android:layout_height="fill_parent" 
     android:layout_weight = "0.7">
 
-    <edu.cui.wineapp.ScaleImageView
+    <edu.cui.wineapp.views.ScaleImageView
         android:id="@+id/imageView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -11,8 +11,10 @@ import android.view.ViewGroup;
 
 import com.fima.cardsui.views.CardUI;
 
-import edu.cui.wineapp.Models.DetailedWine;
-import edu.cui.wineapp.Models.Review;
+import edu.cui.wineapp.models.DetailedWine;
+import edu.cui.wineapp.models.Review;
+import edu.cui.wineapp.models.ReviewCard;
+import edu.cui.wineapp.models.managers.WineInfoManager;
 
 public class WineReviewFragment extends Fragment {
     public static final String ARG_WINE = "currWine";
@@ -26,8 +28,8 @@ public class WineReviewFragment extends Fragment {
     	ArrayList<String> reviewBodies = new ArrayList<String>();
     	
         View rootView = inflater.inflate(R.layout.fragment_wine_info_reviews, container, false);
-        DetailedWine dWine = (DetailedWine)getArguments().getSerializable(ARG_WINE);
-        
+        DetailedWine dWine = WineInfoManager.getDetailedWine();
+        		
         mCardView = (CardUI) rootView.findViewById(R.id.cardsview);
 		mCardView.setSwipeable(false);
         

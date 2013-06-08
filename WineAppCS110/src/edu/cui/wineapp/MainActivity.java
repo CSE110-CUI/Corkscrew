@@ -1,5 +1,8 @@
 package edu.cui.wineapp;
 
+import edu.cui.wineapp.controllers.MainActivityController;
+import edu.cui.wineapp.models.managers.MainActivityManager;
+import edu.cui.wineapp.views.MainActivityView;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -7,7 +10,7 @@ import android.view.Menu;
 
 public class MainActivity extends Activity {
 
-	static MainActivity mainActivity;
+	public static MainActivity mainActivity;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
