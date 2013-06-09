@@ -3,10 +3,10 @@ package edu.cui.wineapp.models.managers;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import edu.cui.wineapp.WineFoodFragment;
-import edu.cui.wineapp.WineNotesFragment;
-import edu.cui.wineapp.WineOverviewFragment;
-import edu.cui.wineapp.WineReviewFragment;
+import edu.cui.wineapp.fragments.WineFoodFragment;
+import edu.cui.wineapp.fragments.WineNotesFragment;
+import edu.cui.wineapp.fragments.WineOverviewFragment;
+import edu.cui.wineapp.fragments.WineReviewFragment;
 
 public class FragmentCollectionManager extends FragmentPagerAdapter {
 	public FragmentCollectionManager(FragmentManager fm) {

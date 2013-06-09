@@ -10,9 +10,9 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import edu.cui.wineapp.FizzGameUIThread;
 import edu.cui.wineapp.R;
-import edu.cui.wineapp.Sizes;
+import edu.cui.wineapp.models.FizzGameUIThread;
+import edu.cui.wineapp.models.Sizes;
 
 public class AndroObjectView extends SurfaceView implements SurfaceHolder.Callback {
 	

@@ -1,4 +1,4 @@
-package edu.cui.wineapp;
+package edu.cui.wineapp.fragments;
 
 import java.util.ArrayList;
 
@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.fima.cardsui.views.CardUI;
 
+import edu.cui.wineapp.R;
 import edu.cui.wineapp.models.DetailedWine;
 import edu.cui.wineapp.models.MyCard;
 import edu.cui.wineapp.models.Review;

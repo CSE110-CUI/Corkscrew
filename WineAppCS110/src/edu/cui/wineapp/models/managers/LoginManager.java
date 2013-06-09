@@ -1,4 +1,4 @@
-package edu.cui.wineapp.controllers;
+package edu.cui.wineapp.models.managers;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;

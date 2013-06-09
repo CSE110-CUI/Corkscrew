@@ -1,4 +1,4 @@
-package edu.cui.wineapp;
+package edu.cui.wineapp.models;
 
 
 import java.util.List;
@@ -7,7 +7,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.view.SurfaceHolder;
-import android.widget.Toast;
+import edu.cui.wineapp.models.AndroObject;
 
 public class FizzGameUIThread extends Thread {
 
@@ -45,8 +45,7 @@ public class FizzGameUIThread extends Thread {
 				}
 			}
 			draw();
-			// update game state
-			// render state to the screen
+
 		}
 	}
 	

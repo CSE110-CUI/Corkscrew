@@ -1,4 +1,4 @@
-package edu.cui.wineapp;
+package edu.cui.wineapp.fragments;
 
 import java.util.ArrayList;
 
@@ -17,7 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-import android.widget.Toast;
+import edu.cui.wineapp.R;
 import edu.cui.wineapp.models.Comment;
 import edu.cui.wineapp.models.DetailedWine;
 import edu.cui.wineapp.models.managers.UserManager;

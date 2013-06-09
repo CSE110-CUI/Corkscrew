@@ -1,4 +1,4 @@
-package edu.cui.wineapp;
+package edu.cui.wineapp.fragments;
 
 import java.util.ArrayList;
 
@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 
 import com.origamilabs.library.views.StaggeredGridView;
 
+import edu.cui.wineapp.R;
+import edu.cui.wineapp.WineInfoActivity;
 import edu.cui.wineapp.adapters.StaggeredAdapter;
 import edu.cui.wineapp.models.DetailedWine;
 import edu.cui.wineapp.models.Food;

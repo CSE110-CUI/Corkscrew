@@ -1,4 +1,4 @@
-package edu.cui.wineapp;
+package edu.cui.wineapp.models;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

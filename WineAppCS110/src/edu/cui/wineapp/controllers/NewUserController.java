@@ -11,6 +11,7 @@ import android.widget.Toast;
 import edu.cui.wineapp.MainActivity;
 import edu.cui.wineapp.NewUserActivity;
 import edu.cui.wineapp.models.User;
+import edu.cui.wineapp.models.managers.NewUserManager;
 import edu.cui.wineapp.models.managers.UserManager;
 import edu.cui.wineapp.utilities.FormValidation;
 import edu.cui.wineapp.views.NewUserView;

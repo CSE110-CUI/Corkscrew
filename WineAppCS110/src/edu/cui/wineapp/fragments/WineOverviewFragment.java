@@ -1,14 +1,14 @@
-package edu.cui.wineapp;
+package edu.cui.wineapp.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.fima.cardsui.views.CardUI;
 
+import edu.cui.wineapp.R;
 import edu.cui.wineapp.models.DetailedWine;
 import edu.cui.wineapp.models.MyCard;
 import edu.cui.wineapp.models.managers.WineInfoManager;

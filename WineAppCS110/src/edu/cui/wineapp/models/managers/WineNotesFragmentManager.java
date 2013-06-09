@@ -1,4 +1,4 @@
-package edu.cui.wineapp;
+package edu.cui.wineapp.models.managers;
 
 import java.util.ArrayList;
 

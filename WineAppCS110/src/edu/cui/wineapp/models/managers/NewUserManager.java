@@ -1,4 +1,4 @@
-package edu.cui.wineapp.controllers;
+package edu.cui.wineapp.models.managers;
 
 import android.util.Log;
 import edu.cui.wineapp.NewUserActivity;
