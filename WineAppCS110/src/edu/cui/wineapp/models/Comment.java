@@ -22,8 +22,6 @@ public class Comment {
 	public String getWineCode(){
 		return winecode;
 	}
-	//public String getId(){
-	//return id;
-	//}
+
 
 }

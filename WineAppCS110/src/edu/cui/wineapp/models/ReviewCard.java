@@ -19,18 +19,12 @@ public class ReviewCard extends Card {
 
 	public ReviewCard(String name,String source, String rating, 
 			String body){
-		//super(name);
 		this.source = source;
 		this.rating = rating;
 		this.body = body;
 		this.name = name;
 
-		//Name
-		//SnoothRank
-		//Region
-		//Vintage
-		//Color (orType?)
-		//Winery
+
 	}
 
 	@Override
@@ -46,8 +40,7 @@ public class ReviewCard extends Card {
 		}
 		((TextView) view.findViewById(R.id.body)).setText(body);
 		((TextView) view.findViewById(R.id.name)).setText(name);
-//		((TextView) view.findViewById(R.id.winery)).setText(winery);
-	//	((TextView) view.findViewById(R.id.rank)).setText(rank);
+
 		
 
 		

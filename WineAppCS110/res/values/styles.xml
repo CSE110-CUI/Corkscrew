@@ -37,6 +37,13 @@
         <item name="android:textColor">#600017</item>
         
     </style>
+    
+    <style name="BigTextStyle">
+    <item name="android:textSize">50dp</item> 
+</style>
+<style name="MediumTextStyle">
+    <item name="android:textSize">20dp</item> 
+</style>
 
     <!--
                <item name="android:dividerPadding">10dp</item>

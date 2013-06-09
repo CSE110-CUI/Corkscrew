@@ -2,9 +2,12 @@ package edu.cui.wineapp;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import edu.cui.wineapp.controllers.WineCellarController;
+import edu.cui.wineapp.utilities.CheckNetwork;
 import edu.cui.wineapp.views.WineCellarView;
 
 public class WineCellarActivity extends Activity {
@@ -19,6 +22,8 @@ public class WineCellarActivity extends Activity {
 		
 		wineCellar = this;
 		
+        CheckNetwork.isInternetAvailable(getApplicationContext());
+		
 		final WineCellarView wCView = new WineCellarView(this);
 		final WineCellarController wCController = new WineCellarController(this, wCView);
 
@@ -30,5 +35,14 @@ public class WineCellarActivity extends Activity {
 		getMenuInflater().inflate(R.menu.wine_cellar, menu);
 		return true;
 	}
+	
+	 
+	 @Override
+	   public boolean onOptionsItemSelected(MenuItem item) {
+	  Intent i = new Intent(this, SettingsActivity.class);
+	  startActivity(i);
+	  return true;
+	  
+	 }
 
 }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="splash_screen_entries">
+        <item >Choose A Wine</item>
+        <item >Wine History</item>
+    </string-array>
+    <string-array name="splash_screen_values">
+        <item name="0">0</item>
+        <item name="1">1</item>
+        <item name="2">2</item>
+        <item name="3">3</item>
+    </string-array>
+    <string-array name="priority_entries">
+        <item >rating</item>
+        <item >name</item>
+        <item >time</item>
+    </string-array>
+    <string-array name ="glass_size_entries">
+        <item name="1oz">1 oz.</item>
+        <item name="5oz">5 oz.</item>
+        <item name="10oz">10 oz.</item>
+	</string-array>
+	<string-array name = "glass_size_values">
+	    <item name = "1">1</item>
+	    <item name ="5">5</item>
+	    <item name="10">10</item>
+	</string-array>
+	<string-array name="BAC_mode_entries">
+	    <item name="DMV">DMV Formula</item>
+	    <item name="Wildmark">Widemark E. Formula</item>
+	</string-array>
+	<string-array name="BAC_mode_values">
+	    <item name="DMV">DMV</item>
+	    <item name="Wildmark">Wildmark</item>
+	</string-array>
+</resources>

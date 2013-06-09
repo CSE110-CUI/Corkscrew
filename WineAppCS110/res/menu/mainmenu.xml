@@ -4,7 +4,7 @@
         android:id="@+id/action_refresh"
         android:orderInCategory="100"
         android:showAsAction="always"
-        android:icon="@drawable/content_new"
+        android:icon="@drawable/bac_plus"
         android:title="Add Drink"/>
     <item
         android:id="@+id/action_settings"

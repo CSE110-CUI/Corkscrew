@@ -23,18 +23,21 @@ import android.text.format.Time;
 public class BAC {
 
 	/* weight of one ounce of pure alcohol */
-    private final static double oneOunceOfAlcohol = 23.36; // unit -> grams
+	private final static double oneOunceOfAlcohol = 23.36; // unit -> grams
 	private final static double lbsToKg = 2.2046;
-   	private final static double Default_Wine_Percentage = 0.12; // 12%
+	private final static double Default_Wine_Percentage = 0.12; // 12%
 	private final static double elimination_rate = 0.017; 
-	private final static int drink_size = 5; // as in 5 oz		
+	 private static int drink_size = 5; // as in 5 oz  
 	private static boolean conservative_rate_set = false; //can have this form setting
 	private static boolean percentageSet = false; // if we manage to get the percent
-	private static int drink_count = 0; //the globalcounter every time a button is pressed
+	public static int drink_count = 0; //the globalcounter every time a button is pressed
+	public static double finalBAC;
+	 private static boolean DMV_rate_set = false; //can have this form setting
+	public static int dVar = 1;
 	public static  double hour = 1; //should be updated before calculating the BAC 
-	
+
 	private static double Custom_Alcohol_Percentage; //using 12% right now
-	
+
 	/***************************************NOTE*******************************************/
 	/* if we can get he alcohol content percentage just uncommentting the setter
 	 * method below is all it needs to be done, the rest is handled through BAC 
@@ -50,6 +53,8 @@ public class BAC {
 	public static void setHour(double _hour){
 		hour = _hour;
 	}/**
+	
+	
 	private double getHour() {
 		return this.hour;
 	}*/ 
@@ -60,36 +65,45 @@ public class BAC {
 			percentageSet = true;
 		}
 	 */
-	
+
 	/* if you need to set the conservative rate,
 	 * probably set in the setting
 	 */ 	
-	
+
 	public static void incrDrink(){
 		drink_count++;
 	}
+	
+	 public static void setGlassSize(int _size){
+		  drink_size =  _size;
+		 }
+	 
 	public static void decDrink(){
 		if (drink_count >= 1){
 			drink_count--;
 		}
 	}
-	public void setConservative_rate() {
-		this.conservative_rate_set = true;
+	public static void setConservative_rate() {
+		  DMV_rate_set = true;
+		 }
+	public static void unsetConservative_rate() {
+		DMV_rate_set = false;
 	}
+
 	private static double RoundTo2Decimals(double val) {
-       		 DecimalFormat num = new DecimalFormat("###.###");
-    		return Double.valueOf(num.format(val));
+		DecimalFormat num = new DecimalFormat("###.###");
+		return Double.valueOf(num.format(val));
 	}
-	
+
 	public static int calculateHour(Time lastDrink, Time currentTime){
 		return 24*(currentTime.yearDay-lastDrink.yearDay)+currentTime.hour-lastDrink.hour;
 	}
-	
+
 	public static double calculateBAC(int weight, String gender) {
 		double WaterInBody;
 
 		if (gender.toLowerCase().matches("male")) {
-		/* have to convert the weight to KG and
+			/* have to convert the weight to KG and
 		 multiply by the body weight */
 			WaterInBody = (weight/lbsToKg) * 0.58;
 		}else{
@@ -97,11 +111,11 @@ public class BAC {
 		}
 		double alc_in_body = (oneOunceOfAlcohol /(WaterInBody * 1000));
 		/* 
-	 	 * asumming that on average blood is composed of 80.6 % water
-	 	 * calculates Alcohol concentration in blood 
-	 	 * returns the result  as of X grams alcohol per 100 ml of blood
-	 	 * pass the result of CalAlcoholInBody as a parameter 
-	 	 */
+		 * asumming that on average blood is composed of 80.6 % water
+		 * calculates Alcohol concentration in blood 
+		 * returns the result  as of X grams alcohol per 100 ml of blood
+		 * pass the result of CalAlcoholInBody as a parameter 
+		 */
 		double unadjustedBAC = ((alc_in_body * 0.806)*100);
 		double adjustedBAC;
 
@@ -119,7 +133,7 @@ public class BAC {
 		/*returns the final BAC after considering
 		 * the metabolized alcohol
 		 */	
-		double finalBAC;
+		//double finalBAC;
 		if (conservative_rate_set)	{
 			finalBAC = ((adjustedBAC) - (hour * 0.012));
 			if (finalBAC <= 0.00000) { finalBAC = 0; }
@@ -127,9 +141,9 @@ public class BAC {
 			finalBAC = ((adjustedBAC) - (hour * elimination_rate));
 			if (finalBAC <= 0.00000) { finalBAC = 0; }
 		}
-		return RoundTo2Decimals(finalBAC);
+		return RoundTo2Decimals(dVar*finalBAC);
 	}
 }
-		
-	
+
+
 

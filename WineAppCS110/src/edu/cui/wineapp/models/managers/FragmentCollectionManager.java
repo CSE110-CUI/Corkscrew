@@ -1,11 +1,12 @@
 package edu.cui.wineapp.models.managers;
 
-import edu.cui.wineapp.WineNotesFragment;
-import edu.cui.wineapp.WineOverviewFragment;
-import edu.cui.wineapp.WineReviewFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import edu.cui.wineapp.WineFoodFragment;
+import edu.cui.wineapp.WineNotesFragment;
+import edu.cui.wineapp.WineOverviewFragment;
+import edu.cui.wineapp.WineReviewFragment;
 
 public class FragmentCollectionManager extends FragmentPagerAdapter {
 	public FragmentCollectionManager(FragmentManager fm) {
@@ -25,7 +26,7 @@ public class FragmentCollectionManager extends FragmentPagerAdapter {
 		//Reviews
 		case 2: fragment = new WineReviewFragment(); break;
 		//More Info
-		case 3: fragment = new WineOverviewFragment(); break;	
+		case 3: fragment = new WineFoodFragment(); break;	
 		}
 		return fragment;
 	}
@@ -41,7 +42,7 @@ public class FragmentCollectionManager extends FragmentPagerAdapter {
 		case 0:tabTitle = "Overview";break;
 		case 1:tabTitle = "Notes";break;
 		case 2:tabTitle = "Reviews";break;
-		case 3:tabTitle = "More Info";break;
+		case 3:tabTitle = "Food Pairing";break;
 		}
 
 		return tabTitle;

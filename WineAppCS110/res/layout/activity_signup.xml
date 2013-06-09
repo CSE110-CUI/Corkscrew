@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background" >
+
+    <RelativeLayout
+        android:layout_width="530dp"
+        android:layout_height="775dp"
+        android:layout_gravity="center"
+        android:background="@drawable/greenbg"
+        android:gravity="center"
+        android:orientation="horizontal" >
+    <RelativeLayout
+        android:layout_width="515dp"
+        android:layout_height="760dp"
+        android:layout_gravity="center"
+        android:background="#ffffff"
+        android:gravity="center"
+        android:orientation="horizontal" >
+ 
+        <!--  Header Starts-->
+
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="fill_parent"
+            android:layout_height="90dip"
+            android:orientation="horizontal"
+            android:paddingBottom="5dip"
+            android:paddingTop="5dip" >
+             <TextView 
+                android:id="@+id/greeting"
+                 android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#372c24"
+                style="@style/BigTextStyle"
+                android:gravity="center"
+            	android:text="@string/reg_greeting" />
+             
+        <!-- Logo Start
+        <ImageView android:src="@drawable/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"/>
+            Logo Ends -->
+		</LinearLayout>
+        <!--  Header Ends -->
+ 		<LinearLayout
+            android:id="@+id/header2"
+            android:layout_width="fill_parent"
+            android:layout_height="130dip"
+            android:orientation="horizontal"
+            android:layout_below="@id/header"
+            android:paddingBottom="5dip"
+            android:paddingTop="5dip" >
+ 		<TextView 
+                android:id="@+id/greeting2"
+                 android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#372c24"
+                android:gravity="center"
+                style="@style/MediumTextStyle"
+            	android:text="@string/greeting2" />
+ 		</LinearLayout>
+        <!-- Footer Start -->
+
+        <LinearLayout
+            android:id="@+id/footer"
+            android:layout_width="fill_parent"
+            android:layout_height="150dip"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal" >
+        
+		</LinearLayout>
+                   <!-- Place footer next to header to set z-index property to minus value -->
+        <!-- Footer Ends -->
+ 
+        <!-- Login Form -->
+
+         <LinearLayout
+             android:id="@+id/reg_info"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_above="@id/footer"
+             android:layout_below="@id/header2"
+             android:orientation="vertical"
+             android:padding="10dip" >
+
+             <EditText
+                 android:id="@+id/reg_name"
+                 android:layout_width="300dp"
+                 android:layout_height="0dp"
+                 android:layout_gravity="center_horizontal"
+                 android:layout_weight="0.73"
+                 android:ems="10"
+                 android:hint="What&apos;s your name?"
+                 android:inputType="text"
+                  />
+             <!-- Email Label -->
+
+             <EditText
+                 android:id="@+id/reg_email"
+                 android:layout_width="300dp"
+                 android:layout_height="0dp"
+                 android:layout_gravity="center_horizontal"
+                 android:layout_weight="0.73"
+                 android:ems="10"
+                 android:hint="What&apos;s your email?"
+                 android:inputType="textEmailAddress" />
+
+             <!-- Age Label -->
+
+             <EditText
+                 android:id="@+id/reg_age"
+                 android:layout_width="300dip"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center_horizontal"
+                 android:layout_weight="0.15"
+                 android:ems="10"
+                 android:hint="How old are you?"
+                 android:inputType="number"
+                 android:maxLength="3" />
+
+             <!-- Weight Label -->
+
+             <EditText
+                 android:id="@+id/reg_weight"
+                 android:layout_width="300dip"
+                 android:layout_height="0dp"
+                 android:layout_gravity="center_horizontal"
+                 android:layout_weight="0.70"
+                 android:ems="10"
+                 android:hint="How much do you weigh?"
+                 android:inputType="number"
+                 android:maxLength="3" />
+   			<!-- Password -->
+             <EditText
+                 android:id="@+id/reg_password"
+                 android:layout_width="300dip"
+                 android:layout_height="0dp"
+                 android:layout_gravity="center_horizontal"
+                 android:layout_weight="0.70"
+                 android:ems="10"
+                 android:hint="Enter a password"
+                 android:inputType="textPassword" 
+                 android:maxLength="16" />
+             
+              <EditText
+                 android:id="@+id/reg_password1"
+                 android:layout_width="300dip"
+                 android:layout_height="0dp"
+                 android:layout_gravity="center_horizontal"
+                 android:layout_weight="0.70"
+                 android:ems="10"
+                 android:hint="Re-enter password"
+                 android:inputType="textPassword" 
+                 android:maxLength="16" />
+
+             <EditText
+                 android:id="@+id/reg_country"
+                 android:layout_width="300dip"
+                 android:layout_height="0dp"
+                 android:layout_gravity="center_horizontal"
+                 android:layout_weight="0.70"
+                 android:ems="10"
+                 android:hint="Where are you from?" />
+             <!-- Continue Button -->
+
+             <TableRow
+                 android:id="@+id/tableRow1"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center_horizontal" >
+
+                 <CheckBox
+                     android:id="@+id/male"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_gravity="center_horizontal"
+                     android:text="Male" />
+
+             	<CheckBox
+                	 android:id="@+id/female"
+                 	android:layout_width="wrap_content"
+                 	android:layout_height="wrap_content"
+                 	android:layout_gravity="center_horizontal"
+                 	android:text="Female" />
+
+             </TableRow>
+
+             <Button
+                 android:id="@+id/btnRegister"
+                 android:layout_width="289dp"
+                 android:layout_height="wrap_content"
+                 android:layout_gravity="center_horizontal"
+                 android:layout_marginTop="10dip"
+                 android:text="Start Wine Tasting!" />
+
+         </LinearLayout>
+
+        <!-- Login Form Ends -->
+ 
+  </RelativeLayout>
+</RelativeLayout>
+</ScrollView>

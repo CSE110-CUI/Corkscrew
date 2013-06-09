@@ -1,89 +1,90 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".WineInfoActivity" >
-    
-    
-	<!-- Image -->
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:maxWidth="75dp"
-        android:minHeight="75dp"
-        android:minWidth="75dp"
-        android:src="@drawable/ic_launcher" />
-    
-    <!-- Name -->
-    <TextView
-        android:id="@+id/textview_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/image"
-        android:layout_marginLeft="15dp"
-        android:layout_toRightOf="@+id/image"
-        android:text="Name"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <!-- Varietal -->
-    <TextView
-        android:id="@+id/textview_varietal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textview_name"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textview_region"
-        android:text="Varietal"
-        android:textSize="12sp" />
+    <!-- Image -->
 
-    <!-- Rating -->
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
 
-    <TextView
-        android:id="@+id/textview_rating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textview_varietal"
-        android:layout_alignRight="@+id/textview_varietal"
-        android:layout_below="@+id/textview_varietal"
-        android:text="Rating"
-        android:textSize="12sp" />
-	
-    <!-- Region -->
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:maxWidth="75dp"
+            android:minHeight="75dp"
+            android:minWidth="75dp"
+            android:src="@drawable/ic_launcher" />
 
-    <TextView
-        android:id="@+id/textview_region"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textview_rating"
-        android:layout_alignRight="@+id/textview_name"
-        android:layout_below="@+id/textview_name"
-        android:text="Region"
-        android:textSize="12sp" />
-    
-     
+        <!-- Name -->
+
+        <TextView
+            android:id="@+id/textview_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/image"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/image"
+            android:text="No Name Available"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <!-- Varietal -->
+
+        <TextView
+            android:id="@+id/textview_varietal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textview_name"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/textview_region"
+            android:text="No Varietal Available"
+            android:textSize="12sp" />
+
+        <!-- Rating -->
+
+        <TextView
+            android:id="@+id/textview_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textview_varietal"
+            android:layout_alignRight="@+id/textview_varietal"
+            android:layout_below="@+id/textview_varietal"
+            android:text="Rating"
+            android:textSize="12sp" />
+
+        <!-- Region -->
+
+        <TextView
+            android:id="@+id/textview_region"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textview_rating"
+            android:layout_alignRight="@+id/textview_name"
+            android:layout_below="@+id/textview_name"
+            android:text="Region"
+            android:textSize="12sp" />
+    </RelativeLayout>
 
     <com.viewpagerindicator.TabPageIndicator
         android:id="@+id/indicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textview_rating"
-        android:gravity="center_horizontal" 
-        
-        
-        />
-    <!--  style="@style/MyTabPageIndicator" -->
+        android:gravity="center_horizontal" />
+    <!-- style="@style/MyTabPageIndicator" -->
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/indicator" />
+        android:layout_height="wrap_content" />
 
-</RelativeLayout>
+</LinearLayout>

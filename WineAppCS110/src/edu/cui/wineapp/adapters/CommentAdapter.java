@@ -36,29 +36,7 @@ public class CommentAdapter extends ArrayAdapter<String>
 		TextView commentView = (TextView) rowView.findViewById(R.id.comment);
 		
 		nameView.setText(values.get(position));
-		//timeView.setText(values.get(position+1));
-		// commentView.setText(values.get(position));
 		
-		// change the icon
-		/* String s = values.get(position);
-		if(s.startsWith("Choose-a-Wine"))
-		{
-			imageView.setImageResource(R.drawable.caw_icon);
-		}
-		else if(s.startsWith("Build-a-Wine"))
-		{
-			imageView.setImageResource(R.drawable.baw_icon);
-		}
-		else if(s.startsWith("Pair-a-Wine"))
-		{
-			imageView.setImageResource(R.drawable.paw_icon);
-		}
-		else
-		{
-			imageView.setImageResource(R.drawable.wh_icon);
-		}
-		return rowView;
-		*/
 		String s = values.get(position);
 		if(s.startsWith("Viewtiful Joe"))
 		{

@@ -14,17 +14,13 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/app_icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
             android:name="edu.cui.wineapp.MainActivity"
-            android:label="@string/app_name" >
+            android:label="Corkscrew" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-
                 <intent-filter>
                     <action android:name="android.intent.action.SEARCH" />
                 </intent-filter>
@@ -35,8 +31,28 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="edu.cui.wineapp.LoginActivity"
+            android:label="Corkscrew" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name="edu.cui.wineapp.DisplaySearchActivity"
             android:label="@string/title_activity_display_search" >
+        </activity>
+        <activity
+            android:name="edu.cui.wineapp.SettingsActivity"
+            android:label="Settings" >
+        </activity>
+        <activity
+            android:name="edu.cui.wineapp.SignupActivity"
+            android:label="SignUp" >
+        </activity>
+        <activity
+            android:name="edu.cui.wineapp.FizzGameActivity"
+            android:label="Told You Not to Touch" >
         </activity>
         <activity
             android:name="edu.cui.wineapp.WineInfoActivity"
@@ -45,7 +61,11 @@
         </activity>
         <activity
             android:name="edu.cui.wineapp.WineCellarActivity"
-            android:label="@string/title_activity_wine_cellar" >
+            android:label="Wine Cellar" >
+        </activity>
+        <activity
+            android:name="edu.cui.wineapp.NewUserActivity"
+            android:label="New User SignUp" >
         </activity>
     </application>
 

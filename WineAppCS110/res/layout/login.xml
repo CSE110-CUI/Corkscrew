@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background" >
+    
+    <RelativeLayout
+        android:layout_width="530dp"
+        android:layout_height="775dp"
+        android:layout_gravity="center"
+        android:background="@drawable/greenbg"
+        android:gravity="center"
+        android:orientation="horizontal" >
+    <RelativeLayout
+        android:layout_width="515dp"
+        android:layout_height="760dp"
+        android:layout_gravity="center"
+        android:background="#ffffff"
+        android:gravity="center"
+        android:orientation="horizontal" >
+        
+    <!-- Header -->
+      <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="fill_parent"
+            android:layout_height="90dip"
+            android:orientation="horizontal"
+            android:paddingBottom="5dip"
+            android:paddingTop="5dip" >
+             <TextView 
+                android:id="@+id/appName"
+                 android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#372c24"
+                style="@style/BigTextStyle"
+                android:gravity="center"
+            	android:text="Corkscrew" />
+    	</LinearLayout>
+
+    <!-- Footer -->
+      <LinearLayout
+            android:id="@+id/footer"
+            android:layout_width="fill_parent"
+            android:layout_height="210dip"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal" >
+        <TextView 
+                android:id="@+id/disclaimer"
+                 android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#372c24"
+                android:gravity="center"
+            	android:text="@string/disclaimer" />
+		</LinearLayout>
+    <!-- Login form -->
+      <LinearLayout
+             android:id="@+id/login_info"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_above="@id/footer"
+             android:layout_below="@id/header2"
+             android:orientation="vertical"
+             android:padding="10dip" >
+    <ImageView
+              android:id="@+id/imageView1"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center_horizontal"
+              android:src="@drawable/cuilogo" />
+          <EditText
+                 android:id="@+id/login_email"
+                 android:layout_width="300dp"
+                 android:layout_height="0dp"
+                 android:layout_gravity="center_horizontal"
+                 android:layout_weight="0.73"
+                 android:ems="10"
+                 android:hint="Email"
+                 android:inputType="textEmailAddress" />
+    
+           <EditText
+                 android:id="@+id/login_password"
+                 android:layout_width="300dip"
+                 android:layout_height="0dp"
+                 android:layout_gravity="center_horizontal"
+                 android:layout_weight="0.70"
+                 android:ems="10"
+                 android:hint="Password"
+                 android:inputType="textPassword" 
+                 android:maxLength="16" />
+
+           <Button
+               android:id="@+id/login_button"
+               android:layout_width="280dp"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center_horizontal"
+               android:text="Login" />
+
+           <TextView
+               android:id="@+id/or_text"
+               android:layout_width="wrap_content"
+               android:layout_height="match_parent"
+               android:layout_gravity="center_horizontal"
+               style="@style/MediumTextStyle"
+               android:text="Or" />
+
+           <Button
+               android:id="@+id/signup_button"
+                android:layout_width="280dp"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center_horizontal"
+               android:text="Sign Up" />
+
+    	</LinearLayout>
+    </RelativeLayout>  
+  </RelativeLayout>
+
+</ScrollView>

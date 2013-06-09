@@ -40,7 +40,12 @@ public class DisplaySearchManager {
 	{
 		for(final Wine currWine:wineList)
 		{
-    		DisplaySearchCard currentCard = new DisplaySearchCard(currWine.getName(),String.valueOf(currWine.getSnoothrank()),currWine.getRegion(),currWine.getVintage(), currWine.getType(), currWine.getWinery(),String.valueOf(currWine.getPrice()));
+    		DisplaySearchCard currentCard = new DisplaySearchCard(
+    				currWine.getName(),
+    				String.valueOf(currWine.getSnoothrank()),
+    				currWine.getRegion(),currWine.getVintage(), 
+    				currWine.getType(), currWine.getWinery(),
+    				determineWinePrice(currWine.getPrice()));
     		currentCard.setOnClickListener(new OnClickListener() {
     			@Override
     			public void onClick(View v) {
@@ -52,5 +57,11 @@ public class DisplaySearchManager {
     		});
     		currCard.addCard(currentCard);
 		}
+	}
+	
+	private String determineWinePrice(float price){
+		if(price <= 0) return "NA";
+		else return String.valueOf(price);
+
 	}
 }

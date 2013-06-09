@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">wineApp</string>
+    <string name="app_name">Corkscrew</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="new_wine_search">Wine Name</string>
     <string name="search">Search</string>
-    <string name="title_activity_display_search">DisplaySearchActivity</string>
-    <string name="title_activity_wine_info">WineInfo</string>
+    <string name="title_activity_display_search">Search Results</string>
+    <string name="title_activity_wine_info">Wine Info</string>
     <string name="drawer_open">Search</string>
     <string name="drawer_close">Search</string>
     <string name="title_activity_wine_cellar">Wine Cellar</string>
+    <string name="reg_greeting">Howdy Stranger!</string>
+    <string name="greeting2">Welcome aboard! It seems like you\'re new to our wine tasting app. We have lots to offer to our fellow oenophiles. But first things first, we need to know more about you!</string>
+    <string name="title_new_user_activity">New User</string>
+    <string name="disclaimer">Disclaimer: To use this app, you will need a reliable internet connection</string>
+        <string name = "setting_glass_size">Drink Mode</string>
+    <string name = "glass_size_default">1</string>
+    <string name ="BAC_mode">BAC Caculation Formula</string>
+    <string name = "BAC_mode_default">Widemark</string>
+    
 
 </resources>

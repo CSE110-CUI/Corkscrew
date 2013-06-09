@@ -26,12 +26,7 @@ public class DisplaySearchCard extends Card {
 		this.vintage = vintage;
 		this.winery = winery;
 		this.price = price;
-		//Name
-		//SnoothRank
-		//Region
-		//Vintage
-		//Color (orType?)
-		//Winery
+
 	}
 
 	public DisplaySearchCard(String name, float rank, String region,
@@ -52,7 +47,12 @@ public class DisplaySearchCard extends Card {
 		this.color = curWine.getType();
 		this.vintage = curWine.getVintage();
 		this.winery = curWine.getWinery();
-		this.price = String.valueOf(curWine.getPrice());
+		this.price = determineWinePrice(curWine.getPrice());
+	}
+
+	private String determineWinePrice(float price) {
+		if(price <= 0) return "NA";
+		else return String.valueOf(price);
 	}
 
 	@Override

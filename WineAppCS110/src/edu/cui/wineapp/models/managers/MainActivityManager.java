@@ -62,7 +62,6 @@ public class MainActivityManager extends Activity{
 			mCardView.addCard(currentCard);
 		}
 		
-		//mCardView.refresh();
 	}
 
 

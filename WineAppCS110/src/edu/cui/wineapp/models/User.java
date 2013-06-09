@@ -15,14 +15,14 @@ public class User {
 	private String photourl=null;
 	private ArrayList<Wine> drinkedWines=null;
 	private ArrayList<String> comments=null;
-	private long id;
+	private String id;
 	//private String currentWine = "To Get Started, Search a Wine Below!";
 	private Wine currentWine = null;
 	private Time lastDrinkTime = null;
 	private double BAC;
 	
 	
-	public User(String name, int age, float weight, String email, String sex, String country, String photourl, long id){
+	public User(String name, int age, float weight, String email, String sex, String country, String photourl, String id){
 		this.name = name;
 		this.age = age;
 		this.weight = weight;
@@ -32,7 +32,7 @@ public class User {
 		this.photourl = photourl;
 		this.id = id;
 	}
-	public long getId(){
+	public String getId(){
 		return id;
 	}
 	public String getName(){
@@ -62,36 +62,7 @@ public class User {
 	public ArrayList<String> getComments(){
 		return comments;
 	}
-/**	
-	//setter!!!!!
-	public static boolean setName(String name){
-		return dao.setUserName(name);
-	}
-	public static boolean setAge(int age){
-		return dao.setUserAge(age);
-	}
-	public static boolean setWeight(float weight){
-		return dao.setUserWeight(weight);
-	}
-	public static boolean setEmail(String email){
-		return dao.setUserEmail(email);
-	}
-	public static boolean setSex(String sex){
-		return dao.setUserSex(sex);
-	}
-	public static boolean setCountry(String country){
-		return dao.setUserCountry(country);
-	}
-	public static boolean setPhotoUrl(String url){
-		return dao.setUserPhoto(url);
-	}
-	public static boolean drink(Wine wine){
-		return false;
-	}
-	public static boolean setComments(String comment){
-		return dao.setUserComments(comment);
-	}
-**/
+
 	public Wine getCurrentWine() {
 		return currentWine;
 	}

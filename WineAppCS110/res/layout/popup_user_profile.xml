@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_root"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="10dp" >
+ 
+ 	<TextView
+	    android:id="@+id/name"
+	    style="@style/CardText"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="Viewtiful Joe"
+	    android:textSize="60px"
+	    android:textStyle="bold" />
+	
+	<TextView
+	    android:id="@+id/age"
+	    style="@style/CardText"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_toRightOf="@+id/name"
+	    android:text="Age: Lv.24"
+	    android:textSize="46px" />
+	
+    <TextView
+        android:id="@+id/weight"
+        style="@style/CardText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Weight: 168 lbs"
+        android:textSize="46px" />
+    
+    <TextView
+        android:id="@+id/sex"
+        style="@style/CardText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sex: M"
+        android:textSize="46px" />
+    
+    <TextView
+        android:id="@+id/country"
+        style="@style/CardText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Country: Movieland"
+        android:textSize="46px" />
+ 
+</LinearLayout>

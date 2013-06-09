@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content" >
+
+ <!--   <ListPreference
+
+        android:key="Splash_Screen"
+        android:title="@string/setting_splash_screen"
+        android:summary="Decide which system will lauch at app start"
+        android:dialogTitle="choose splash screen"
+        android:entries="@array/splash_screen_entries"
+        android:entryValues="@array/splash_screen_values"
+        android:defaultValue="@string/splash_screen_default"/>
+    
+    <ListPreference 
+        
+        android:key = "Priority"
+        android:title = "@string/priority_search"
+        android:summary = "Tailor searches by priority wine varitals"
+        android:dialogTitle="Search wine by..."
+        android:entries="@array/priority_entries"
+        android:entryValues="@array/priority_entries"
+        android:defaultValue="@string/priority_search_default" />
+    -->
+    
+        <ListPreference
+        android:key="Glass_Size"
+        android:title="@string/setting_glass_size"
+        android:summary="Choose the glass size."
+        android:dialogTitle="Choose the glass size."
+        android:entries="@array/glass_size_entries"
+        android:entryValues="@array/glass_size_values"
+        android:defaultValue="@string/glass_size_default"
+        />
+    
+   <ListPreference
+        android:key="BAC_Mode"
+        android:title="Change BAC Calculatin Algorithm"
+        android:summary ="Choose formula used to caculate BAC. Warning: Your BAC will be reset."
+        android:dialogTitle="Choose the formula to caculate BAC"
+        android:entries="@array/BAC_mode_entries"
+        android:entryValues="@array/BAC_mode_values"
+        android:defaultValue="@string/BAC_mode_default"
+    />
+    
+ <!--
+    <CheckBoxPreference
+ 
+        android:key = "theme"
+        android:title="Dark CUI"
+        android:summary ="enable dark theme"
+        android:defaultValue ="false" />
+    
+    <CheckBoxPreference
+ 
+        android:key = "Notification"
+        android:title="Notification"
+        android:summary ="enable notifications based on current BAC levels"
+        android:defaultValue ="true" />
+        
+    <CheckBoxPreference
+ 
+        android:key = "DynamicBAC"
+        android:title="DynamicBAC"
+        android:summary ="Modify splash screen to dyanamically display BAC levels"
+        android:defaultValue ="true" /> 
+      -->
+    
+</PreferenceScreen>

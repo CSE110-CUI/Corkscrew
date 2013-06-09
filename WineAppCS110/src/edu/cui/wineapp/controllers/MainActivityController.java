@@ -3,13 +3,23 @@ package edu.cui.wineapp.controllers;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.database.sqlite.SQLiteException;
+import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ListView;
+import android.widget.SearchView;
+
 import com.fima.cardsui.views.CardUI;
 
 import edu.cui.wineapp.DisplaySearchActivity;
 import edu.cui.wineapp.MainActivity;
 import edu.cui.wineapp.R;
-import edu.cui.wineapp.R.drawable;
-import edu.cui.wineapp.R.string;
+import edu.cui.wineapp.WineInfoActivity;
 import edu.cui.wineapp.adapters.CustomAdapter;
 import edu.cui.wineapp.models.CurrentlyDrinkingCard;
 import edu.cui.wineapp.models.DisplaySearchCard;
@@ -18,20 +28,6 @@ import edu.cui.wineapp.models.Wine;
 import edu.cui.wineapp.models.managers.MainActivityManager;
 import edu.cui.wineapp.models.managers.UserManager;
 import edu.cui.wineapp.views.MainActivityView;
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.database.sqlite.SQLiteException;
-import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.Toast;
 
 public class MainActivityController implements SearchView.OnQueryTextListener,
 SearchView.OnCloseListener {
@@ -44,6 +40,8 @@ SearchView.OnCloseListener {
 		this.currView = currView;
 		this.currManager = currManager;
 
+		/*** testing ***/
+		//initUser();
 		initSearchView(currView.getmSearchView());
 		initTitleView(currView.getmCardName());
 		initCards(currView.getmCardView());
@@ -53,7 +51,11 @@ SearchView.OnCloseListener {
 		initDrawerToggle();
 	}
 
+	public void initUser()
+	{
+		UserManager uManager = UserManager.getUserManager(MainActivity.mainActivity.getApplication().getApplicationContext());//.setLocalUser("1", 1, 1, "1", "1", "1", "1", 1));
 
+	}
 
 	private void initDrawerToggle() {
 		ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
@@ -67,19 +69,26 @@ SearchView.OnCloseListener {
 
 
 	private void initAcionBar() {
-		MainActivity.mainActivity.getActionBar().setDisplayHomeAsUpEnabled(true);
-		MainActivity.mainActivity.getActionBar().setHomeButtonEnabled(true);		
+	
 	}
 
 	private void initDrawerView(ListView mDrawerList) {
-		
+
 		mDrawerList.setAdapter(new CustomAdapter(MainActivity.mainActivity.getApplicationContext(), 
 				currView.getDrawerNames()));
 		mDrawerList.setOnItemClickListener(new DrawerItemController());
 	}
 
 	private void initDrawerNames(ArrayList<String> drawerNames) {
+		drawerNames.add("User Profile");
 		drawerNames.add("Wine Cellar");
+		drawerNames.add("Top Wines");
+		drawerNames.add("Get Random Wine");
+		drawerNames.add("Current BAC");
+		drawerNames.add("Clear BAC");
+		drawerNames.add("Clear Wine");
+		drawerNames.add("DO NOT TOUCH");
+		drawerNames.add("Logout");
 	}
 
 	private void initCards(CardUI mCardView) {
@@ -98,12 +107,27 @@ SearchView.OnCloseListener {
 		name.clearCards();
 
 		if(UserManager.getUserManager(MainActivity.mainActivity.getApplicationContext()).getLocalUser() == null){
-			name.addCard(new MyCard("Welcome.","To Get Started, Search for a Wine Below"));
+			name.addCard(new MyCard("Welcome. ","To Get Started, Search for a Wine Below"));
+		}
+
+		else if(UserManager.getUserManager(MainActivity.mainActivity.getApplicationContext()).getLocalUser().getCurrentWine() == null){
+			name.addCard(new MyCard("Welcome, "+UserManager.getLocalUser().getName(),"To Get Started, Search for a Wine Below"));
 		}
 
 		else{
-			Wine curWine = UserManager.getUserManager(MainActivity.mainActivity.getApplicationContext()).getLocalUser().getCurrentWine();
-			name.addCard(new CurrentlyDrinkingCard(curWine));
+			final Wine curWine = UserManager.getUserManager(MainActivity.mainActivity.getApplicationContext()).getLocalUser().getCurrentWine();
+			CurrentlyDrinkingCard currWine = new CurrentlyDrinkingCard(curWine);
+			currWine.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Bundle bundle2 = new Bundle();
+					Intent i = new Intent(MainActivity.mainActivity.getApplication().getApplicationContext(), WineInfoActivity.class);
+					bundle2.putString("passedWine", curWine.getCode());
+					i.putExtras(bundle2);
+					MainActivity.mainActivity.startActivity(i);
+				}
+			});	
+			name.addCard(currWine);
 		}
 
 		initCards(name);

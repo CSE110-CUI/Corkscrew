@@ -15,9 +15,7 @@ public class WineCellarView
 	
 	public WineCellarView(Activity activity)
 	{
-		// super(activity, null);
 		View view = WineCellarActivity.wineCellar.getWindow().getDecorView().getRootView();
-		// gridView = (StaggeredGridView) view.findViewById(R.id.staggeredGridView1);
 		setGridView((StaggeredGridView) view.findViewById(R.id.staggeredGridView1));
 		setMargin(20);
 		setUpGridImage(getGridView());

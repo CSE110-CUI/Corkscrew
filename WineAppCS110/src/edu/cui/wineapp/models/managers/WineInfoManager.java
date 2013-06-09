@@ -58,7 +58,8 @@ public class WineInfoManager extends Activity {
 	}
 
 	public String getWineVarietal(){
-		return dWine.getVarietal();
+		if (dWine.getVarietal().length() <= 0) return "No Varietal Available";
+		else return dWine.getVarietal();
 	}
 
 	public String getWineRegion(){

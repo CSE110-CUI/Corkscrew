@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">wineApp</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="new_wine_search">Wine Name</string>
+    <string name="search">Search</string>
+    <string name="title_activity_display_search">DisplaySearchActivity</string>
+    <string name="title_activity_wine_info">WineInfo</string>
+    <string name="drawer_open">Search</string>
+    <string name="drawer_close">Search</string>
+    <string name="title_activity_wine_cellar">Wine Cellar</string>
+
+</resources>

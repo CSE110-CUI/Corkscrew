@@ -5,37 +5,37 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.text.format.Time;
-import edu.cui.wineapp.DAO;
-import edu.cui.wineapp.DAOBU;
-import edu.cui.wineapp.WineDAO;
+import android.util.Log;
 import edu.cui.wineapp.models.BAC;
 import edu.cui.wineapp.models.Comment;
 import edu.cui.wineapp.models.User;
 import edu.cui.wineapp.models.Wine;
+import edu.cui.wineapp.models.data.UserDAO;
+import edu.cui.wineapp.models.data.WineDAO;
 
 public class UserManager{
 	private static Context context = null;
-	private static WineDAO WineDao = null; 
-	private static DAOBU dao = null;
+	private static UserDAO dao = null; 
 	private static User localUser;
+	private static WineDAO winedao=null;
+	//private static UserManager ourInstance = new UserManager();
 	private UserManager(Context context){
 		this.context = context;
-		dao=DAOBU.getDAO(context);
+		dao=UserDAO.getUserDAO(context);
+		winedao=WineDAO.getWineDAO(context);
 	}
 	
 	public static UserManager getUserManager(Context context){
 		return new UserManager(context);
 	}
-
-	public static boolean deleteUser(String name){
-		return dao.deleteUser(name);
-	}
+	
 	public ArrayList<Comment> getComment(String q){
 		return dao.getCommentsByQuery(q);
 	}
 	
 	public void setComment(String w,String u, String c){
 		try {
+			Log.e("MANAGER COMMENT","!!");
 		dao.setComment(w, u, c);
 		} catch (UnsupportedEncodingException e) {
 		// TODO Auto-generated catch block
@@ -43,22 +43,13 @@ public class UserManager{
 		}
 	}
 	
-	public User createUserOnServer(String name, int age, float weight, String email, String sex, String country, String photourl, long userid) throws UnsupportedEncodingException{
-		return dao.createUserOnServer(name, age, weight, email, sex, country, photourl, userid);
+	public User createUserOnServer(String name, int age, float weight, String email, String sex, String country, String photourl, String userid,String pass) throws UnsupportedEncodingException{
+		return dao.createUserOnServer(name, age, weight, email, sex, country, photourl, userid,pass);
 	}
 	
-	public User testCreateUser(){
-		try {
-			return createUserOnServer("9", 9, 9, "9", "9", "9", "9", 22);
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
-	}
 	
-	public User loginToServer(long userid) throws UnsupportedEncodingException{
-		ArrayList<User> myArr = dao.loginServer(Long.toString(userid));
+	public User loginToServer(String userid,String pass) throws UnsupportedEncodingException{
+		ArrayList<User> myArr = dao.loginServer(userid,pass);
 		if(myArr.size() == 0){
 			return null;
 		}
@@ -68,8 +59,21 @@ public class UserManager{
 	public static User getLocalUser() {
 		return localUser;
 	}
+	
+	public static ArrayList<Wine> fetchOnlineWines(){
+		try {
+			return winedao.retrieveUsersWines(UserManager.getLocalUser().getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ArrayList<Wine>();
+		}
+	}
 
-	public static void setLocalUser(String name, int age, float weight, String email, String sex, String country, String photourl, long id) {
+	public static void clearBAC(){
+		localUser.setBAC(0);
+	}
+	
+	public static void setLocalUser(String name, int age, float weight, String email, String sex, String country, String photourl, String id) {
 		localUser = new User(name, age, weight, email, sex, country, photourl, id);
 	}
 	
@@ -78,9 +82,17 @@ public class UserManager{
 		Time currentTime = new Time();
 		currentTime.setToNow();
 		
-		DAO.getDAO(context).createWine(basicWine);
-		
+		//winedao.createWine(basicWine);
+
 		localUser.setCurrentWine(basicWine);
+		
+		try {
+			winedao.addWineOnline(basicWine,UserManager.getLocalUser().getId(),UserManager.getLocalUser().getCurrentWine().getCode());
+			//winedao.retrieveUsersWines(UserManager.getLocalUser().getId());
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		
 		
 		if(localUser.getLastDrinkTime() == null){
 			lastDrink.setToNow();
@@ -94,8 +106,12 @@ public class UserManager{
 		BAC.setHour(hr);
 		
 		// FIX THIS
-		localUser.setBAC(BAC.calculateBAC(150, "male"));
+		localUser.setBAC(BAC.calculateBAC((int)UserManager.getLocalUser().getWeight(), UserManager.getLocalUser().getSex()));
 		
+	}
+
+	public static void clearLocalWineCellar() {
+		winedao.clearAllLocalWines();
 	}
 	
 	

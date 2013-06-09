@@ -36,13 +36,12 @@ public class WineNotesFragment extends ListFragment {
 
 		View rootView = inflater.inflate(R.layout.fragment_wine_notes, container, false);
 		final EditText commentBox = (EditText) rootView.findViewById(R.id.comment);
-		final int origWidth = commentBox.getWidth();
-		final int origHeight = commentBox.getHeight();
+
 
 		contextForDialog = getActivity().getParent();
 		
-		//dWine = (DetailedWine) getArguments().getSerializable(ARG_WINE);
 		dWine = WineInfoManager.getDetailedWine();
+		//dWine.getName();
 
 		updateComments();
 
@@ -51,15 +50,14 @@ public class WineNotesFragment extends ListFragment {
 			@Override
 			public boolean onEditorAction(TextView v, int actionId,	KeyEvent event){
 				commentLength = commentBox.getText().toString().length();
-				if(commentLength > 3)Toast.makeText(getActivity(), "TEXT LONGER THAN 3", Toast.LENGTH_LONG).show();
 				boolean handled = false;
 
 				if (actionId == EditorInfo.IME_ACTION_SEND){
-/*
+
 					UserManager.getUserManager(getActivity()).setComment(
 							dWine.getCode(), String.valueOf(UserManager.getLocalUser().getId()), commentBox.getText().toString());
 					commentBox.setText("");
-					*/
+					
 					handled = true;
 				}
 
@@ -67,17 +65,9 @@ public class WineNotesFragment extends ListFragment {
 				if(commentLength > 0){
 					do updateComments(); while(prevCommentCount == currentCommentCount);
 				}
-				
-				commentBox.setWidth(origWidth);
-				commentBox.setHeight(origHeight);
-				
+
 				return handled;
 			}});
-
-		
-		final int newWidth = getActivity().getWindowManager().getDefaultDisplay().getWidth();
-		final int newHeight = getActivity().getWindowManager().getDefaultDisplay().getHeight();
-
 
 		commentBox.setOnClickListener(new OnClickListener() {
  
@@ -104,8 +94,9 @@ public class WineNotesFragment extends ListFragment {
 					    public void onClick(DialogInterface dialog,int id) {
 						// get user input and set it to result
 						// edit text
+					    	commentLength=userInput.getText().toString().length();
 							UserManager.getUserManager(getActivity()).setComment(
-									dWine.getCode(), String.valueOf(UserManager.getLocalUser().getId()), commentBox.getText().toString());
+									dWine.getCode(), String.valueOf(UserManager.getLocalUser().getId()), userInput.getText().toString());
 							commentBox.setText("");
 							prevCommentCount = currentCommentCount;
 							if(commentLength > 0){
@@ -132,33 +123,14 @@ public class WineNotesFragment extends ListFragment {
 				alertDialog.show();
  
 			}
-		});
-		/*	
-			@Override
-			public void onClick(View arg0) {
-				//Animation anim=AnimationUtils.loadAnimation( getActivity().getApplicationContext(), R.anim.animation_sample);
-
-				
-					commentBox.setWidth(newWidth);
-					commentBox.setHeight(newHeight);
-
-				//commentBox.startAnimation(anim);
-			}
-			
-
-		});
-		*/
-			
-
-		
-		
+		});		
 		return rootView;
 	}
 
 	protected void updateComments(){
 				
 		ArrayList<Comment>commentList = (UserManager.getUserManager(getActivity()).getComment(
-				"WHERE winecode = '"+dWine.getCode()+"' ORDER BY date DESC LIMIT 10"));
+				"WHERE winecode = '"+dWine.getCode()+"' ORDER BY date DESC"));
 		
 		currentCommentCount = commentList.size();
 		
@@ -167,7 +139,9 @@ public class WineNotesFragment extends ListFragment {
 		for(Comment c:commentList)
 			commentStrings.add(c.getComment());
 
-		setListAdapter(new ArrayAdapter<String>(
-				getActivity().getApplicationContext(), R.layout.list_item_black, commentStrings));
+		ArrayAdapter<String> t =new ArrayAdapter<String>(
+				getActivity().getApplicationContext(), R.layout.list_item_black, commentStrings);
+		setListAdapter(t);
+		t.notifyDataSetChanged();
 	}
 }

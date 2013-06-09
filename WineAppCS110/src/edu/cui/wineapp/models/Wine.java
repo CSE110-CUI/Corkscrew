@@ -1,10 +1,8 @@
 package edu.cui.wineapp.models;
 
-import android.content.Context;
-import android.util.Log;
-
 import java.util.ArrayList;
 
+import android.content.Context;
 import edu.cui.wineapp.models.managers.FoodManager;
 
 public class Wine {

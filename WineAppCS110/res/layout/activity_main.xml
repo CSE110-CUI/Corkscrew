@@ -8,21 +8,23 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" 
-                android:background="@drawable/grey_background_pattern">
-        
-<!--  
+        android:background="@drawable/grey_background_pattern"
+        android:orientation="vertical" >
+
+        <!--
         <TextView
             android:id="@+id/textview_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Name"
             android:textAppearance="?android:attr/textAppearanceLarge" />
--->
-<com.fima.cardsui.views.CardUI
+        -->
+
+        <com.fima.cardsui.views.CardUI
             android:id="@+id/cardName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
         <SearchView
             android:id="@+id/searchView1"
             android:layout_width="match_parent"
@@ -36,17 +38,15 @@
     </LinearLayout>
 
     <ListView
-            android:padding="10dp"
-            android:id="@+id/left_drawer"
-            android:layout_width="240dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:choiceMode="singleChoice"
-            android:divider="#444444"
-        	android:dividerHeight="1dp"
-            android:background="#111"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
-            
-
+        android:id="@+id/left_drawer"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="#111"
+        android:choiceMode="singleChoice"
+        android:divider="#444444"
+        android:dividerHeight="1dp"
+        android:padding="10dp"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </android.support.v4.widget.DrawerLayout>

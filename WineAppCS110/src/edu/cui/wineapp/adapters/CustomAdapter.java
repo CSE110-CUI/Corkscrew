@@ -36,18 +36,42 @@ public class CustomAdapter extends ArrayAdapter<String>
 		
 		// change the icon
 		String s = values.get(position);
-		if(s.startsWith("Choose-a-Wine"))
+		if(s.startsWith("Get Random Wine"))
 		{
-			imageView.setImageResource(R.drawable.caw_icon);
+			imageView.setImageResource(R.drawable.rand_icon);
 		}
-		else if(s.startsWith("Build-a-Wine"))
+		else if(s.startsWith("Top Wines"))
 		{
-			imageView.setImageResource(R.drawable.baw_icon);
+			imageView.setImageResource(R.drawable.top_icon);
 		}
-		else if(s.startsWith("Pair-a-Wine"))
+		else if(s.startsWith("Current BAC"))
 		{
-			imageView.setImageResource(R.drawable.paw_icon);
+			imageView.setImageResource(R.drawable.curr_bax_x);
+		}		
+		else if(s.startsWith("Clear BAC"))
+		{
+			imageView.setImageResource(R.drawable.clr_bar);
+		}	
+		else if(s.startsWith("User Profile"))
+		{
+			imageView.setImageResource(R.drawable.user_prof);
 		}
+		else if(s.startsWith("User Profile"))
+		{
+			imageView.setImageResource(R.drawable.user_prof);
+		}
+		else if(s.startsWith("DO NOT TOUCH"))
+		{
+			imageView.setImageResource(R.drawable.gillsp);
+		}
+		else if(s.startsWith("Clear Wine"))
+		{
+			imageView.setImageResource(R.drawable.clear_icon);
+		}	
+		else if(s.startsWith("Logout"))
+		{
+			imageView.setImageResource(R.drawable.logout_icon);
+		}	
 		else
 		{
 			imageView.setImageResource(R.drawable.wh_icon);

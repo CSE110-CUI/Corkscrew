@@ -2,6 +2,7 @@ package edu.cui.wineapp.controllers;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import com.viewpagerindicator.TabPageIndicator;
 
 import edu.cui.wineapp.WineInfoActivity;
+import edu.cui.wineapp.models.BAC;
 import edu.cui.wineapp.models.managers.FragmentCollectionManager;
 import edu.cui.wineapp.models.managers.UserManager;
 import edu.cui.wineapp.models.managers.WineInfoManager;
@@ -35,7 +37,6 @@ public class WineInfoController extends FragmentActivity{
 		initWineRating(currView.getWineRating());
 		initWinePhoto(currView.getWineImage());
 
-		Log.e("4","4");
 	}
 
 	private void initWinePhoto(ImageView wineImage) {
@@ -58,8 +59,9 @@ public class WineInfoController extends FragmentActivity{
 
 	private void initWineName(TextView name) {
 		name.setText(currManager.getWineName());
-		//name.setTypeface(Typeface.createFromAsset(getAssets(),
-		//	"fonts/Roboto-BoldCondensed.ttf"));
+		Typeface myType = Typeface.createFromAsset(WineInfoActivity.wineInfoActivity.getAssets(), "fonts/Roboto-BoldCondensed.ttf");
+		name.setTypeface(myType);
+
 	}
 
 	private void initmTitlePageIndicator(TabPageIndicator titleIndicator) {
@@ -73,8 +75,10 @@ public class WineInfoController extends FragmentActivity{
 	}
 
 	public void addDrink() {
-		//STOPGAP
-		UserManager.setLocalUser("2", 2, 2, "2", "male", "c", "c", 1);
+		
+		UserManager.setLocalUser(UserManager.getLocalUser().getName(), UserManager.getLocalUser().getAge(), UserManager.getLocalUser().getWeight(), UserManager.getLocalUser().getEmail(), UserManager.getLocalUser().getSex(), UserManager.getLocalUser().getCountry(), UserManager.getLocalUser().getPhotoUrl(), UserManager.getLocalUser().getId());
+		
+		BAC.dVar = 1;
 		UserManager.addDrink(WineInfoManager.getBasicWine());
 		Toast.makeText(WineInfoActivity.wineInfoActivity, 
 				"Current Wine: " + currManager.getCurrentWineName()+"\n" +
